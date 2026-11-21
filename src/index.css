@@ -1,0 +1,33 @@
+@import './design/tokens.css';
+
+:root {
+  font-family: var(--font-text);
+  color: var(--ink);
+  background: var(--cream);
+  font-size: 100%;
+  line-height: var(--lh-body);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+  background: var(--cream);
+  overflow-wrap: break-word;
+}
+button { font: inherit; color: inherit; }
+h1, h2, h3, p { margin-top: 0; }
+#root { min-height: 100vh; }
+h1, h2 {
+  font-family: var(--font-display);
+  line-height: var(--lh-heading);
+  overflow-wrap: break-word;
+}
+h3 {
+  font-family: var(--font-text);
+  font-weight: 700;
+  line-height: var(--lh-heading);
+  overflow-wrap: break-word;
+}

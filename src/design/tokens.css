@@ -1,0 +1,122 @@
+:root {
+  --cream: #FBF7F1;
+  --paper: #FFFFFF;
+  --paper-raised: #FFFCFA;
+  --ink: #2A2422;
+  --muted: #5F574F;
+  --line: #E8E0D4;
+  --line-strong: #D2C5B4;
+
+  --accent: #E8893A;
+  --accent-deep: #C96A1E;
+  --sage: #6F8F6A;
+  --sage-deep: #3F5540;
+  --sage-bg: #E8F0E6;
+  --sky: #5B8FB5;
+  --sky-deep: #3A5F7A;
+  --sky-bg: #E4EEF5;
+  --rose: #C07A84;
+  --rose-deep: #7A4550;
+  --rose-bg: #F6E9EB;
+  --violet: #7A6B96;
+  --violet-deep: #4A3F5E;
+  --violet-bg: #EDE8F4;
+  --orange: #E8893A;
+
+  --sidebar-bg: #3A4A40;
+  --sidebar-text: #F7F4EF;
+  --sidebar-active: rgba(247, 244, 239, .16);
+  --zone: #F3EEE6;
+  --item-card: #FFFFFF;
+  --ok: #3F5540;
+  --ok-bg: #E8F0E6;
+  --warn: #A85A20;
+  --warn-bg: #F8E8D8;
+  --focus: #C96A1E;
+  --hint-1: #E8F0E6;
+  --hint-2: #E4EEF5;
+  --hint-3: #EDE8F4;
+  --hint-solution: #F3EEE6;
+
+  --font-display: "Fraunces", "Iowan Old Style", Palatino, serif;
+  --font-text: "Source Sans 3", "Segoe UI", Aptos, system-ui, sans-serif;
+
+  --fs-kicker: 0.78rem;
+  --fs-meta: 0.95rem;
+  --fs-body: clamp(1rem, 0.96rem + 0.2vw, 1.125rem);
+  --fs-prompt: clamp(1.1rem, 1.02rem + 0.35vw, 1.25rem);
+  --fs-sentence: clamp(1.2rem, 1.1rem + 0.45vw, 1.4rem);
+  --fs-scan: clamp(1.1rem, 1.05rem + 0.3vw, 1.25rem);
+  --fs-h1: clamp(1.75rem, 1.35rem + 1.6vw, 2.5rem);
+  --fs-h2: clamp(1.3rem, 1.12rem + 0.7vw, 1.75rem);
+  --fs-h3: clamp(1.05rem, 1rem + 0.25vw, 1.2rem);
+  --fs-small: 0.92rem;
+  --fs-option: clamp(1rem, 0.96rem + 0.2vw, 1.08rem);
+  --lh-tight: 1.15;
+  --lh-heading: 1.2;
+  --lh-option: 1.4;
+  --lh-body: 1.55;
+  --lh-sentence: 1.55;
+  --lh-scan: 1.7;
+
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-8: var(--space-4);
+  --space-12: var(--space-5);
+  --space-16: var(--space-6);
+  --space-24: 3rem;
+
+  --pad-sm: 1rem;
+  --pad-md: 1.25rem;
+  --pad-lg: 1.75rem;
+
+  --radius-sm: 12px;
+  --radius-md: 16px;
+  --radius-lg: 22px;
+  --radius-pill: 14px;
+  --shadow-card: 0 8px 24px rgba(42, 36, 34, .05);
+  --shadow-focus: 0 0 0 3px rgba(201, 106, 30, .28);
+  --focus-ring: 3px solid var(--accent-deep);
+  --border-card: 1px solid var(--line);
+  --card-gap: 1.15rem;
+  --button-height: 46px;
+  --touch: 44px;
+  --sidebar: 232px;
+  --action-gap: 0.75rem;
+
+  /* Content shells: page vs interaction (Referenz: kompakte TextScan-Karte) */
+  --content-width-page: min(100%, 72rem);
+  --content-width-reading: min(100%, 56.25rem);   /* ~900px */
+  --content-width-task: min(100%, 50rem);         /* ~800px, 700–850px-Band */
+  --content-width-wide: min(100%, 58rem);         /* ~928px, Sort/Match */
+  --content-width-compact: min(100%, 45rem);      /* ~720px */
+  --content-width-home: min(100%, 72.5rem);       /* ~1160px */
+  --content-width-scan: min(100%, 50rem);         /* gleiche Kartenbreite wie Task */
+  --content-width-completion: min(100%, 50rem);
+  --interaction-choice: min(100%, 36rem);         /* kompakte Antworten */
+  --interaction-slot: min(100%, 12rem);           /* kurze Adverb-Eingabe */
+  --interaction-read: min(100%, 42rem);           /* Fließtext ~60–80ch */
+
+  /* Legacy aliases used across App.css */
+  --content-max: var(--content-width-page);
+  --page-wide: var(--content-width-home);
+  --learn-max: var(--content-width-reading);
+  --task-max: var(--content-width-task);
+  --wide-task-max: var(--content-width-wide);
+  --completion-max: var(--content-width-completion);
+  --scan-max: var(--content-width-scan);
+  --page-max: var(--content-width-compact);
+  --knowledge-max: var(--content-width-reading);
+
+  --bp-phone: 600px;
+  --bp-tablet: 840px;
+  --bp-laptop: 1024px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}
