@@ -221,7 +221,7 @@ describe('Lernwege', () => {
     for (const area of AREAS) {
       const card = screen.getByRole('heading', { name: area.title }).closest('article')
       if (!card) throw new Error(area.title)
-      await user.click(within(card).getByRole('button', { name: /Trainieren|Weiterüben/ }))
+      await user.click(within(card).getByRole('button', { name: /Gemischt üben|Weiterüben/ }))
       const confirm = screen.queryByRole('button', { name: exactName('Neue Runde starten') })
       if (confirm) await user.click(confirm)
       const seen = new Set<string>()
@@ -241,7 +241,7 @@ describe('Lernwege', () => {
     expect(storage.getItem(STORAGE_KEY)).toMatch(/"attempted":3/)
     view.unmount()
     renderApp(storage)
-    expect(screen.getAllByText(/3 von 3 richtig/).length).toBe(AREAS.length)
+    expect(screen.getAllByText(/3 Aufgaben trainiert/).length).toBe(AREAS.length)
   }, 120000)
 
   it('beschriftet gemischte Aufgaben mit ihrem Lernbereich', async () => {
@@ -252,7 +252,7 @@ describe('Lernwege', () => {
     const openArea = async (title: string) => {
       const card = screen.getByRole('heading', { name: exactName(title) }).closest('article')
       if (!card) throw new Error(title)
-      await user.click(within(card).getByRole('button', { name: /Trainieren|Weiterüben/ }))
+      await user.click(within(card).getByRole('button', { name: /Gemischt üben|Weiterüben/ }))
       const confirm = screen.queryByRole('button', { name: exactName('Neue Runde starten') })
       if (confirm) await user.click(confirm)
     }

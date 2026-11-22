@@ -2,11 +2,13 @@ import { useState } from 'react'
 import type { Answer, SortBucket, SortItem, Task, ToggleToken, WordToken } from '../../engine/types'
 import { rngFromString, shuffle } from '../../engine/random'
 
+export type BoardTone = 'training' | 'explore' | 'exam'
+
 interface BoardProps {
   task: Task
   answer: Answer | null
   locked: boolean
-  tone: 'training' | 'explore'
+  tone: BoardTone
   onChange: (answer: Answer) => void
 }
 
@@ -122,7 +124,7 @@ export function MarkSentence({
   correctIds: readonly string[]
   mode: 'single' | 'multi'
   locked: boolean
-  tone: 'training' | 'explore'
+  tone: BoardTone
   onChange: (ids: string[]) => void
 }) {
   return (
@@ -167,7 +169,7 @@ export function ChoiceList({
   correctId?: string
   layout: 'stack' | 'pair'
   locked: boolean
-  tone: 'training' | 'explore'
+  tone: BoardTone
   seed: string
   onChange: (id: string) => void
 }) {
@@ -209,7 +211,7 @@ export function ClassifyBoard({
   value: Record<string, string>
   solution?: Record<string, string>
   locked: boolean
-  tone: 'training' | 'explore'
+  tone: BoardTone
   onChange: (map: Record<string, string>) => void
 }) {
   const [active, setActive] = useState<string | null>(null)
@@ -294,7 +296,7 @@ export function OrderBoard({
   value: readonly string[]
   correctIds: readonly string[]
   locked: boolean
-  tone: 'training' | 'explore'
+  tone: BoardTone
   seed: string
   onChange: (ids: string[]) => void
 }) {
@@ -360,7 +362,7 @@ function ToggleSentence({
   tokens: readonly ToggleToken[]
   values: Record<string, string>
   locked: boolean
-  tone: 'training' | 'explore'
+  tone: BoardTone
   onChange: (values: Record<string, string>) => void
 }) {
   return (
@@ -402,7 +404,7 @@ function CommaSentence({
   slots: readonly number[]
   correctSlots: readonly number[]
   locked: boolean
-  tone: 'training' | 'explore'
+  tone: BoardTone
   onChange: (slots: number[]) => void
 }) {
   const toggle = (index: number) => {
