@@ -1,7 +1,7 @@
 import type { AreaId } from '../domain/areas'
 import type { FoundationModule } from './types'
 
-const modules: readonly FoundationModule[] = [
+export const modules: readonly FoundationModule[] = [
   {
     area: 'nouns',
     steps: [
@@ -40,7 +40,15 @@ const modules: readonly FoundationModule[] = [
         id: 'n2',
         title: 'Die Artikelprobe',
         lead: 'Vor viele Substantive kann man der, die oder das setzen.',
-        concept: { term: 'Artikelprobe', definition: 'Passt der, die oder das vor das Wort, ist es oft ein Substantiv.' },
+        concept: {
+          term: 'Artikelprobe',
+          definition: 'Passt der, die oder das vor das Wort, ist es oft ein Substantiv. Der Artikel zeigt das Genus (grammatisches Geschlecht).',
+          pairs: [
+            { term: 'maskulin', hint: 'männlich, z. B. der Baum' },
+            { term: 'feminin', hint: 'weiblich, z. B. die Blume' },
+            { term: 'neutral', hint: 'sächlich, z. B. das Haus' },
+          ],
+        },
         try: {
           kind: 'series',
           questions: [
@@ -101,16 +109,24 @@ const modules: readonly FoundationModule[] = [
       },
       {
         id: 'n4',
-        title: 'Einzahl und Mehrzahl',
-        lead: 'Viele Substantive haben Singular und Plural: Hund → Hunde, Kind → Kinder, Buch → Bücher.',
-        concept: { term: 'Plural', definition: 'Die Mehrzahl zeigt, dass es sich um mehr als eines handelt.' },
+        title: 'Numerus: Singular und Plural',
+        lead: 'Der Numerus (Zahlform) zeigt, ob ein Substantiv im Singular (Einzahl) oder im Plural (Mehrzahl) steht: Hund → Hunde.',
+        concept: {
+          term: 'Numerus',
+          also: 'Zahlform',
+          definition: 'Singular ist die Einzahl, Plural die Mehrzahl.',
+          pairs: [
+            { term: 'Singular', hint: 'Einzahl' },
+            { term: 'Plural', hint: 'Mehrzahl' },
+          ],
+        },
         examples: ['Hund → Hunde', 'Kind → Kinder', 'Buch → Bücher'],
         try: {
           kind: 'series',
           questions: [
             {
               stimulus: 'Hund',
-              prompt: 'Bilde die Mehrzahl.',
+              prompt: 'Bilde den Plural.',
               options: [
                 { id: 'Hunde', text: 'Hunde' },
                 { id: 'Hunden', text: 'Hunden' },
@@ -121,7 +137,7 @@ const modules: readonly FoundationModule[] = [
             },
             {
               stimulus: 'Kind',
-              prompt: 'Bilde die Mehrzahl.',
+              prompt: 'Bilde den Plural.',
               options: [
                 { id: 'Kinden', text: 'Kinden' },
                 { id: 'Kinder', text: 'Kinder' },
@@ -132,7 +148,7 @@ const modules: readonly FoundationModule[] = [
             },
             {
               stimulus: 'Buch',
-              prompt: 'Bilde die Mehrzahl.',
+              prompt: 'Bilde den Plural.',
               options: [
                 { id: 'Buche', text: 'Buche' },
                 { id: 'Bücher', text: 'Bücher' },
@@ -151,7 +167,14 @@ const modules: readonly FoundationModule[] = [
         id: 'n5',
         title: 'Konkret und abstrakt',
         lead: 'Tisch kann man anfassen, Freude nicht. Ordne Mut und Katze zu.',
-        concept: { term: 'abstrakt', definition: 'Abstrakte Substantive bezeichnen etwas, das man nicht anfassen kann.' },
+        concept: {
+          term: 'abstraktes Substantiv',
+          definition: 'Ein abstraktes Substantiv bezeichnet zum Beispiel ein Gefühl, einen Zustand oder eine Eigenschaft. Ein konkretes Substantiv ist sinnlich wahrnehmbar.',
+          pairs: [
+            { term: 'konkretes Substantiv', hint: 'sinnlich wahrnehmbar' },
+            { term: 'abstraktes Substantiv', hint: 'Gefühl, Zustand, Eigenschaft' },
+          ],
+        },
         try: {
           kind: 'classify',
           prompt: 'Ordne zu: konkret oder abstrakt.',
@@ -219,7 +242,15 @@ const modules: readonly FoundationModule[] = [
         id: 'c1',
         title: 'Bestimmte Artikel',
         lead: 'der, die und das begleiten ein Nomen und zeigen, dass etwas Bestimmtes gemeint ist.',
-        concept: { term: 'bestimmter Artikel', definition: 'der, die und das bestimmen etwas genauer.' },
+        concept: {
+          term: 'Artikel',
+          also: 'Begleiter',
+          definition: 'der, die und das sind bestimmte Artikel. ein und eine sind unbestimmte Artikel.',
+          pairs: [
+            { term: 'bestimmter Artikel', hint: 'der, die, das' },
+            { term: 'unbestimmter Artikel', hint: 'ein, eine' },
+          ],
+        },
         examples: ['der Hund', 'die Katze', 'das Haus'],
         try: {
           kind: 'choice',
@@ -258,7 +289,17 @@ const modules: readonly FoundationModule[] = [
         id: 'c3',
         title: 'Kasus = Fall',
         lead: 'Dieselbe Wortgruppe kann in vier Fällen (Kasus) stehen. Zu jedem Fall gehört eine Frage.',
-        concept: { term: 'Kasus', definition: 'Kasus bedeutet Fall. Es gibt Nominativ, Genitiv, Dativ und Akkusativ.' },
+        concept: {
+          term: 'Kasus',
+          also: 'grammatischer Fall',
+          definition: 'Die vier Kasus heißen Nominativ, Genitiv, Dativ und Akkusativ.',
+          pairs: [
+            { term: 'Nominativ', hint: 'Wer-oder-was-Fall' },
+            { term: 'Genitiv', hint: 'Wessen-Fall' },
+            { term: 'Dativ', hint: 'Wem-Fall' },
+            { term: 'Akkusativ', hint: 'Wen-oder-was-Fall' },
+          ],
+        },
         examples: ['Nominativ: Wer oder was?', 'Genitiv: Wessen?', 'Dativ: Wem?', 'Akkusativ: Wen oder was?'],
         try: {
           kind: 'classify',
@@ -405,7 +446,16 @@ const modules: readonly FoundationModule[] = [
         id: 'c9',
         title: 'Femininum und Neutrum',
         lead: 'Auch die und das ändern sich in den Fällen. Merke die Tabellen.',
-        concept: { term: 'Genus', definition: 'Maskulin, feminin und neutrum haben eigene Artikelformen.' },
+        concept: {
+          term: 'Genus',
+          also: 'grammatisches Geschlecht',
+          definition: 'Maskulin, feminin und neutral haben eigene Artikelformen.',
+          pairs: [
+            { term: 'maskulin', hint: 'männlich' },
+            { term: 'feminin', hint: 'weiblich' },
+            { term: 'neutral', hint: 'sächlich' },
+          ],
+        },
         examples: [
           'feminin: die Frau – der Frau – der Frau – die Frau',
           'neutrum: das Kind – des Kindes – dem Kind – das Kind',
@@ -482,11 +532,20 @@ const modules: readonly FoundationModule[] = [
         id: 'a2',
         title: 'Positiv',
         lead: 'Die Grundform eines Adjektivs heißt Positiv.',
-        concept: { term: 'Positiv', definition: 'Der Positiv ist die Grundform ohne Vergleich.' },
+        concept: {
+          term: 'Komparation',
+          also: 'Steigerung von Adjektiven',
+          definition: 'Der Positiv ist die Grundstufe eines Adjektivs.',
+          pairs: [
+            { term: 'Positiv', hint: 'Grundstufe' },
+            { term: 'Komparativ', hint: '1. Steigerungsstufe' },
+            { term: 'Superlativ', hint: 'höchste Steigerungsstufe' },
+          ],
+        },
         examples: ['klein', 'schnell'],
         try: {
           kind: 'choice',
-          prompt: 'Welche Form ist die Grundform?',
+          prompt: 'Welche Form ist der Positiv (Grundstufe)?',
           options: [
             { id: 'klein', text: 'klein' },
             { id: 'kleiner', text: 'kleiner' },
@@ -502,7 +561,7 @@ const modules: readonly FoundationModule[] = [
         id: 'a3',
         title: 'Komparativ',
         lead: 'Beim Vergleich bekommt das Adjektiv oft die Endung -er.',
-        concept: { term: 'Komparativ', definition: 'Der Komparativ ist die Vergleichsform.' },
+        concept: { term: 'Komparativ', definition: 'Der Komparativ ist die 1. Steigerungsstufe.' },
         examples: ['kleiner', 'schneller'],
         try: {
           kind: 'choice',
@@ -720,7 +779,15 @@ const modules: readonly FoundationModule[] = [
         id: 'v3',
         title: 'Konjugieren',
         lead: 'Beim Konjugieren ändert sich die Verbform nach Person und Zahl.',
-        concept: { term: 'Konjugation', definition: 'Konjugieren heißt: die passende Verbform zur Person bilden.' },
+        concept: {
+          term: 'Konjugation',
+          definition: 'Konjugieren bedeutet: Ein Verb wird an Person und Numerus angepasst.',
+          pairs: [
+            { term: 'Infinitiv', hint: 'Grundform' },
+            { term: 'Personalform', hint: 'konjugierte Verbform' },
+            { term: 'Numerus', hint: 'Singular oder Plural' },
+          ],
+        },
         try: {
           kind: 'choice',
           prompt: 'Was bedeutet konjugieren?',
@@ -898,13 +965,25 @@ const modules: readonly FoundationModule[] = [
     steps: [
       {
         id: 't0',
-        title: 'Was sind Zeitformen?',
-        lead: 'Zeitformen ordnen Handlungen zeitlich ein: Gegenwart, Vergangenheit, Zukunft.',
-        concept: { term: 'Zeitform', definition: 'Eine Zeitform zeigt, wann etwas geschieht.' },
+        title: 'Was ist ein Tempus?',
+        lead: 'Das Tempus (Zeitform) ordnet eine Handlung zeitlich ein. Die Tempora sind Präsens, Präteritum, Perfekt, Plusquamperfekt, Futur I und Futur II.',
+        concept: {
+          term: 'Tempus',
+          also: 'Zeitform',
+          definition: 'Grammatische Zeitform. Mehrzahl: Tempora.',
+          pairs: [
+            { term: 'Präsens', hint: 'Gegenwart' },
+            { term: 'Präteritum', hint: 'einfache Vergangenheit' },
+            { term: 'Perfekt', hint: 'vollendete Vergangenheit' },
+            { term: 'Plusquamperfekt', hint: 'Vorvergangenheit' },
+            { term: 'Futur I', hint: 'Zukunft' },
+            { term: 'Futur II', hint: 'vollendete Zukunft' },
+          ],
+        },
         examples: ['Gegenwart', 'Vergangenheit', 'Zukunft'],
         try: {
           kind: 'choice',
-          prompt: 'Wozu dienen Zeitformen?',
+          prompt: 'Wozu dient das Tempus (Zeitform)?',
           options: [
             { id: 'zeit', text: 'zur zeitlichen Einordnung' },
             { id: 'gros', text: 'nur zur Großschreibung' },
@@ -913,7 +992,7 @@ const modules: readonly FoundationModule[] = [
         },
         observation: 'Zeitformen sagen, ob etwas jetzt, früher oder später geschieht.',
         explanation: 'Im Deutschen gibt es sechs gebräuchliche Zeitformen.',
-        merksatz: 'Zeitformen = zeitliche Einordnung.',
+        merksatz: 'Tempus = zeitliche Einordnung.',
       },
       {
         id: 't1',
@@ -1096,7 +1175,14 @@ const modules: readonly FoundationModule[] = [
         id: 'p1',
         title: 'Aktiv',
         lead: 'Der Junge schießt den Ball.',
-        concept: { term: 'Aktiv', definition: 'Im Aktiv handelt das Subjekt selbst.' },
+        concept: {
+          term: 'Genus verbi',
+          definition: 'Genus verbi bezeichnet die Handlungsrichtung eines Verbs.',
+          pairs: [
+            { term: 'Aktiv', hint: 'die handelnde Person steht im Mittelpunkt' },
+            { term: 'Passiv', hint: 'die Handlung steht im Mittelpunkt' },
+          ],
+        },
         try: {
           kind: 'choice',
           prompt: 'Wer handelt in diesem Satz selbst?',
@@ -1151,7 +1237,7 @@ const modules: readonly FoundationModule[] = [
         id: 'p3b',
         title: 'Umwandlung',
         lead: 'Der Lehrer erklärt die Aufgabe.',
-        concept: { term: 'Umwandlung', definition: 'Objekt des Aktivs wird Subjekt des Passivs.' },
+        concept: { term: 'Umwandlung', definition: 'Das Akkusativobjekt des Aktivsatzes wird im Passivsatz zum Subjekt.' },
         examples: ['Objekt: die Aufgabe', 'Passiv: Die Aufgabe wird vom Lehrer erklärt.'],
         try: {
           kind: 'choice',
@@ -1498,8 +1584,17 @@ const modules: readonly FoundationModule[] = [
       },
       {
         id: 's2',
-        title: 'Doppelter Mitlaut',
-        lead: 'Nach kurzem betonten Vokal steht häufig ein doppelter Mitlaut.',
+        title: 'Vokal und Doppelkonsonant',
+        lead: 'Nach kurzem betontem Vokal (Selbstlaut) steht häufig ein Doppelkonsonant (doppelter Mitlaut).',
+        concept: {
+          term: 'Vokal',
+          also: 'Selbstlaut',
+          definition: 'a, e, i, o, u.',
+          pairs: [
+            { term: 'Konsonant', hint: 'Mitlaut' },
+            { term: 'Doppelkonsonant', hint: 'doppelter Mitlaut, z. B. mm, tt' },
+          ],
+        },
         examples: ['kommen', 'bitter', 'Sommer', 'rennen', 'Halle', 'Koffer'],
         try: {
           kind: 'compare',
@@ -1594,7 +1689,10 @@ const modules: readonly FoundationModule[] = [
         id: 's8',
         title: 'das oder dass',
         lead: 'das zeigt auf etwas. dass leitet einen Nebensatz ein.',
-        concept: { term: 'dass', definition: 'dass ist die Konjunktion für Nebensätze.' },
+        concept: {
+          term: 'Konjunktion',
+          definition: 'dass ist eine Konjunktion und leitet einen Nebensatz ein. das kann Artikel oder Pronomen sein.',
+        },
         examples: ['Das Buch liegt hier.', 'Ich weiß, dass du kommst.'],
         try: {
           kind: 'choice',

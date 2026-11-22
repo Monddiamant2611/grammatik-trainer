@@ -25,6 +25,7 @@ import {
 } from '../../progress/exams'
 import { historyFor } from '../../progress/model'
 import { useProgress } from '../../progress/ProgressContext'
+import { PromptBlock } from '../PromptBlock'
 import { TaskInteraction } from '../interactions/TaskInteraction'
 
 const AREA_LABEL: Record<AreaId, string> = {
@@ -379,7 +380,7 @@ function ExamTask({
       <div className="progress-bar" role="progressbar" aria-valuemin={0} aria-valuemax={total} aria-valuenow={position} aria-label={`Aufgabe ${index + 1} von ${total}`}>
         <span style={{ width: `${(position / total) * 100}%` }} />
       </div>
-      <article className="learning-card exercise-card">
+      <article className="learning-card exercise-card" data-task-id={task.id}>
         <p className="prompt">{task.prompt}</p>
         {task.stimulus && <p className="stimulus">{task.stimulus}</p>}
         <TaskInteraction task={task} answer={answer} locked={confirmed} tone="exam" onChange={onChange} />
@@ -475,8 +476,8 @@ function PracticeRound({
         </div>
         <p className="step-line">Aufgabe {index + 1} von {tasks.length}</p>
       </header>
-      <article key={task.id} className="learning-card exercise-card">
-        <p className="prompt">{task.prompt}</p>
+      <article key={task.id} className="learning-card exercise-card" data-task-id={task.id}>
+        <PromptBlock text={task.prompt} help />
         {task.stimulus && <p className="stimulus">{task.stimulus}</p>}
         <TaskInteraction task={task} answer={answer} locked={checked} tone="training" onChange={setAnswer} />
         {checked && answer && <p className="feedback-status">{correct ? 'Das stimmt.' : 'Schau noch einmal hin.'}</p>}

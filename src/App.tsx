@@ -1,10 +1,11 @@
 import { useState } from 'react'
-import { ClipboardList, FileCheck, Home, Library, Menu, X } from 'lucide-react'
+import { BookOpen, ClipboardList, FileCheck, Home, Library, Menu, X } from 'lucide-react'
 import { areaById, type AreaId, type TrainingArea } from './domain/areas'
 import { FoundationsFlow } from './components/foundations/FoundationsFlow'
 import { HomePage } from './components/HomePage'
 import { ProgressPage } from './components/ProgressPage'
 import { ExamFlow } from './components/exam/ExamFlow'
+import { GlossaryPage } from './components/GlossaryPage'
 import { canTrain, TrainingSession } from './components/trainer/TrainingSession'
 import { useProgress } from './progress/ProgressContext'
 import './App.css'
@@ -15,6 +16,7 @@ type Screen =
   | { name: 'foundations'; area: AreaId }
   | { name: 'training'; area: TrainingArea }
   | { name: 'exam' }
+  | { name: 'glossary' }
 
 export default function App() {
   const progress = useProgress()
@@ -77,6 +79,9 @@ export default function App() {
           <button type="button" className={screen.name === 'exam' ? 'active' : ''} onClick={openExam}>
             <FileCheck size={18} /> Prüfung
           </button>
+          <button type="button" className={screen.name === 'glossary' ? 'active' : ''} onClick={() => { setScreen({ name: 'glossary' }); setMenuOpen(false) }}>
+            <BookOpen size={18} /> Glossar
+          </button>
         </nav>
       </aside>
       <main id="inhalt" className="content-shell">
@@ -91,6 +96,7 @@ export default function App() {
         )}
         {screen.name === 'training' && <TrainingSession key={screen.area} area={screen.area} onExit={goHome} />}
         {screen.name === 'exam' && <ExamFlow onExit={goHome} />}
+        {screen.name === 'glossary' && <GlossaryPage />}
       </main>
       {pending && (
         <div className="dialog-backdrop">

@@ -44,6 +44,11 @@ function renderApp(storage = memoryStorage()) {
 function visibleNounTask(): Task {
   const card = document.querySelector('.exercise-card')
   if (!card) throw new Error('Keine Aufgabenkarte')
+  const taskId = card.getAttribute('data-task-id')
+  if (taskId) {
+    const named = tasksFor('nouns').find((task) => task.id === taskId)
+    if (named) return named
+  }
   const heading = card.parentElement?.querySelector('h1')?.textContent ?? ''
   const prompt = card.querySelector('.prompt')?.textContent ?? ''
   const stimulus = card.querySelector('.stimulus')?.textContent ?? undefined
@@ -137,6 +142,7 @@ describe('Prüfungsmodus', () => {
     for (let step = 0; step < 10; step += 1) {
       expect(screen.getByText(`Aufgabe ${step + 1} von 10`)).toBeTruthy()
       expect(screen.queryByText(/von 10 richtig/)).toBeNull()
+      expect(screen.queryByRole('button', { name: 'Begriffshilfe' })).toBeNull()
       const task = visibleNounTask()
       const bad = wrongAnswer(task)
       if (misses === 0 && bad && !isCorrect(task, bad)) {

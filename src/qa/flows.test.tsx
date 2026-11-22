@@ -45,10 +45,15 @@ function renderApp(storage = memoryStorage()) {
 function visibleTask(area: TrainingArea): Task {
   const card = document.querySelector('.exercise-card')
   if (!card) throw new Error('Keine Aufgabenkarte')
+  const taskId = card.getAttribute('data-task-id')
+  const pool = area === 'mixed' ? allTasks() : tasksFor(area)
+  if (taskId) {
+    const named = pool.find((task) => task.id === taskId)
+    if (named) return named
+  }
   const heading = within(card.parentElement as HTMLElement).getByRole('heading', { level: 1 }).textContent ?? ''
   const prompts = [...card.querySelectorAll('.prompt')].map((node) => node.textContent ?? '')
   const stimulus = card.querySelector('.stimulus')?.textContent ?? undefined
-  const pool = area === 'mixed' ? allTasks() : tasksFor(area)
   let matches = pool.filter((task) => task.typeLabel === heading && prompts.includes(task.prompt) && (task.stimulus ?? undefined) === stimulus)
   if (matches.length > 1) {
     const names = new Set([...card.querySelectorAll('button')].map((button) => button.textContent ?? ''))

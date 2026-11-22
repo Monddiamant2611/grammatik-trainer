@@ -76,6 +76,13 @@ function StepBody({ step, onNext, onBack }: { step: FoundationStep; onNext: () =
           <p className="merke-text"><strong>{step.concept.term}</strong></p>
           {step.concept.also && <p className="concept-also">auch: <strong>{step.concept.also}</strong></p>}
           <p className="merke-text">{step.concept.definition}</p>
+          {step.concept.pairs && (
+            <ul className="concept-pairs">
+              {step.concept.pairs.map((pair) => (
+                <li key={pair.term}><strong>{pair.term}</strong> <span>{pair.hint}</span></li>
+              ))}
+            </ul>
+          )}
         </aside>
       )}
       {step.examples && (

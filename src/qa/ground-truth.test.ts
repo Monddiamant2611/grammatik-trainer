@@ -126,7 +126,7 @@ describe('Geprüfte Kerninhalte', () => {
 
   it('bildet das Passiv mit worden und macht das Objekt zum Subjekt', () => {
     expect(chosen('voice-to-passive-v07')).toBe('Das Fenster wird von Mia geöffnet.')
-    expect(taskById('voice-to-passive-v07').feedbackCorrect).toMatch(/wird zum Subjekt/)
+    expect(taskById('voice-to-passive-v07').feedbackCorrect).toMatch(/Akkusativobjekt des Aktivsatzes wird im Passivsatz zum Subjekt/)
     expect(chosen('voice-tense-v01')).toBe('Passiv Präsens')
     expect(chosen('voice-tense-v11')).toBe('Passiv Präteritum')
     expect(chosen('voice-tense-v13')).toBe('Passiv Perfekt')

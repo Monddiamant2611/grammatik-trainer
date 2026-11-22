@@ -20,11 +20,18 @@ export type FoundationTry =
   | { kind: 'compare'; prompt: string; left: string; right: string; answer: 'left' | 'right' }
   | { kind: 'order'; prompt: string; items: FoundationChoice[]; correctIds: string[] }
 
+export interface ConceptPair {
+  term: string
+  hint: string
+}
+
 export interface ConceptCard {
   term: string
   /** Gleichbedeutender Fachbegriff, sichtbar unter dem Hauptbegriff. */
   also?: string
   definition: string
+  /** Kurze Zuordnungen, zum Beispiel Positiv → Grundstufe. */
+  pairs?: readonly ConceptPair[]
 }
 
 export interface FoundationStep {

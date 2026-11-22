@@ -266,6 +266,33 @@
 .merke-text { font-family: var(--font-display); font-size: var(--fs-prompt); margin: 0; }
 .concept-also { margin: 0.15rem 0 0.45rem; font-size: var(--fs-meta); }
 .concept-also strong { letter-spacing: .06em; text-transform: uppercase; }
+.concept-pairs { list-style: none; margin: 0.45rem 0 0; padding: 0; }
+.concept-pairs li { display: flex; justify-content: space-between; gap: 1rem; margin: 0.15rem 0; }
+.concept-pairs span { color: var(--muted); }
+.prompt-line { display: flex; align-items: flex-start; gap: 0.6rem; }
+.prompt-line .prompt { flex: 1; }
+.term-help-button {
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  min-width: 2rem;
+  min-height: 2rem;
+  border-radius: 99px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+}
+.term-help { list-style: none; margin: 0.45rem 0 0; padding: 0.7rem 0.85rem; background: var(--zone); border-radius: var(--radius-sm); }
+.term-help li { margin: 0.3rem 0; }
+.glossary-search { display: grid; gap: 0.35rem; margin: var(--space-4) 0; font-weight: 600; }
+.glossary-search input { min-height: var(--button-height); border: 1px solid var(--line-strong); border-radius: var(--radius-sm); padding: 0 0.8rem; font: inherit; }
+.glossary-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.75rem; }
+.glossary-list li { background: var(--paper); border-radius: var(--radius-md); padding: 0.9rem 1rem; }
+.glossary-list h2 { font-size: var(--fs-h3); margin: 0 0 0.25rem; }
+.glossary-list p { margin: 0.2rem 0; }
+.glossary-example { color: var(--muted); }
 .feedback-banner.correct { background: var(--ok-bg); }
 .feedback-banner.revise { background: var(--warn-bg); }
 .feedback-status { font-weight: 700; margin-bottom: var(--space-2); }

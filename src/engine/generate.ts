@@ -26,6 +26,11 @@ import { tenseIds, tenseLabels, tensePools, recognitionSentences, timelineLabels
 import { gapSentences, participlePairs, perfectItems, persons, preteriteForms, verbParadigms, type Person } from '../data/verbs'
 import { voiceErrors, voicePairs, voicePatternSentence, voiceTenseLabels, type VoiceTense } from '../data/voice'
 import type { ChoiceOption, Difficulty, Task } from './types'
+
+/** Stufe 1 zeigt den Fachbegriff mit Brücke, ab Stufe 2 nur den Fachbegriff. */
+function withBridge(difficulty: Difficulty, term: string, bridge: string): string {
+  return difficulty === 1 ? `${term} (${bridge})` : term
+}
 import { distinct, idsForWords, listWords, renderCommas, renderToggle, requireWord, wordTokens } from './text'
 
 const caseIds: CaseId[] = ['nom', 'gen', 'dat', 'akk']
@@ -138,10 +143,10 @@ export function buildNounTasks(): Task[] {
       id: `noun-plural-${probe.singular}`,
       area: 'nouns',
       type: 'noun-plural',
-      typeLabel: 'Mehrzahlprobe',
+      typeLabel: 'Plural bilden',
       difficulty: 1,
       tags: ['nomen', 'mehrzahl'],
-      prompt: `Welche Mehrzahl gehört zu „${probe.singular}“?`,
+      prompt: `Wie lautet der Plural (Mehrzahl) von „${probe.singular}“?`,
       interaction: { kind: 'choose', layout: 'stack', options: options(plurals), correctId: probe.plural },
       feedbackCorrect: `Die Mehrzahl von ${probe.singular} lautet ${probe.plural}. Viele Substantive können in Einzahl und Mehrzahl stehen.`,
       feedbackIncorrect: `Die Mehrzahl von ${probe.singular} lautet ${probe.plural}. Viele Substantive können in Einzahl und Mehrzahl stehen.`,
@@ -156,7 +161,9 @@ export function buildNounTasks(): Task[] {
       typeLabel: 'Konkret oder abstrakt',
       difficulty: item.kind === 'abstrakt' ? 2 : 1,
       tags: ['nomen', item.kind],
-      prompt: `Ist „${item.word}“ konkret oder abstrakt?`,
+      prompt: item.kind === 'abstrakt'
+        ? `Ist „${item.word}“ ein konkretes oder ein abstraktes Substantiv?`
+        : `Ist „${item.word}“ ein konkretes Substantiv (sinnlich wahrnehmbar) oder ein abstraktes Substantiv?`,
       interaction: {
         kind: 'choose',
         layout: 'pair',
@@ -271,10 +278,10 @@ export function buildCaseTasks(): Task[] {
         id: `case-id-${sentence.id}-${index}`,
         area: 'cases',
         type: 'case-identify',
-        typeLabel: 'Fall bestimmen',
+        typeLabel: 'Kasus bestimmen',
         difficulty: sentence.difficulty,
         tags: ['fall', target.caseId],
-        prompt: `In welchem Fall steht „${target.label}“?`,
+        prompt: `In welchem ${withBridge(sentence.difficulty, 'Kasus', 'Fall')} steht „${target.label}“?`,
         stimulus: sentence.sentence,
         interaction: { kind: 'choose', layout: 'stack', options: caseOptions, correctId: caseLabels[target.caseId] },
         feedbackCorrect: feedback,
@@ -287,7 +294,7 @@ export function buildCaseTasks(): Task[] {
         typeLabel: 'Passende Frage',
         difficulty: sentence.difficulty,
         tags: ['fall', 'frage'],
-        prompt: `Welche Frage passt zu „${target.label}“?`,
+        prompt: `Welche Frage passt zu diesem ${withBridge(sentence.difficulty, 'Kasus', 'Fall')}?`,
         stimulus: sentence.sentence,
         interaction: { kind: 'choose', layout: 'stack', options: questionOptions, correctId: caseQuestions[target.caseId] },
         feedbackCorrect: feedback,
@@ -302,14 +309,15 @@ export function buildCaseTasks(): Task[] {
         const correct = paradigm.forms[caseId][kind]
         const forms = caseIds.map((id) => paradigm.forms[id][kind])
         const label = kind === 'def' ? 'bestimmt' : 'unbestimmt'
+        const difficulty: Difficulty = caseId === 'nom' || caseId === 'akk' ? 1 : 2
         tasks.push(task({
           id: `case-article-${paradigm.noun}-${caseId}-${kind}`,
           area: 'cases',
           type: 'case-article',
           typeLabel: 'Artikel einsetzen',
-          difficulty: caseId === 'nom' || caseId === 'akk' ? 1 : 2,
+          difficulty,
           tags: ['artikel', paradigm.gender, caseId],
-          prompt: `Welche Form steht im ${caseLabels[caseId]} mit ${label}em Artikel?`,
+          prompt: `Welche Form des ${label}en Artikels steht im ${withBridge(difficulty, 'Kasus', 'Fall')} ${caseLabels[caseId]}?`,
           stimulus: paradigm.noun,
           interaction: { kind: 'choose', layout: 'stack', options: options(forms), correctId: correct },
           feedbackCorrect: `Im ${caseLabels[caseId]} heißt es ${correct}.`,
@@ -326,7 +334,7 @@ export function buildCaseTasks(): Task[] {
         typeLabel: 'Artikel verändern',
         difficulty: 2,
         tags: ['artikel', 'wechsel'],
-        prompt: `Setze „${from}“ in den ${caseLabels[caseId]}.`,
+        prompt: `Setze „${from}“ in den Kasus ${caseLabels[caseId]}.`,
         interaction: {
           kind: 'choose',
           layout: 'stack',
@@ -348,7 +356,7 @@ export function buildCaseTasks(): Task[] {
       typeLabel: 'Artikel verändern',
       difficulty: 2,
       tags: ['artikel', 'hund'],
-      prompt: `Setze „der Hund“ in den ${caseLabels[caseId]}.`,
+      prompt: `Setze „der Hund“ in den Kasus ${caseLabels[caseId]}.`,
       interaction: { kind: 'choose', layout: 'stack', options: options(caseIds.map((id) => hundParadigm[id])), correctId: hundParadigm[caseId] },
       feedbackCorrect: `der Hund heißt im ${caseLabels[caseId]} ${hundParadigm[caseId]}.`,
       feedbackIncorrect: `der Hund heißt im ${caseLabels[caseId]} ${hundParadigm[caseId]}.`,
@@ -380,10 +388,10 @@ export function buildCaseTasks(): Task[] {
       id: `case-prep-${preposition}`,
       area: 'cases',
       type: 'case-preposition',
-      typeLabel: 'Präposition und Fall',
+      typeLabel: 'Präposition und Kasus',
       difficulty: 2,
       tags: ['präposition', caseId],
-      prompt: `Welchen Fall verlangt „${preposition}“?`,
+      prompt: `Welchen Kasus verlangt „${preposition}“?`,
       interaction: { kind: 'choose', layout: 'pair', options: options(['Dativ', 'Akkusativ']), correctId: caseLabels[caseId] },
       feedbackCorrect: `Die Präposition „${preposition}“ verlangt den ${caseLabels[caseId]}.`,
       feedbackIncorrect: `Die Präposition „${preposition}“ verlangt den ${caseLabels[caseId]}.`,
@@ -396,10 +404,10 @@ export function buildCaseTasks(): Task[] {
       id: `case-prep-phrase-${example.phrase}`,
       area: 'cases',
       type: 'case-preposition',
-      typeLabel: 'Präposition und Fall',
+      typeLabel: 'Präposition und Kasus',
       difficulty: example.phrase === 'zum Arzt' ? 3 : 2,
       tags: ['präposition', example.caseId],
-      prompt: 'In welchem Fall steht diese Wortgruppe?',
+      prompt: 'In welchem Kasus steht diese Wortgruppe?',
       stimulus: example.phrase,
       interaction: { kind: 'choose', layout: 'stack', options: caseOptions, correctId: caseLabels[example.caseId] },
       feedbackCorrect: example.phrase === 'zum Arzt'
@@ -448,10 +456,10 @@ export function buildAdjectiveTasks(): Task[] {
         id: `adj-degree-${item.id}-${degree.key}`,
         area: 'adjectives',
         type: 'adj-degree',
-        typeLabel: 'Steigerungsstufe erkennen',
+        typeLabel: 'Komparation',
         difficulty: item.difficulty,
         tags: ['adjektiv', item.pattern],
-        prompt: `In welcher Steigerungsstufe steht das Adjektiv „${form}“?`,
+        prompt: `In welcher Steigerungsstufe der ${withBridge(item.difficulty, 'Komparation', 'Steigerung')} steht „${form}“?`,
         stimulus: form,
         interaction: { kind: 'choose', layout: 'stack', options: options(['Positiv', 'Komparativ', 'Superlativ']), correctId: degree.label },
         feedbackCorrect: `${form} ist der ${degree.label} von ${item.positive}. Positiv ist die Grundform, Komparativ der Vergleich, Superlativ die höchste Stufe.`,
@@ -465,7 +473,7 @@ export function buildAdjectiveTasks(): Task[] {
       typeLabel: 'Komparativ bilden',
       difficulty: item.difficulty,
       tags: ['adjektiv', 'komparativ'],
-      prompt: `Wie lautet der Komparativ von „${item.positive}“?`,
+      prompt: `Bilde den ${withBridge(item.difficulty, 'Komparativ', '1. Steigerungsstufe')} von „${item.positive}“.`,
       interaction: { kind: 'choose', layout: 'stack', options: options(forms), correctId: item.comparative },
       feedbackCorrect: `Der Komparativ von ${item.positive} lautet ${item.comparative}.`,
       feedbackIncorrect: `Der Komparativ von ${item.positive} lautet ${item.comparative}.`,
@@ -477,7 +485,7 @@ export function buildAdjectiveTasks(): Task[] {
       typeLabel: 'Superlativ bilden',
       difficulty: item.difficulty,
       tags: ['adjektiv', 'superlativ'],
-      prompt: `Wie lautet der Superlativ von „${item.positive}“?`,
+      prompt: `Bilde den ${withBridge(item.difficulty, 'Superlativ', 'höchste Steigerungsstufe')} von „${item.positive}“.`,
       interaction: { kind: 'choose', layout: 'stack', options: options(forms), correctId: item.superlative },
       feedbackCorrect: `Der Superlativ von ${item.positive} lautet ${item.superlative}.`,
       feedbackIncorrect: `Der Superlativ von ${item.positive} lautet ${item.superlative}.`,
@@ -489,7 +497,7 @@ export function buildAdjectiveTasks(): Task[] {
       typeLabel: 'Alle drei Formen',
       difficulty: maxDifficulty(item.difficulty, 2),
       tags: ['adjektiv', 'reihenfolge'],
-      prompt: 'Bringe die Formen in diese Reihenfolge: Grundform, Vergleich, höchste Stufe.',
+      prompt: 'Ordne die Komparation: Positiv, Komparativ, Superlativ.',
       stimulus: item.positive,
       interaction: {
         kind: 'order',
@@ -525,7 +533,7 @@ export function buildAdjectiveTasks(): Task[] {
       typeLabel: 'Regelmäßig oder unregelmäßig',
       difficulty: irregular ? 3 : 2,
       tags: ['adjektiv', irregular ? 'unregelmäßig' : 'regelmäßig'],
-      prompt: `Ist die Steigerung von „${item.positive}“ unregelmäßig?`,
+        prompt: `Ist die Komparation von „${item.positive}“ unregelmäßig?`,
       stimulus: `${item.positive}, ${item.comparative}, ${item.superlative}`,
       interaction: { kind: 'bool', correct: irregular },
       feedbackCorrect: irregular
@@ -545,10 +553,12 @@ export function buildAdjectiveTasks(): Task[] {
       id: `adj-compare-${item.id}`,
       area: 'adjectives',
       type: 'adj-als',
-      typeLabel: 'Als oder wie',
+      typeLabel: 'Vergleichspartikel',
       difficulty: item.difficulty,
       tags: ['adjektiv', item.connector],
-      prompt: 'Welches Vergleichswort passt: als oder wie?',
+      prompt: item.difficulty === 1
+        ? 'Welche Vergleichspartikel passt: als oder wie? (als beim Unterschied, wie beim gleichen Maß)'
+        : 'Welche Vergleichspartikel passt: als oder wie?',
       stimulus: gapped,
       interaction: { kind: 'choose', layout: 'pair', options: options(['als', 'wie']), correctId: item.connector },
       feedbackCorrect: same
@@ -627,10 +637,10 @@ export function buildVerbTasks(): Task[] {
         id: `verb-person-${verb.infinitive}-${person}`,
         area: 'verbs',
         type: 'verb-person',
-        typeLabel: 'Person erkennen',
+        typeLabel: 'Person und Numerus',
         difficulty: verb.difficulty,
         tags: ['verb', verb.pattern],
-        prompt: `Welche Person und Zahl hat die Verbform „${form}“?`,
+        prompt: `Welche Person und welchen ${withBridge(verb.difficulty, 'Numerus', 'Singular oder Plural')} hat die Personalform „${form}“?`,
         stimulus: `${verb.infinitive}: ${form}`,
         interaction: { kind: 'choose', layout: 'stack', options: personOptions, correctId: person },
         feedbackCorrect: `${form} gehört zu ${person}.${personNote}`,
@@ -640,10 +650,12 @@ export function buildVerbTasks(): Task[] {
         id: `verb-form-${verb.infinitive}-${person}`,
         area: 'verbs',
         type: 'verb-form',
-        typeLabel: 'Verb konjugieren',
+        typeLabel: 'Konjugation',
         difficulty: verb.difficulty,
         tags: ['verb', 'präsens'],
-        prompt: `Wie lautet die Verbform für „${person}“?`,
+        prompt: verb.difficulty === 1
+          ? `Konjugiere „${verb.infinitive}“ für „${person}“ (an Person und Numerus anpassen).`
+          : `Konjugiere „${verb.infinitive}“ für „${person}“.`,
         stimulus: verb.infinitive,
         interaction: { kind: 'choose', layout: 'stack', options: options(distinctForms), correctId: form },
         feedbackCorrect: `${person} ${form}. Das ist die Präsensform von ${verb.infinitive}.${personNote}`,
@@ -661,7 +673,7 @@ export function buildVerbTasks(): Task[] {
         id: `verb-lemma-${gap.id}`,
         area: 'verbs',
         type: 'verb-lemma',
-        typeLabel: 'Grundform bestimmen',
+        typeLabel: 'Infinitiv bestimmen',
         difficulty: gap.difficulty,
         tags: ['verb', 'grundform'],
         prompt: `Wie lautet der Infinitiv von „${gap.solution}“?`,
@@ -679,7 +691,7 @@ export function buildVerbTasks(): Task[] {
       typeLabel: 'Verbform einsetzen',
       difficulty: gap.difficulty,
       tags: ['verb', 'lücke'],
-      prompt: `Setze „${gap.infinitive}“ in die passende Form.`,
+      prompt: `Konjugiere „${gap.infinitive}“ in die passende Personalform.`,
       stimulus: `${gap.before} ___ ${gap.after} (${gap.infinitive})`,
       interaction: {
         kind: 'choose',
@@ -772,10 +784,12 @@ export function buildTenseTasks(): Task[] {
         id: `tense-id-${pool.id}-${tense}`,
         area: 'tenses',
         type: 'tense-identify',
-        typeLabel: 'Zeitform erkennen',
+        typeLabel: 'Tempus bestimmen',
         difficulty: hard ? 3 : maxDifficulty(pool.difficulty, tense === 'praesens' || tense === 'praeteritum' ? 1 : 2),
         tags: ['zeit', tense],
-        prompt: 'In welcher Zeitform steht der Satz?',
+        prompt: (hard ? 3 : maxDifficulty(pool.difficulty, tense === 'praesens' || tense === 'praeteritum' ? 1 : 2)) === 1
+          ? 'Bestimme das Tempus (Zeitform).'
+          : 'Bestimme das Tempus.',
         stimulus: form.sentence,
         interaction: { kind: 'choose', layout: 'stack', options: options(labels), correctId: tenseLabels[tense] },
         feedbackCorrect: tenseFeedback(tense, form.parts),
@@ -802,7 +816,7 @@ export function buildTenseTasks(): Task[] {
         typeLabel: 'Satz umformen',
         difficulty: hard ? 3 : 2,
         tags: ['zeit', 'umformen'],
-        prompt: `Wie lautet der Satz im ${tenseLabels[tense]}?`,
+        prompt: `Setze den Satz ins ${tenseLabels[tense]}.`,
         interaction: {
           kind: 'choose',
           layout: 'stack',
@@ -821,7 +835,7 @@ export function buildTenseTasks(): Task[] {
       typeLabel: 'Zeitstrahl',
       difficulty: 3,
       tags: ['zeit', 'zeitstrahl'],
-      prompt: 'Ordne vom Früheren zum Späteren: Vorvergangenheit, Vergangenheit, Gegenwart, Zukunft.',
+      prompt: 'Ordne die Tempora: Plusquamperfekt, Präteritum, Präsens, Futur I.',
       stimulus: pool.verb,
       interaction: { kind: 'order', items: timelineItems, correctIds: timelineItems.map((item) => item.id) },
       feedbackCorrect: timelineOrder.map((tense) => `${timelineLabels[tense]}: ${pool.forms[tense].sentence}`).join(' '),
@@ -834,10 +848,10 @@ export function buildTenseTasks(): Task[] {
       id: `tense-read-${item.id}`,
       area: 'tenses',
       type: 'tense-identify',
-      typeLabel: 'Zeitform erkennen',
+      typeLabel: 'Tempus bestimmen',
       difficulty: item.difficulty,
       tags: ['zeit', item.tense],
-      prompt: 'In welcher Zeitform steht der Satz?',
+      prompt: item.difficulty === 1 ? 'Bestimme das Tempus (Zeitform).' : 'Welche Tempusform liegt vor?',
       stimulus: item.sentence,
       interaction: { kind: 'choose', layout: 'stack', options: options(labels), correctId: tenseLabels[item.tense] },
       feedbackCorrect: `Der Satz steht im ${tenseLabels[item.tense]}.`,
@@ -869,10 +883,14 @@ export function buildVoiceTasks(): Task[] {
       id: `voice-active-${pair.id}`,
       area: 'voice',
       type: 'voice-kind',
-      typeLabel: 'Aktiv oder Passiv',
+      typeLabel: pair.difficulty === 3 ? 'Genus verbi' : 'Aktiv oder Passiv',
       difficulty: pair.difficulty,
       tags: ['genus', 'aktiv'],
-      prompt: 'Steht der Satz im Aktiv oder im Passiv?',
+      prompt: pair.difficulty === 1
+        ? 'Steht der Satz im Aktiv oder im Passiv (Genus verbi)?'
+        : pair.difficulty === 2
+          ? 'Bestimme das Genus verbi: Aktiv oder Passiv.'
+          : 'Bestimme das Genus verbi.',
       stimulus: pair.active,
       interaction: { kind: 'choose', layout: 'pair', options: options(['Aktiv', 'Passiv']), correctId: 'Aktiv' },
       feedbackCorrect: 'Das Subjekt handelt selbst. Der Satz steht im Aktiv.',
@@ -882,10 +900,14 @@ export function buildVoiceTasks(): Task[] {
       id: `voice-passive-${pair.id}`,
       area: 'voice',
       type: 'voice-kind',
-      typeLabel: 'Aktiv oder Passiv',
+      typeLabel: pair.difficulty === 3 ? 'Genus verbi' : 'Aktiv oder Passiv',
       difficulty: pair.difficulty,
       tags: ['genus', 'passiv'],
-      prompt: 'Steht der Satz im Aktiv oder im Passiv?',
+      prompt: pair.difficulty === 1
+        ? 'Steht der Satz im Aktiv oder im Passiv (Genus verbi)?'
+        : pair.difficulty === 2
+          ? 'Bestimme das Genus verbi: Aktiv oder Passiv.'
+          : 'Bestimme das Genus verbi.',
       stimulus: pair.passive,
       interaction: { kind: 'choose', layout: 'pair', options: options(['Aktiv', 'Passiv']), correctId: 'Passiv' },
       feedbackCorrect: 'Die Handlung steht im Mittelpunkt. Der Satz steht im Passiv.',
@@ -911,7 +933,7 @@ export function buildVoiceTasks(): Task[] {
       typeLabel: 'Objekt erkennen',
       difficulty: pair.difficulty,
       tags: ['genus', 'objekt'],
-      prompt: 'Welches Objekt steht im Aktivsatz?',
+      prompt: pair.difficulty === 1 ? 'Welches Objekt steht im Aktivsatz?' : 'Welches Akkusativobjekt steht im Aktivsatz?',
       stimulus: pair.active,
       interaction: { kind: 'choose', layout: 'pair', options: options([pair.activeObject, pair.agent]), correctId: pair.activeObject },
       feedbackCorrect: `„${pair.activeObject}“ ist das Objekt. Im Passiv wird daraus das Subjekt: ${pair.passive}`,
@@ -927,8 +949,8 @@ export function buildVoiceTasks(): Task[] {
       prompt: 'Forme den Satz ins Passiv um.',
       stimulus: pair.active,
       interaction: { kind: 'choose', layout: 'stack', options: pairOptions, correctId: pair.passive },
-      feedbackCorrect: `Das Objekt „${pair.activeObject}“ wird zum Subjekt. ${pair.passive}`,
-      feedbackIncorrect: `Das Objekt „${pair.activeObject}“ wird zum Subjekt. ${pair.passive}`,
+      feedbackCorrect: `Das Akkusativobjekt des Aktivsatzes wird im Passivsatz zum Subjekt. ${pair.passive}`,
+      feedbackIncorrect: `Das Akkusativobjekt des Aktivsatzes wird im Passivsatz zum Subjekt. ${pair.passive}`,
     }))
     tasks.push(task({
       id: `voice-to-active-${pair.id}`,
@@ -964,10 +986,10 @@ export function buildVoiceTasks(): Task[] {
       id: `voice-tense-${pair.id}`,
       area: 'voice',
       type: 'voice-tense',
-      typeLabel: 'Zeitform im Passiv',
+      typeLabel: 'Tempus im Passiv',
       difficulty: pair.difficulty,
       tags: ['genus', pair.tense],
-      prompt: 'In welcher Zeitform steht dieses Passiv?',
+      prompt: 'In welchem Tempus steht dieses Passiv?',
       stimulus: pair.passive,
       interaction: { kind: 'choose', layout: 'stack', options: tenseOptions, correctId: voiceTenseLabels[pair.tense] },
       feedbackCorrect: `Die Form ${pair.parts.join(' ')} ist ${voiceTenseLabels[pair.tense]}.`,
@@ -980,10 +1002,10 @@ export function buildVoiceTasks(): Task[] {
     id: 'voice-futur2',
     area: 'voice',
     type: 'voice-tense',
-    typeLabel: 'Zeitform im Passiv',
+    typeLabel: 'Tempus im Passiv',
     difficulty: 3,
     tags: ['genus', 'futur2'],
-    prompt: 'In welcher Zeitform steht dieses Passiv?',
+    prompt: 'Bestimme das Tempus.',
     stimulus: voicePatternSentence.sentence,
     interaction: { kind: 'choose', layout: 'stack', options: tenseOptions, correctId: voiceTenseLabels.futur2 },
     feedbackCorrect: 'werden + Partizip II + worden sein bildet das Passiv Futur II.',
