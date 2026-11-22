@@ -1128,6 +1128,31 @@ export function buildSpellingTasks(): Task[] {
       feedbackCorrect: pair.note,
       feedbackIncorrect: `„${pair.wrong}“ ist nicht korrekt. ${pair.note}`,
     }))
+    tasks.push(task({
+      id: `spell-bool-${pair.id}`,
+      area: 'spelling',
+      type: 'spell-bool',
+      typeLabel: 'Richtig oder falsch',
+      difficulty: pair.difficulty,
+      tags: ['rechtschreibung', pair.topic],
+      prompt: 'Stimmt diese Schreibung?',
+      stimulus: pair.wrong,
+      interaction: { kind: 'bool', correct: false },
+      feedbackCorrect: `„${pair.wrong}“ ist falsch. Richtig ist „${pair.correct}“. ${pair.note}`,
+      feedbackIncorrect: `„${pair.wrong}“ ist falsch. Richtig ist „${pair.correct}“. ${pair.note}`,
+    }))
+    tasks.push(task({
+      id: `spell-fix-${pair.id}`,
+      area: 'spelling',
+      type: 'spell-fix',
+      typeLabel: 'Fehler korrigieren',
+      difficulty: maxDifficulty(pair.difficulty, 2),
+      tags: ['rechtschreibung', pair.topic, 'fehler'],
+      prompt: 'Welche Fassung ist richtig?',
+      interaction: { kind: 'choose', layout: 'pair', options: options([pair.wrong, pair.correct]), correctId: pair.correct },
+      feedbackCorrect: pair.note,
+      feedbackIncorrect: `„${pair.wrong}“ ist nicht korrekt. ${pair.note}`,
+    }))
   }
   const groupLabels: Record<(typeof sWords)[number]['group'], string> = {
     ss: 'ss nach kurzem Vokal',
