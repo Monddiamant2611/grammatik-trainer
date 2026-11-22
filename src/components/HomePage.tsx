@@ -1,6 +1,6 @@
 import { AREAS, type AreaId, type TrainingArea } from '../domain/areas'
 import { practiceLabel, practiceLevel } from '../engine/difficulty'
-import { foundationCount } from '../foundations/content'
+import { tutorialCount } from '../foundations/content'
 import { isAreaStarted } from '../progress/model'
 import { useProgress } from '../progress/ProgressContext'
 import { canTrain } from './trainer/TrainingSession'
@@ -27,11 +27,11 @@ export function HomePage({
         {AREAS.map((area) => {
           const record = state.areas[area.id]
           const level = practiceLevel(record.attempted, record.correct)
-          const foundation = record.foundationsDone
-            ? 'Grundlagen angesehen'
-            : record.foundationStep > 0
-              ? `Grundlagen: Schritt ${Math.min(record.foundationStep + 1, foundationCount(area.id))} von ${foundationCount(area.id)}`
-              : 'Grundlagen noch nicht begonnen'
+          const tutorial = record.tutorialCompleted
+            ? 'Tutorial abgeschlossen'
+            : record.tutorialStep > 0
+              ? `Tutorial: Schritt ${Math.min(record.tutorialStep + 1, tutorialCount(area.id))} von ${tutorialCount(area.id)}`
+              : 'Tutorial noch nicht begonnen'
           const training = record.attempted === 0
             ? 'Training noch offen'
             : `${practiceLabel(level, record.attempted)} · ${record.correct} von ${record.attempted} richtig`
@@ -40,10 +40,10 @@ export function HomePage({
             <article key={area.id} className={`area-card accent-${area.accent}`}>
               <span className="area-index">{area.order}</span>
               <div>
-                <span className="eyebrow">Lernbereich</span>
+                <span className="eyebrow">Lernpfad</span>
                 <h2>{area.title}</h2>
                 <p>{area.description}</p>
-                <p className="progress-copy">{foundation}</p>
+                <p className="progress-copy">{tutorial}</p>
                 <p className="progress-copy">{training}</p>
                 {record.attempted > 0 && (
                   <div className="progress-bar" role="meter" aria-label={`Übungsstand ${area.title}`} aria-valuemin={0} aria-valuemax={100} aria-valuenow={level}>
@@ -52,8 +52,12 @@ export function HomePage({
                 )}
                 {record.lastLabel && <p className="muted-note">Zuletzt: {record.lastLabel}</p>}
                 <div className="card-actions">
-                  <button type="button" className="secondary-button" onClick={() => onLearn(area.id)}>Lernen</button>
-                  <button type="button" className="primary-button" onClick={() => onTrain(area.id)}>{resume ? 'Weiterüben' : 'Trainieren'}</button>
+                  <button type="button" className="secondary-button" onClick={() => onLearn(area.id)}>
+                    {record.tutorialCompleted ? 'Tutorial wiederholen' : record.tutorialStep > 0 ? 'Tutorial fortsetzen' : 'Tutorial starten'}
+                  </button>
+                  <button type="button" className="primary-button" onClick={() => onTrain(area.id)}>
+                    {resume ? 'Weiterüben' : record.tutorialCompleted ? 'Trainieren' : 'Zuerst Tutorial'}
+                  </button>
                 </div>
               </div>
             </article>
@@ -64,7 +68,7 @@ export function HomePage({
         <div>
           <span className="eyebrow">Über mehrere Bereiche</span>
           <h2>Gemischtes Training</h2>
-          <p>Aufgaben aus Bereichen, die du schon begonnen hast. Gleiche Aufgabentypen folgen nicht direkt aufeinander.</p>
+          <p>Aufgaben aus Bereichen, die du schon begonnen hast. Gleiche Aufgabentypen folgen höchstens zweimal hintereinander.</p>
           <p className="progress-copy">
             {mixedOpen
               ? `${started} Bereiche begonnen`

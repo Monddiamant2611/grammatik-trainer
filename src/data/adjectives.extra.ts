@@ -1,6 +1,6 @@
-import type { AdjectivePattern } from './adjectives'
+import type { AdjectiveTriple, ComparisonSentence, SpellingFix } from './adjectives'
 
-export const adjectivesExtra = [
+export const adjectivesExtra: readonly AdjectiveTriple[] = [
   {
     id: 'a26',
     positive: 'hell',
@@ -403,7 +403,7 @@ export const adjectivesExtra = [
   },
 ] as const
 
-export const comparisonSentencesExtra = [
+export const comparisonSentencesExtra: readonly ComparisonSentence[] = [
   {
     id: 'vx01',
     sentence: 'Das Haus ist größer als das unsere.',
@@ -526,7 +526,7 @@ export const comparisonSentencesExtra = [
   },
 ] as const
 
-export const adjectiveErrorsExtra = [
+export const adjectiveErrorsExtra: readonly SpellingFix[] = [
   {
     id: 'xae1',
     faulty: 'Sie ist stärker wie ich.',

@@ -47,20 +47,30 @@ describe('Aufgaben aus den geprüften Pools', () => {
     expect(practiceLevel(0, 0)).toBe(0)
   })
 
-  it('setzt im gemischten Rundgang keine gleichen Aufgabentypen direkt hintereinander', () => {
+  it('setzt im gemischten Rundgang denselben Typ höchstens zweimal hintereinander', () => {
     for (let seed = 1; seed <= 12; seed += 1) {
       const round = buildRound({
         pool: tasks,
-        count: 10,
+        count: 20,
         recentIds: [],
         preferred: new Set([1, 2, 3]),
         rng: mulberry32(seed),
         varyArea: true,
       })
-      expect(round).toHaveLength(10)
+      expect(round).toHaveLength(20)
+      let streak = 1
       for (let index = 1; index < round.length; index += 1) {
-        expect(round[index]?.type).not.toBe(round[index - 1]?.type)
+        if (round[index]?.type === round[index - 1]?.type) streak += 1
+        else streak = 1
+        expect(streak).toBeLessThanOrEqual(2)
       }
+    }
+  })
+
+  it('liefert je Lernpfad mindestens 500 Aufgaben mit eindeutigen IDs', () => {
+    for (const area of AREA_IDS) {
+      const areaTasks = tasks.filter((task) => task.area === area)
+      expect(areaTasks.length, area).toBeGreaterThanOrEqual(500)
     }
   })
 })

@@ -6,25 +6,32 @@ import { allTasks, tasksFor } from '../../engine/generate'
 import { mulberry32 } from '../../engine/random'
 import { buildRound } from '../../engine/select'
 import type { Answer, Task } from '../../engine/types'
-import { isAreaStarted } from '../../progress/model'
+import { historyFor, isAreaStarted, type HistoryState } from '../../progress/model'
 import { useProgress } from '../../progress/ProgressContext'
 import { FeedbackBanner } from '../feedback/FeedbackBanner'
 import { TaskInteraction } from '../interactions/TaskInteraction'
 
-const AREA_LENGTH = 8
-const MIXED_LENGTH = 10
+export const AREA_LENGTH = 20
+export const MIXED_LENGTH = 20
 
 export function TrainingSession({ area, onExit }: { area: TrainingArea; onExit: () => void }) {
   const progress = useProgress()
   const existing = progress.state.session?.area === area ? progress.state.session : null
-  const [created] = useState(() => existing ?? createSession(area, progress.state.areas))
+  const [created] = useState(() => existing ?? createSession(area, progress.state.areas, progress.history))
   const resumePastAnswer = Boolean(existing?.answered)
   const [index, setIndex] = useState(() => resumePastAnswer ? existing!.index + 1 : created.index)
   const [roundCorrect, setRoundCorrect] = useState(created.roundCorrect)
   const [answered, setAnswered] = useState(false)
   const [finished, setFinished] = useState(() => resumePastAnswer && created.index + 1 >= created.taskIds.length)
+  const [remembered, setRemembered] = useState(Boolean(existing))
   const tasks = useMemo(() => resolveTasks(created.taskIds), [created.taskIds])
   const task = tasks[index]
+
+  useEffect(() => {
+    if (remembered || existing) return
+    progress.rememberRound(area, created.taskIds)
+    setRemembered(true)
+  }, [area, created.taskIds, existing, progress, remembered])
 
   useEffect(() => {
     if (finished || index >= created.taskIds.length) return
@@ -139,7 +146,11 @@ function TaskCard({
   )
 }
 
-function createSession(area: TrainingArea, areas: ReturnType<typeof useProgress>['state']['areas']) {
+export function createSession(
+  area: TrainingArea,
+  areas: ReturnType<typeof useProgress>['state']['areas'],
+  history: HistoryState,
+) {
   const started = (Object.keys(areas) as AreaId[]).filter((id) => isAreaStarted(areas[id]))
   const pool = area === 'mixed'
     ? allTasks().filter((task) => started.includes(task.area))
@@ -147,9 +158,7 @@ function createSession(area: TrainingArea, areas: ReturnType<typeof useProgress>
   const correct = area === 'mixed'
     ? Math.max(0, ...started.map((id) => areas[id].correct))
     : areas[area].correct
-  const recent = area === 'mixed'
-    ? started.flatMap((id) => areas[id].recent.map((item) => item.taskId))
-    : areas[area].recent.map((item) => item.taskId)
+  const recent = historyFor(history, area)
   const round = buildRound({
     pool,
     count: area === 'mixed' ? MIXED_LENGTH : AREA_LENGTH,

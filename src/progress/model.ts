@@ -8,8 +8,12 @@ export interface Outcome {
 }
 
 export interface AreaRecord {
+  /** @deprecated prefer tutorialStep; kept for migration */
   foundationStep: number
+  /** @deprecated prefer tutorialCompleted; kept for migration */
   foundationsDone: boolean
+  tutorialStep: number
+  tutorialCompleted: boolean
   attempted: number
   correct: number
   recent: Outcome[]
@@ -25,18 +29,27 @@ export interface SessionRecord {
 }
 
 export interface ProgressState {
-  version: 1
+  version: 2
   areas: Record<AreaId, AreaRecord>
   session: SessionRecord | null
 }
 
+export interface HistoryState {
+  version: 1
+  byArea: Record<string, string[]>
+}
+
 export const STORAGE_KEY = 'grammatik-trainer-progress-v1'
+export const HISTORY_KEY = 'grammatik-trainer-history-v1'
 const RECENT_LIMIT = 40
+const HISTORY_LIMIT = 800
 
 export function emptyArea(): AreaRecord {
   return {
     foundationStep: 0,
     foundationsDone: false,
+    tutorialStep: 0,
+    tutorialCompleted: false,
     attempted: 0,
     correct: 0,
     recent: [],
@@ -46,14 +59,18 @@ export function emptyArea(): AreaRecord {
 
 export function emptyProgress(): ProgressState {
   return {
-    version: 1,
+    version: 2,
     areas: Object.fromEntries(AREA_IDS.map((id) => [id, emptyArea()])) as Record<AreaId, AreaRecord>,
     session: null,
   }
 }
 
+export function emptyHistory(): HistoryState {
+  return { version: 1, byArea: {} }
+}
+
 export function isAreaStarted(record: AreaRecord): boolean {
-  return record.foundationsDone || record.foundationStep > 0 || record.attempted > 0
+  return record.tutorialCompleted || record.tutorialStep > 0 || record.attempted > 0
 }
 
 export function uncertainLabels(recent: readonly Outcome[]): string[] {
@@ -77,9 +94,18 @@ function sanitizeArea(value: unknown): AreaRecord {
   const base = emptyArea()
   if (!isRecord(value)) return base
   const recent = Array.isArray(value.recent) ? value.recent : []
+  const foundationStep = Math.max(0, Math.floor(typeof value.foundationStep === 'number' ? value.foundationStep : 0))
+  const foundationsDone = value.foundationsDone === true
+  const tutorialStep = Math.max(
+    foundationStep,
+    Math.max(0, Math.floor(typeof value.tutorialStep === 'number' ? value.tutorialStep : 0)),
+  )
+  const tutorialCompleted = value.tutorialCompleted === true || foundationsDone
   return {
-    foundationStep: Math.max(0, Math.floor(typeof value.foundationStep === 'number' ? value.foundationStep : 0)),
-    foundationsDone: value.foundationsDone === true,
+    foundationStep: tutorialStep,
+    foundationsDone: tutorialCompleted,
+    tutorialStep,
+    tutorialCompleted,
     attempted: Math.max(0, Math.floor(typeof value.attempted === 'number' ? value.attempted : 0)),
     correct: Math.max(0, Math.floor(typeof value.correct === 'number' ? value.correct : 0)),
     lastLabel: typeof value.lastLabel === 'string' ? value.lastLabel : '',
@@ -95,7 +121,7 @@ export function sanitizeProgress(value: unknown): ProgressState {
   if (!isRecord(value) || !isRecord(value.areas)) return empty
   const areas = { ...empty.areas }
   for (const id of AREA_IDS) areas[id] = sanitizeArea(value.areas[id])
-  return { version: 1, areas, session: sanitizeSession(value.session) }
+  return { version: 2, areas, session: sanitizeSession(value.session) }
 }
 
 function sanitizeSession(value: unknown): SessionRecord | null {
@@ -127,19 +153,75 @@ export function saveProgress(storage: Storage | undefined, state: ProgressState)
   storage?.setItem(STORAGE_KEY, JSON.stringify(state))
 }
 
-export function withFoundation(state: ProgressState, area: AreaId, step: number, done: boolean): ProgressState {
+export function sanitizeHistory(value: unknown): HistoryState {
+  const empty = emptyHistory()
+  if (!isRecord(value) || !isRecord(value.byArea)) return empty
+  const byArea: Record<string, string[]> = {}
+  for (const [key, list] of Object.entries(value.byArea)) {
+    if (!Array.isArray(list)) continue
+    byArea[key] = list.filter((item): item is string => typeof item === 'string' && item.length > 0).slice(-HISTORY_LIMIT)
+  }
+  return { version: 1, byArea }
+}
+
+export function loadHistory(storage: Storage | undefined): HistoryState {
+  if (!storage) return emptyHistory()
+  try {
+    const raw = storage.getItem(HISTORY_KEY)
+    if (!raw) return emptyHistory()
+    return sanitizeHistory(JSON.parse(raw) as unknown)
+  } catch {
+    return emptyHistory()
+  }
+}
+
+export function saveHistory(storage: Storage | undefined, state: HistoryState): void {
+  storage?.setItem(HISTORY_KEY, JSON.stringify(state))
+}
+
+export function historyFor(state: HistoryState, area: TrainingArea): string[] {
+  return state.byArea[area] ?? []
+}
+
+export function withHistory(state: HistoryState, area: TrainingArea, taskIds: readonly string[]): HistoryState {
+  const previous = state.byArea[area] ?? []
+  const merged = [...previous]
+  for (const id of taskIds) {
+    const existing = merged.indexOf(id)
+    if (existing >= 0) merged.splice(existing, 1)
+    merged.push(id)
+  }
+  return {
+    version: 1,
+    byArea: {
+      ...state.byArea,
+      [area]: merged.slice(-HISTORY_LIMIT),
+    },
+  }
+}
+
+export function withTutorial(state: ProgressState, area: AreaId, step: number, done: boolean): ProgressState {
   const current = state.areas[area]
+  const tutorialStep = Math.max(current.tutorialStep, step)
+  const tutorialCompleted = current.tutorialCompleted || done
   return {
     ...state,
     areas: {
       ...state.areas,
       [area]: {
         ...current,
-        foundationStep: Math.max(current.foundationStep, step),
-        foundationsDone: current.foundationsDone || done,
+        foundationStep: tutorialStep,
+        foundationsDone: tutorialCompleted,
+        tutorialStep,
+        tutorialCompleted,
       },
     },
   }
+}
+
+/** @deprecated use withTutorial */
+export function withFoundation(state: ProgressState, area: AreaId, step: number, done: boolean): ProgressState {
+  return withTutorial(state, area, step, done)
 }
 
 export function withAnswer(state: ProgressState, task: Task, correct: boolean): ProgressState {
