@@ -1,3 +1,5 @@
+import { voiceErrorsExtra, voicePairsExtra } from './voice.extra'
+
 export type VoiceTense = 'praesens' | 'praeteritum' | 'perfekt' | 'plusquam' | 'futur1' | 'futur2'
 
 export const voiceTenseLabels: Record<VoiceTense, string> = {
@@ -39,6 +41,7 @@ export const voicePairs: readonly VoicePair[] = [
   { id: 'v14', difficulty: 3, tense: 'perfekt', active: 'Die Lehrerin hat die Aufgaben erklärt.', passive: 'Die Aufgaben sind von der Lehrerin erklärt worden.', agent: 'die Lehrerin', patient: 'die Aufgaben', activeObject: 'die Aufgaben', passiveAgent: 'von der Lehrerin', parts: ['sind', 'erklärt', 'worden'] },
   { id: 'v15', difficulty: 3, tense: 'plusquam', active: 'Der Hausmeister hatte die Tür geschlossen.', passive: 'Die Tür war vom Hausmeister geschlossen worden.', agent: 'der Hausmeister', patient: 'die Tür', activeObject: 'die Tür', passiveAgent: 'vom Hausmeister', parts: ['war', 'geschlossen', 'worden'] },
   { id: 'v16', difficulty: 3, tense: 'futur1', active: 'Die Firma wird das Gebäude renovieren.', passive: 'Das Gebäude wird von der Firma renoviert werden.', agent: 'die Firma', patient: 'das Gebäude', activeObject: 'das Gebäude', passiveAgent: 'von der Firma', parts: ['wird', 'renoviert', 'werden'] },
+  ...voicePairsExtra,
 ]
 
 export const voicePatternSentence = {
@@ -83,4 +86,5 @@ export const voiceErrors = [
     error: 'wurde',
     note: 'Passiv Perfekt bildet man mit ist oder sind, dem Partizip II und worden.',
   },
+  ...voiceErrorsExtra,
 ] as const

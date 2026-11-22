@@ -1,6 +1,8 @@
-import { render, screen } from '@testing-library/react'
+import { cleanup, render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
-import { describe, expect, it } from 'vitest'
+import { afterEach, describe, expect, it } from 'vitest'
+
+afterEach(() => cleanup())
 import App from '../App'
 import { ProgressProvider } from '../progress/ProgressContext'
 
@@ -27,19 +29,21 @@ describe('Startseite', () => {
     renderApp()
     expect(screen.getByRole('heading', { name: 'Grammatik-Trainer' })).toBeTruthy()
     expect(screen.getByText('Lernen. Ausprobieren. Sicher anwenden.')).toBeTruthy()
-    expect(screen.getAllByRole('button', { name: 'Lernen' })).toHaveLength(8)
-    expect(screen.getAllByRole('button', { name: 'Trainieren' })).toHaveLength(8)
+    expect(screen.getAllByRole('button', { name: 'Tutorial starten' })).toHaveLength(8)
+    expect(screen.getAllByRole('button', { name: 'Zuerst Tutorial' })).toHaveLength(8)
     const mixed = screen.getByRole('button', { name: 'Gemischt trainieren' })
     expect((mixed as HTMLButtonElement).disabled).toBe(true)
 
-    await userEvent.click(screen.getAllByRole('button', { name: 'Lernen' })[0]!)
+    await userEvent.click(screen.getAllByRole('button', { name: 'Tutorial starten' })[0]!)
     expect(screen.getByText(/ohne Bewertung/)).toBeTruthy()
+    expect(screen.getByText(/Tutorial/)).toBeTruthy()
   })
 
-  it('öffnet eine Trainingsaufgabe mit Prüfen', async () => {
-    renderApp()
-    await userEvent.click(screen.getAllByRole('button', { name: 'Trainieren' })[0]!)
-    expect(screen.getByRole('button', { name: 'Prüfen' })).toBeTruthy()
-    expect(screen.getByText(/Aufgabe 1 von/)).toBeTruthy()
+  it('leitet Erstbesuch vom Training ins Tutorial', async () => {
+    const { unmount } = renderApp()
+    await userEvent.click(screen.getAllByRole('button', { name: 'Zuerst Tutorial' })[0]!)
+    expect(screen.getAllByText(/ohne Bewertung/).length).toBeGreaterThan(0)
+    expect(screen.getByText(/Tutorial/)).toBeTruthy()
+    unmount()
   })
 })

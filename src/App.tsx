@@ -25,15 +25,28 @@ export default function App() {
     setMenuOpen(false)
   }
 
+  const openTutorial = (area: AreaId) => {
+    setScreen({ name: 'foundations', area })
+    setMenuOpen(false)
+  }
+
+  const startTraining = (area: TrainingArea) => {
+    setScreen({ name: 'training', area })
+    setMenuOpen(false)
+  }
+
   const requestTrain = (area: TrainingArea) => {
     if (!canTrain(area, progress.state.areas)) return
+    if (area !== 'mixed' && !progress.state.areas[area].tutorialCompleted) {
+      openTutorial(area)
+      return
+    }
     const current = progress.state.session
     if (current && current.area !== area) {
       setPending(area)
       return
     }
-    setScreen({ name: 'training', area })
-    setMenuOpen(false)
+    startTraining(area)
   }
 
   return (
@@ -61,9 +74,15 @@ export default function App() {
         </nav>
       </aside>
       <main id="inhalt" className="content-shell">
-        {screen.name === 'home' && <HomePage onLearn={(area) => { setScreen({ name: 'foundations', area }); setMenuOpen(false) }} onTrain={requestTrain} />}
+        {screen.name === 'home' && <HomePage onLearn={openTutorial} onTrain={requestTrain} />}
         {screen.name === 'progress' && <ProgressPage />}
-        {screen.name === 'foundations' && <FoundationsFlow area={screen.area} onExit={goHome} />}
+        {screen.name === 'foundations' && (
+          <FoundationsFlow
+            area={screen.area}
+            onExit={goHome}
+            onTrain={(area) => startTraining(area)}
+          />
+        )}
         {screen.name === 'training' && <TrainingSession key={screen.area} area={screen.area} onExit={goHome} />}
       </main>
       {pending && (

@@ -9,6 +9,8 @@ export interface AdjectiveTriple {
   difficulty: 1 | 2 | 3
 }
 
+import { adjectivesExtra, adjectiveErrorsExtra, comparisonSentencesExtra } from './adjectives.extra'
+
 export const adjectives: readonly AdjectiveTriple[] = [
   { id: 'a01', positive: 'schnell', comparative: 'schneller', superlative: 'am schnellsten', pattern: 'regular', difficulty: 1 },
   { id: 'a02', positive: 'schön', comparative: 'schöner', superlative: 'am schönsten', pattern: 'regular', difficulty: 1 },
@@ -35,6 +37,7 @@ export const adjectives: readonly AdjectiveTriple[] = [
   { id: 'a23', positive: 'gut', comparative: 'besser', superlative: 'am besten', pattern: 'irregular', difficulty: 3 },
   { id: 'a24', positive: 'viel', comparative: 'mehr', superlative: 'am meisten', pattern: 'irregular', difficulty: 3 },
   { id: 'a25', positive: 'hoch', comparative: 'höher', superlative: 'am höchsten', pattern: 'irregular', difficulty: 3 },
+  ...adjectivesExtra,
 ]
 
 export interface ComparisonSentence {
@@ -55,6 +58,7 @@ export const comparisonSentences: readonly ComparisonSentence[] = [
   { id: 'v08', sentence: 'Lena ist so alt wie Mia.', connector: 'wie', difficulty: 1 },
   { id: 'v09', sentence: 'Der Berg ist höher als der Hügel.', connector: 'als', difficulty: 3 },
   { id: 'v10', sentence: 'Paul ist nicht so groß wie sein Bruder.', connector: 'wie', difficulty: 3 },
+  ...comparisonSentencesExtra,
 ]
 
 export interface SpellingFix {
@@ -101,4 +105,5 @@ export const adjectiveErrors: readonly SpellingFix[] = [
     error: 'groß',
     note: 'Bei einem gleichen Vergleich steht so … wie: so groß wie.',
   },
+  ...adjectiveErrorsExtra,
 ]

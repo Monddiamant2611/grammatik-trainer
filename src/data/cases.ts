@@ -1,3 +1,5 @@
+import { caseSentencesExtra } from './cases.extra'
+
 export type CaseId = 'nom' | 'gen' | 'dat' | 'akk'
 
 export const caseLabels: Record<CaseId, string> = {
@@ -132,6 +134,7 @@ export const caseSentences: readonly CaseSentence[] = [
     difficulty: 1,
     targets: [{ surface: 'dem Nachbarn', label: 'dem Nachbarn', caseId: 'dat', probe: 'Wem gehört der Hund?' }],
   },
+  ...caseSentencesExtra,
 ]
 
 export interface ArticleForm {
@@ -144,6 +147,69 @@ export interface ArticleParadigm {
   noun: string
   forms: Record<CaseId, ArticleForm>
 }
+
+const articleParadigmsExtra: readonly ArticleParadigm[] = [
+  {
+    gender: 'maskulin',
+    noun: 'Lehrer',
+    forms: {
+      nom: { def: 'der Lehrer', indef: 'ein Lehrer' },
+      gen: { def: 'des Lehrers', indef: 'eines Lehrers' },
+      dat: { def: 'dem Lehrer', indef: 'einem Lehrer' },
+      akk: { def: 'den Lehrer', indef: 'einen Lehrer' },
+    },
+  },
+  {
+    gender: 'maskulin',
+    noun: 'Freund',
+    forms: {
+      nom: { def: 'der Freund', indef: 'ein Freund' },
+      gen: { def: 'des Freundes', indef: 'eines Freundes' },
+      dat: { def: 'dem Freund', indef: 'einem Freund' },
+      akk: { def: 'den Freund', indef: 'einen Freund' },
+    },
+  },
+  {
+    gender: 'feminin',
+    noun: 'Schule',
+    forms: {
+      nom: { def: 'die Schule', indef: 'eine Schule' },
+      gen: { def: 'der Schule', indef: 'einer Schule' },
+      dat: { def: 'der Schule', indef: 'einer Schule' },
+      akk: { def: 'die Schule', indef: 'eine Schule' },
+    },
+  },
+  {
+    gender: 'feminin',
+    noun: 'Katze',
+    forms: {
+      nom: { def: 'die Katze', indef: 'eine Katze' },
+      gen: { def: 'der Katze', indef: 'einer Katze' },
+      dat: { def: 'der Katze', indef: 'einer Katze' },
+      akk: { def: 'die Katze', indef: 'eine Katze' },
+    },
+  },
+  {
+    gender: 'neutrum',
+    noun: 'Buch',
+    forms: {
+      nom: { def: 'das Buch', indef: 'ein Buch' },
+      gen: { def: 'des Buches', indef: 'eines Buches' },
+      dat: { def: 'dem Buch', indef: 'einem Buch' },
+      akk: { def: 'das Buch', indef: 'ein Buch' },
+    },
+  },
+  {
+    gender: 'neutrum',
+    noun: 'Fenster',
+    forms: {
+      nom: { def: 'das Fenster', indef: 'ein Fenster' },
+      gen: { def: 'des Fensters', indef: 'eines Fensters' },
+      dat: { def: 'dem Fenster', indef: 'einem Fenster' },
+      akk: { def: 'das Fenster', indef: 'ein Fenster' },
+    },
+  },
+]
 
 export const articleParadigms: readonly ArticleParadigm[] = [
   {
@@ -176,6 +242,7 @@ export const articleParadigms: readonly ArticleParadigm[] = [
       akk: { def: 'das Kind', indef: 'ein Kind' },
     },
   },
+  ...articleParadigmsExtra,
 ]
 
 export const hundParadigm: Record<CaseId, string> = {

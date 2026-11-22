@@ -1,3 +1,12 @@
+import {
+  articleProbesExtra,
+  capitalizationPairsExtra,
+  concreteAbstractExtra,
+  nounSentencesExtra,
+  pluralProbesExtra,
+  properNamesExtra,
+} from './nouns.extra'
+
 export interface NounSentence {
   id: string
   sentence: string
@@ -7,7 +16,7 @@ export interface NounSentence {
   text: boolean
 }
 
-export const nounSentences: readonly NounSentence[] = [
+const nounSentencesBase: readonly NounSentence[] = [
   { id: 'n01', sentence: 'Am Sonntag besucht Lena ihren Bruder im Park.', nouns: ['Sonntag', 'Lena', 'Bruder', 'Park'], traps: [], difficulty: 2, text: true },
   { id: 'n02', sentence: 'Der Hund trägt einen Ball durch den Garten.', nouns: ['Hund', 'Ball', 'Garten'], traps: [], difficulty: 1, text: true },
   { id: 'n03', sentence: 'Eine Blume wächst neben dem Fenster.', nouns: ['Blume', 'Fenster'], traps: [], difficulty: 1, text: false },
@@ -30,6 +39,8 @@ export const nounSentences: readonly NounSentence[] = [
   { id: 'n20', sentence: 'Der Rhein fließt durch mehrere Länder.', nouns: ['Rhein', 'Länder'], traps: [], difficulty: 2, text: false },
 ]
 
+export const nounSentences: readonly NounSentence[] = [...nounSentencesBase, ...nounSentencesExtra]
+
 export const nounCategories = [
   { id: 'person', word: 'Lehrer', label: 'Person' },
   { id: 'animal', word: 'Hund', label: 'Tier' },
@@ -44,6 +55,7 @@ export const articleProbes = [
   { word: 'Blume', correct: 'die Blume', options: ['der Blume', 'die Blume', 'das Blume'] },
   { word: 'Haus', correct: 'das Haus', options: ['der Haus', 'die Haus', 'das Haus'] },
   { word: 'Mut', correct: 'der Mut', options: ['der Mut', 'die Mut', 'das Mut'] },
+  ...articleProbesExtra,
 ] as const
 
 export const pluralProbes = [
@@ -51,6 +63,7 @@ export const pluralProbes = [
   { singular: 'Blume', plural: 'Blumen' },
   { singular: 'Buch', plural: 'Bücher' },
   { singular: 'Kind', plural: 'Kinder' },
+  ...pluralProbesExtra,
 ] as const
 
 export const concreteAbstract = [
@@ -60,12 +73,14 @@ export const concreteAbstract = [
   { word: 'Mut', kind: 'abstrakt' },
   { word: 'Zeit', kind: 'abstrakt' },
   { word: 'Liebe', kind: 'abstrakt' },
+  ...concreteAbstractExtra,
 ] as const
 
-export const properNames = ['Anna', 'Berlin', 'Rhein', 'München'] as const
+export const properNames = ['Anna', 'Berlin', 'Rhein', 'München', ...properNamesExtra] as const
 
 export const capitalizationPairs = [
   { faulty: 'der hund', correct: 'der Hund', error: 'hund' },
   { faulty: 'die schule', correct: 'die Schule', error: 'schule' },
   { faulty: 'das leben', correct: 'das Leben', error: 'leben' },
+  ...capitalizationPairsExtra,
 ] as const

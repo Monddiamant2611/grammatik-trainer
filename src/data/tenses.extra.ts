@@ -1,0 +1,1543 @@
+import type { TensePool, RecognitionSentence } from './tenses'
+
+export const tensePoolsExtra: readonly TensePool[] = [
+  {
+    id: 'kochen',
+    verb: 'kochen',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Ich koche Suppe.',
+        parts: [
+          'koche',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Ich kochte Suppe.',
+        parts: [
+          'kochte',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Ich habe Suppe gekocht.',
+        parts: [
+          'habe',
+          'gekocht',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Ich hatte Suppe gekocht.',
+        parts: [
+          'hatte',
+          'gekocht',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Ich werde Suppe kochen.',
+        parts: [
+          'werde',
+          'kochen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Ich werde Suppe gekocht haben.',
+        parts: [
+          'werde',
+          'gekocht',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'tanzen',
+    verb: 'tanzen',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Du tanzt gern.',
+        parts: [
+          'tanzt',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Du tanztest gern.',
+        parts: [
+          'tanztest',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Du hast gern getanzt.',
+        parts: [
+          'hast',
+          'getanzt',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Du hattest gern getanzt.',
+        parts: [
+          'hattest',
+          'getanzt',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Du wirst gern tanzen.',
+        parts: [
+          'wirst',
+          'tanzen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Du wirst getanzt haben.',
+        parts: [
+          'wirst',
+          'getanzt',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'malen',
+    verb: 'malen',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Mia malt ein Bild.',
+        parts: [
+          'malt',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Mia malte ein Bild.',
+        parts: [
+          'malte',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Mia hat ein Bild gemalt.',
+        parts: [
+          'hat',
+          'gemalt',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Mia hatte ein Bild gemalt.',
+        parts: [
+          'hatte',
+          'gemalt',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Mia wird ein Bild malen.',
+        parts: [
+          'wird',
+          'malen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Mia wird ein Bild gemalt haben.',
+        parts: [
+          'wird',
+          'gemalt',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'wandern',
+    verb: 'wandern',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Wir wandern am Sonntag.',
+        parts: [
+          'wandern',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Wir wanderten am Sonntag.',
+        parts: [
+          'wanderten',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Wir haben am Sonntag gewandert.',
+        parts: [
+          'haben',
+          'gewandert',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Wir hatten am Sonntag gewandert.',
+        parts: [
+          'hatten',
+          'gewandert',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Wir werden am Sonntag wandern.',
+        parts: [
+          'werden',
+          'wandern',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Wir werden gewandert haben.',
+        parts: [
+          'werden',
+          'gewandert',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'hören',
+    verb: 'hören',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Lena hört Musik.',
+        parts: [
+          'hört',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Lena hörte Musik.',
+        parts: [
+          'hörte',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Lena hat Musik gehört.',
+        parts: [
+          'hat',
+          'gehört',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Lena hatte Musik gehört.',
+        parts: [
+          'hatte',
+          'gehört',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Lena wird Musik hören.',
+        parts: [
+          'wird',
+          'hören',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Lena wird Musik gehört haben.',
+        parts: [
+          'wird',
+          'gehört',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'suchen',
+    verb: 'suchen',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Paul sucht seinen Schlüssel.',
+        parts: [
+          'sucht',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Paul suchte seinen Schlüssel.',
+        parts: [
+          'suchte',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Paul hat seinen Schlüssel gesucht.',
+        parts: [
+          'hat',
+          'gesucht',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Paul hatte seinen Schlüssel gesucht.',
+        parts: [
+          'hatte',
+          'gesucht',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Paul wird seinen Schlüssel suchen.',
+        parts: [
+          'wird',
+          'suchen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Paul wird seinen Schlüssel gesucht haben.',
+        parts: [
+          'wird',
+          'gesucht',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'kaufen',
+    verb: 'kaufen',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Ben kauft Brot.',
+        parts: [
+          'kauft',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Ben kaufte Brot.',
+        parts: [
+          'kaufte',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Ben hat Brot gekauft.',
+        parts: [
+          'hat',
+          'gekauft',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Ben hatte Brot gekauft.',
+        parts: [
+          'hatte',
+          'gekauft',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Ben wird Brot kaufen.',
+        parts: [
+          'wird',
+          'kaufen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Ben wird Brot gekauft haben.',
+        parts: [
+          'wird',
+          'gekauft',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'laufen',
+    verb: 'laufen',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Tim läuft schnell.',
+        parts: [
+          'läuft',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Tim lief schnell.',
+        parts: [
+          'lief',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Tim ist schnell gelaufen.',
+        parts: [
+          'ist',
+          'gelaufen',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Tim war schnell gelaufen.',
+        parts: [
+          'war',
+          'gelaufen',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Tim wird schnell laufen.',
+        parts: [
+          'wird',
+          'laufen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Tim wird schnell gelaufen sein.',
+        parts: [
+          'wird',
+          'gelaufen',
+          'sein',
+        ],
+      },
+    },
+  },
+  {
+    id: 'fahren',
+    verb: 'fahren',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Wir fahren nach Wien.',
+        parts: [
+          'fahren',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Wir fuhren nach Wien.',
+        parts: [
+          'fuhren',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Wir sind nach Wien gefahren.',
+        parts: [
+          'sind',
+          'gefahren',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Wir waren nach Wien gefahren.',
+        parts: [
+          'waren',
+          'gefahren',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Wir werden nach Wien fahren.',
+        parts: [
+          'werden',
+          'fahren',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Wir werden nach Wien gefahren sein.',
+        parts: [
+          'werden',
+          'gefahren',
+          'sein',
+        ],
+      },
+    },
+  },
+  {
+    id: 'finden',
+    verb: 'finden',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Eva findet den Weg.',
+        parts: [
+          'findet',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Eva fand den Weg.',
+        parts: [
+          'fand',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Eva hat den Weg gefunden.',
+        parts: [
+          'hat',
+          'gefunden',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Eva hatte den Weg gefunden.',
+        parts: [
+          'hatte',
+          'gefunden',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Eva wird den Weg finden.',
+        parts: [
+          'wird',
+          'finden',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Eva wird den Weg gefunden haben.',
+        parts: [
+          'wird',
+          'gefunden',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'trinken',
+    verb: 'trinken',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Jonas trinkt Wasser.',
+        parts: [
+          'trinkt',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Jonas trank Wasser.',
+        parts: [
+          'trank',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Jonas hat Wasser getrunken.',
+        parts: [
+          'hat',
+          'getrunken',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Jonas hatte Wasser getrunken.',
+        parts: [
+          'hatte',
+          'getrunken',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Jonas wird Wasser trinken.',
+        parts: [
+          'wird',
+          'trinken',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Jonas wird Wasser getrunken haben.',
+        parts: [
+          'wird',
+          'getrunken',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'singen',
+    verb: 'singen',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Die Klasse singt ein Lied.',
+        parts: [
+          'singt',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Die Klasse sang ein Lied.',
+        parts: [
+          'sang',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Die Klasse hat ein Lied gesungen.',
+        parts: [
+          'hat',
+          'gesungen',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Die Klasse hatte ein Lied gesungen.',
+        parts: [
+          'hatte',
+          'gesungen',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Die Klasse wird ein Lied singen.',
+        parts: [
+          'wird',
+          'singen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Die Klasse wird ein Lied gesungen haben.',
+        parts: [
+          'wird',
+          'gesungen',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'springen',
+    verb: 'springen',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Lea springt weit.',
+        parts: [
+          'springt',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Lea sprang weit.',
+        parts: [
+          'sprang',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Lea ist weit gesprungen.',
+        parts: [
+          'ist',
+          'gesprungen',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Lea war weit gesprungen.',
+        parts: [
+          'war',
+          'gesprungen',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Lea wird weit springen.',
+        parts: [
+          'wird',
+          'springen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Lea wird weit gesprungen sein.',
+        parts: [
+          'wird',
+          'gesprungen',
+          'sein',
+        ],
+      },
+    },
+  },
+  {
+    id: 'putzen',
+    verb: 'putzen',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Felix putzt das Zimmer.',
+        parts: [
+          'putzt',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Felix putzte das Zimmer.',
+        parts: [
+          'putzte',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Felix hat das Zimmer geputzt.',
+        parts: [
+          'hat',
+          'geputzt',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Felix hatte das Zimmer geputzt.',
+        parts: [
+          'hatte',
+          'geputzt',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Felix wird das Zimmer putzen.',
+        parts: [
+          'wird',
+          'putzen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Felix wird das Zimmer geputzt haben.',
+        parts: [
+          'wird',
+          'geputzt',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'oeffnen',
+    verb: 'öffnen',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Mama öffnet die Tür.',
+        parts: [
+          'öffnet',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Mama öffnete die Tür.',
+        parts: [
+          'öffnete',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Mama hat die Tür geöffnet.',
+        parts: [
+          'hat',
+          'geöffnet',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Mama hatte die Tür geöffnet.',
+        parts: [
+          'hatte',
+          'geöffnet',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Mama wird die Tür öffnen.',
+        parts: [
+          'wird',
+          'öffnen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Mama wird die Tür geöffnet haben.',
+        parts: [
+          'wird',
+          'geöffnet',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'schliessen',
+    verb: 'schließen',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Papa schließt das Fenster.',
+        parts: [
+          'schließt',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Papa schloss das Fenster.',
+        parts: [
+          'schloss',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Papa hat das Fenster geschlossen.',
+        parts: [
+          'hat',
+          'geschlossen',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Papa hatte das Fenster geschlossen.',
+        parts: [
+          'hatte',
+          'geschlossen',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Papa wird das Fenster schließen.',
+        parts: [
+          'wird',
+          'schließen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Papa wird das Fenster geschlossen haben.',
+        parts: [
+          'wird',
+          'geschlossen',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'basteln',
+    verb: 'basteln',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Wir basteln Sterne.',
+        parts: [
+          'basteln',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Wir bastelten Sterne.',
+        parts: [
+          'bastelten',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Wir haben Sterne gebastelt.',
+        parts: [
+          'haben',
+          'gebastelt',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Wir hatten Sterne gebastelt.',
+        parts: [
+          'hatten',
+          'gebastelt',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Wir werden Sterne basteln.',
+        parts: [
+          'werden',
+          'basteln',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Wir werden Sterne gebastelt haben.',
+        parts: [
+          'werden',
+          'gebastelt',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'reparieren',
+    verb: 'reparieren',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Der Vater repariert das Fahrrad.',
+        parts: [
+          'repariert',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Der Vater reparierte das Fahrrad.',
+        parts: [
+          'reparierte',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Der Vater hat das Fahrrad repariert.',
+        parts: [
+          'hat',
+          'repariert',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Der Vater hatte das Fahrrad repariert.',
+        parts: [
+          'hatte',
+          'repariert',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Der Vater wird das Fahrrad reparieren.',
+        parts: [
+          'wird',
+          'reparieren',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Der Vater wird das Fahrrad repariert haben.',
+        parts: [
+          'wird',
+          'repariert',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'fliegen',
+    verb: 'fliegen',
+    difficulty: 3,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Der Vogel fliegt hoch.',
+        parts: [
+          'fliegt',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Der Vogel flog hoch.',
+        parts: [
+          'flog',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Der Vogel ist hoch geflogen.',
+        parts: [
+          'ist',
+          'geflogen',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Der Vogel war hoch geflogen.',
+        parts: [
+          'war',
+          'geflogen',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Der Vogel wird hoch fliegen.',
+        parts: [
+          'wird',
+          'fliegen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Der Vogel wird hoch geflogen sein.',
+        parts: [
+          'wird',
+          'geflogen',
+          'sein',
+        ],
+      },
+    },
+  },
+  {
+    id: 'bleiben',
+    verb: 'bleiben',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Sie bleiben zu Hause.',
+        parts: [
+          'bleiben',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Sie blieben zu Hause.',
+        parts: [
+          'blieben',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Sie sind zu Hause geblieben.',
+        parts: [
+          'sind',
+          'geblieben',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Sie waren zu Hause geblieben.',
+        parts: [
+          'waren',
+          'geblieben',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Sie werden zu Hause bleiben.',
+        parts: [
+          'werden',
+          'bleiben',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Sie werden zu Hause geblieben sein.',
+        parts: [
+          'werden',
+          'geblieben',
+          'sein',
+        ],
+      },
+    },
+  },
+  {
+    id: 'warten',
+    verb: 'warten',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Hannah wartet am Bahnhof.',
+        parts: [
+          'wartet',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Hannah wartete am Bahnhof.',
+        parts: [
+          'wartete',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Hannah hat am Bahnhof gewartet.',
+        parts: [
+          'hat',
+          'gewartet',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Hannah hatte am Bahnhof gewartet.',
+        parts: [
+          'hatte',
+          'gewartet',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Hannah wird am Bahnhof warten.',
+        parts: [
+          'wird',
+          'warten',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Hannah wird gewartet haben.',
+        parts: [
+          'wird',
+          'gewartet',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'arbeiten',
+    verb: 'arbeiten',
+    difficulty: 2,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Er arbeitet fleißig.',
+        parts: [
+          'arbeitet',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Er arbeitete fleißig.',
+        parts: [
+          'arbeitete',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Er hat fleißig gearbeitet.',
+        parts: [
+          'hat',
+          'gearbeitet',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Er hatte fleißig gearbeitet.',
+        parts: [
+          'hatte',
+          'gearbeitet',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Er wird fleißig arbeiten.',
+        parts: [
+          'wird',
+          'arbeiten',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Er wird fleißig gearbeitet haben.',
+        parts: [
+          'wird',
+          'gearbeitet',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'lachen',
+    verb: 'lachen',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Die Kinder lachen laut.',
+        parts: [
+          'lachen',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Die Kinder lachten laut.',
+        parts: [
+          'lachten',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Die Kinder haben laut gelacht.',
+        parts: [
+          'haben',
+          'gelacht',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Die Kinder hatten laut gelacht.',
+        parts: [
+          'hatten',
+          'gelacht',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Die Kinder werden laut lachen.',
+        parts: [
+          'werden',
+          'lachen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Die Kinder werden laut gelacht haben.',
+        parts: [
+          'werden',
+          'gelacht',
+          'haben',
+        ],
+      },
+    },
+  },
+  {
+    id: 'wohnen',
+    verb: 'wohnen',
+    difficulty: 1,
+    forms: {
+      praesens: {
+        tense: 'praesens',
+        sentence: 'Sie wohnen in Hamburg.',
+        parts: [
+          'wohnen',
+        ],
+      },
+      praeteritum: {
+        tense: 'praeteritum',
+        sentence: 'Sie wohnten in Hamburg.',
+        parts: [
+          'wohnten',
+        ],
+      },
+      perfekt: {
+        tense: 'perfekt',
+        sentence: 'Sie haben in Hamburg gewohnt.',
+        parts: [
+          'haben',
+          'gewohnt',
+        ],
+      },
+      plusquam: {
+        tense: 'plusquam',
+        sentence: 'Sie hatten in Hamburg gewohnt.',
+        parts: [
+          'hatten',
+          'gewohnt',
+        ],
+      },
+      futur1: {
+        tense: 'futur1',
+        sentence: 'Sie werden in Hamburg wohnen.',
+        parts: [
+          'werden',
+          'wohnen',
+        ],
+      },
+      futur2: {
+        tense: 'futur2',
+        sentence: 'Sie werden in Hamburg gewohnt haben.',
+        parts: [
+          'werden',
+          'gewohnt',
+          'haben',
+        ],
+      },
+    },
+  },
+] as const
+
+export const recognitionSentencesExtra: readonly RecognitionSentence[] = [
+  {
+    id: 'xr01',
+    sentence: 'Nächste Woche beginnt der Unterricht.',
+    tense: 'praesens',
+    difficulty: 2,
+  },
+  {
+    id: 'xr02',
+    sentence: 'Gestern kaufte Lena Äpfel.',
+    tense: 'praeteritum',
+    difficulty: 1,
+  },
+  {
+    id: 'xr03',
+    sentence: 'Wir haben den Film gesehen.',
+    tense: 'perfekt',
+    difficulty: 2,
+  },
+  {
+    id: 'xr04',
+    sentence: 'Er hatte schon gegessen.',
+    tense: 'plusquam',
+    difficulty: 3,
+  },
+  {
+    id: 'xr05',
+    sentence: 'Morgen werden wir wandern.',
+    tense: 'futur1',
+    difficulty: 2,
+  },
+  {
+    id: 'xr06',
+    sentence: 'Bis dahin werde ich fertig geworden sein.',
+    tense: 'futur2',
+    difficulty: 3,
+  },
+  {
+    id: 'xr07',
+    sentence: 'Die Katze schläft auf dem Bett.',
+    tense: 'praesens',
+    difficulty: 1,
+  },
+  {
+    id: 'xr08',
+    sentence: 'Ben spielte den ganzen Tag.',
+    tense: 'praeteritum',
+    difficulty: 1,
+  },
+  {
+    id: 'xr09',
+    sentence: 'Sie ist gestern angekommen.',
+    tense: 'perfekt',
+    difficulty: 2,
+  },
+  {
+    id: 'xr10',
+    sentence: 'Man hatte sie gewarnt.',
+    tense: 'plusquam',
+    difficulty: 3,
+  },
+  {
+    id: 'xr11',
+    sentence: 'In einer Stunde werde ich anrufen.',
+    tense: 'futur1',
+    difficulty: 2,
+  },
+  {
+    id: 'xr12',
+    sentence: 'Bis morgen werde ich gelesen haben.',
+    tense: 'futur2',
+    difficulty: 3,
+  },
+  {
+    id: 'xr13',
+    sentence: 'Tim läuft jeden Morgen.',
+    tense: 'praesens',
+    difficulty: 1,
+  },
+  {
+    id: 'xr14',
+    sentence: 'Der Lehrer erklärte die Regel.',
+    tense: 'praeteritum',
+    difficulty: 2,
+  },
+  {
+    id: 'xr15',
+    sentence: 'Hannah hat gut gesungen.',
+    tense: 'perfekt',
+    difficulty: 2,
+  },
+  {
+    id: 'xr16',
+    sentence: 'Das Auto war schon gefahren.',
+    tense: 'plusquam',
+    difficulty: 3,
+  },
+  {
+    id: 'xr17',
+    sentence: 'Wir werden bald starten.',
+    tense: 'futur1',
+    difficulty: 2,
+  },
+  {
+    id: 'xr18',
+    sentence: 'Er wird die Arbeit beendet haben.',
+    tense: 'futur2',
+    difficulty: 3,
+  },
+  {
+    id: 'xr19',
+    sentence: 'Eva schreibt einen Brief.',
+    tense: 'praesens',
+    difficulty: 1,
+  },
+  {
+    id: 'xr20',
+    sentence: 'Früher wohnten wir auf dem Land.',
+    tense: 'praeteritum',
+    difficulty: 2,
+  },
+  {
+    id: 'xr21',
+    sentence: 'Jonas hat den Brief geschickt.',
+    tense: 'perfekt',
+    difficulty: 2,
+  },
+  {
+    id: 'xr22',
+    sentence: 'Sie hatte den Text gelesen.',
+    tense: 'plusquam',
+    difficulty: 3,
+  },
+  {
+    id: 'xr23',
+    sentence: 'Der Zug wird gleich kommen.',
+    tense: 'futur1',
+    difficulty: 2,
+  },
+  {
+    id: 'xr24',
+    sentence: 'Felix wird gegangen sein.',
+    tense: 'futur2',
+    difficulty: 3,
+  },
+  {
+    id: 'xr25',
+    sentence: 'Paul malt am Nachmittag.',
+    tense: 'praesens',
+    difficulty: 1,
+  },
+  {
+    id: 'xr26',
+    sentence: 'Im Urlaub schwammen wir täglich.',
+    tense: 'praeteritum',
+    difficulty: 2,
+  },
+  {
+    id: 'xr27',
+    sentence: 'Die Kinder sind müde geworden.',
+    tense: 'perfekt',
+    difficulty: 2,
+  },
+  {
+    id: 'xr28',
+    sentence: 'Er hatte lange gewartet.',
+    tense: 'plusquam',
+    difficulty: 3,
+  },
+  {
+    id: 'xr29',
+    sentence: 'Ihr werdet stolz sein.',
+    tense: 'futur1',
+    difficulty: 2,
+  },
+  {
+    id: 'xr30',
+    sentence: 'Wir werden geantwortet haben.',
+    tense: 'futur2',
+    difficulty: 3,
+  },
+  {
+    id: 'xr31',
+    sentence: 'Mama kocht heute Abend.',
+    tense: 'praesens',
+    difficulty: 1,
+  },
+  {
+    id: 'xr32',
+    sentence: 'Das Wetter wurde kälter.',
+    tense: 'praeteritum',
+    difficulty: 2,
+  },
+  {
+    id: 'xr33',
+    sentence: 'Lea hat im Park getanzt.',
+    tense: 'perfekt',
+    difficulty: 2,
+  },
+  {
+    id: 'xr34',
+    sentence: 'Die Gäste waren schon gegangen.',
+    tense: 'plusquam',
+    difficulty: 3,
+  },
+  {
+    id: 'xr35',
+    sentence: 'Du wirst es schaffen.',
+    tense: 'futur1',
+    difficulty: 2,
+  },
+  {
+    id: 'xr36',
+    sentence: 'Sie werdet gesehen haben.',
+    tense: 'futur2',
+    difficulty: 3,
+  },
+  {
+    id: 'xr37',
+    sentence: 'Der Hund bellt laut.',
+    tense: 'praesens',
+    difficulty: 1,
+  },
+  {
+    id: 'xr38',
+    sentence: 'Sie verlor den Schlüssel.',
+    tense: 'praeteritum',
+    difficulty: 2,
+  },
+  {
+    id: 'xr39',
+    sentence: 'Ich bin pünktlich aufgewacht.',
+    tense: 'perfekt',
+    difficulty: 2,
+  },
+  {
+    id: 'xr40',
+    sentence: 'Das Essen war verbrannt.',
+    tense: 'plusquam',
+    difficulty: 3,
+  },
+] as const

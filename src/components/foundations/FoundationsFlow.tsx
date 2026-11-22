@@ -1,15 +1,23 @@
 import { useState } from 'react'
 import { areaById, type AreaId } from '../../domain/areas'
 import type { FoundationStep, FoundationTry } from '../../foundations/types'
-import { foundationModule } from '../../foundations/content'
+import { foundationModule, tutorialModule } from '../../foundations/content'
 import { useProgress } from '../../progress/ProgressContext'
 import { ChoiceList, ClassifyBoard, OrderBoard } from '../interactions/TaskInteraction'
 
-export function FoundationsFlow({ area, onExit }: { area: AreaId; onExit: () => void }) {
+export function FoundationsFlow({
+  area,
+  onExit,
+  onTrain,
+}: {
+  area: AreaId
+  onExit: () => void
+  onTrain?: (area: AreaId) => void
+}) {
   const progress = useProgress()
-  const module = foundationModule(area)
+  const module = tutorialModule(area)
   const saved = progress.state.areas[area]
-  const initial = saved.foundationsDone ? 0 : Math.min(saved.foundationStep, module.steps.length - 1)
+  const initial = saved.tutorialCompleted ? 0 : Math.min(saved.tutorialStep, module.steps.length - 1)
   const [index, setIndex] = useState(initial)
   const [finished, setFinished] = useState(false)
   const definition = areaById(area)
@@ -17,7 +25,7 @@ export function FoundationsFlow({ area, onExit }: { area: AreaId; onExit: () => 
 
   const goNext = () => {
     const done = index + 1 >= module.steps.length
-    progress.saveFoundation(area, done ? module.steps.length : index + 1, done)
+    progress.saveTutorial(area, done ? module.steps.length : index + 1, done)
     if (done) setFinished(true)
     else setIndex(index + 1)
   }
@@ -25,12 +33,15 @@ export function FoundationsFlow({ area, onExit }: { area: AreaId; onExit: () => 
   if (!step || finished) {
     return (
       <section className="content-task learning-card foundations-done">
-        <span className="eyebrow">Grundlagen</span>
+        <span className="eyebrow">Tutorial</span>
         <h1>{definition.title}</h1>
-        <p>Du hast die Grundlagen dieses Bereichs angesehen. Es gibt dafür keine Punkte. Im Training bekommst du Rückmeldung zu einzelnen Aufgaben.</p>
+        <p>Du hast das Tutorial abgeschlossen. Es gibt keine Punkte und keine Prozentwertung. Im Training bekommst du fachliches Feedback zu einzelnen Aufgaben.</p>
         <div className="exercise-actions">
-          <button type="button" className="primary-button" onClick={onExit}>Zur Startseite</button>
-          <button type="button" className="secondary-button" onClick={() => { setFinished(false); setIndex(0) }}>Noch einmal ansehen</button>
+          {onTrain && (
+            <button type="button" className="primary-button" onClick={() => onTrain(area)}>Jetzt trainieren</button>
+          )}
+          <button type="button" className="secondary-button" onClick={onExit}>Zur Startseite</button>
+          <button type="button" className="ghost-button" onClick={() => { setFinished(false); setIndex(0) }}>Tutorial wiederholen</button>
         </div>
       </section>
     )
@@ -39,7 +50,7 @@ export function FoundationsFlow({ area, onExit }: { area: AreaId; onExit: () => 
   return (
     <section className="content-task">
       <header className="page-header">
-        <span className="eyebrow">{definition.title} · Grundlagen</span>
+        <span className="eyebrow">{definition.title} · Tutorial</span>
         <h1>{step.title}</h1>
         <p className="step-line">Schritt {index + 1} von {module.steps.length} · ohne Bewertung</p>
       </header>
@@ -50,6 +61,8 @@ export function FoundationsFlow({ area, onExit }: { area: AreaId; onExit: () => 
   )
 }
 
+export { foundationModule }
+
 function StepBody({ step, onNext, onBack }: { step: FoundationStep; onNext: () => void; onBack?: () => void }) {
   const [insight, setInsight] = useState(false)
   const [matched, setMatched] = useState(false)
@@ -57,6 +70,12 @@ function StepBody({ step, onNext, onBack }: { step: FoundationStep; onNext: () =
   return (
     <div className="foundation-step">
       <p className="prompt">{step.lead}</p>
+      {step.concept && (
+        <aside className="concept-card" aria-label={`Begriff: ${step.concept.term}`}>
+          <p className="merke-label">Begriff</p>
+          <p className="merke-text"><strong>{step.concept.term}</strong> — {step.concept.definition}</p>
+        </aside>
+      )}
       {step.examples && (
         <ul className="example-list">
           {step.examples.map((example) => <li key={example}>{example}</li>)}

@@ -1,6 +1,6 @@
 import { AREAS } from '../domain/areas'
 import { practiceLabel, practiceLevel } from '../engine/difficulty'
-import { foundationCount } from '../foundations/content'
+import { tutorialCount } from '../foundations/content'
 import { uncertainLabels } from '../progress/model'
 import { useProgress } from '../progress/ProgressContext'
 
@@ -11,7 +11,7 @@ export function ProgressPage() {
       <header className="page-header">
         <span className="eyebrow">Lokal auf diesem Gerät</span>
         <h1>Fortschritt</h1>
-        <p>Grundlagen zählen nicht als Leistung. Der Übungsstand steigt erst mit mehr richtigen Aufgaben.</p>
+        <p>Tutorials zählen nicht als Leistung. Der Übungsstand steigt erst mit mehr richtigen Aufgaben im Training.</p>
       </header>
       <div className="progress-list">
         {AREAS.map((area) => {
@@ -21,10 +21,12 @@ export function ProgressPage() {
           return (
             <article key={area.id} className={`area-card accent-${area.accent}`}>
               <div>
-                <span className="eyebrow">Lernbereich</span>
+                <span className="eyebrow">Lernpfad</span>
                 <h2>{area.title}</h2>
                 <p className="progress-copy">
-                  {record.foundationsDone ? 'Grundlagen angesehen' : `Grundlagen: Schritt ${Math.min(record.foundationStep + 1, foundationCount(area.id))} von ${foundationCount(area.id)}`}
+                  {record.tutorialCompleted
+                    ? 'Tutorial abgeschlossen'
+                    : `Tutorial: Schritt ${Math.min(record.tutorialStep + 1, tutorialCount(area.id))} von ${tutorialCount(area.id)}`}
                 </p>
                 <p className="progress-copy">
                   {record.attempted === 0

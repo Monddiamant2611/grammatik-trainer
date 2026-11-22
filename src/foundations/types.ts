@@ -20,11 +20,17 @@ export type FoundationTry =
   | { kind: 'compare'; prompt: string; left: string; right: string; answer: 'left' | 'right' }
   | { kind: 'order'; prompt: string; items: FoundationChoice[]; correctIds: string[] }
 
+export interface ConceptCard {
+  term: string
+  definition: string
+}
+
 export interface FoundationStep {
   id: string
   title: string
   lead: string
   examples?: readonly string[]
+  concept?: ConceptCard
   try: FoundationTry
   observation: string
   explanation: string
@@ -35,3 +41,8 @@ export interface FoundationModule {
   area: AreaId
   steps: readonly FoundationStep[]
 }
+
+/** Tutorial aliases — same structure as foundations */
+export type TutorialStep = FoundationStep
+export type TutorialModule = FoundationModule
+export type TutorialTry = FoundationTry

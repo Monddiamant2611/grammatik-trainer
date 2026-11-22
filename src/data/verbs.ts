@@ -1,3 +1,11 @@
+import {
+  gapSentencesExtra,
+  participlePairsExtra,
+  perfectItemsExtra,
+  preteriteFormsExtra,
+  verbParadigmsExtra,
+} from './verbs.extra'
+
 export const persons = ['ich', 'du', 'er', 'wir', 'ihr', 'sie'] as const
 export type Person = (typeof persons)[number]
 
@@ -19,6 +27,7 @@ export const verbParadigms: readonly VerbParadigm[] = [
   { infinitive: 'helfen', pattern: 'vowel', difficulty: 2, forms: { ich: 'helfe', du: 'hilfst', er: 'hilft', wir: 'helfen', ihr: 'helft', sie: 'helfen' } },
   { infinitive: 'sein', pattern: 'irregular', difficulty: 3, forms: { ich: 'bin', du: 'bist', er: 'ist', wir: 'sind', ihr: 'seid', sie: 'sind' } },
   { infinitive: 'haben', pattern: 'irregular', difficulty: 3, forms: { ich: 'habe', du: 'hast', er: 'hat', wir: 'haben', ihr: 'habt', sie: 'haben' } },
+  ...verbParadigmsExtra,
 ]
 
 export interface GapSentence {
@@ -41,12 +50,14 @@ export const gapSentences: readonly GapSentence[] = [
   { id: 'g08', before: 'Ben', after: 'seine Tasche.', infinitive: 'tragen', solution: 'trägt', difficulty: 3 },
   { id: 'g09', before: 'Du', after: 'einen Apfel.', infinitive: 'nehmen', solution: 'nimmst', difficulty: 2 },
   { id: 'g10', before: 'Die Kinder', after: 'im Garten.', infinitive: 'spielen', solution: 'spielen', difficulty: 1 },
+  ...gapSentencesExtra,
 ]
 
 export const preteriteForms = [
   { infinitive: 'machen', form: 'machte' },
   { infinitive: 'sein', form: 'war' },
   { infinitive: 'haben', form: 'hatte' },
+  ...preteriteFormsExtra,
 ] as const
 
 export const participlePairs = [
@@ -58,6 +69,7 @@ export const participlePairs = [
   { infinitive: 'gehen', participle: 'gegangen' },
   { infinitive: 'nehmen', participle: 'genommen' },
   { infinitive: 'sehen', participle: 'gesehen' },
+  ...participlePairsExtra,
 ] as const
 
 export interface PerfectItem {
@@ -80,4 +92,5 @@ export const perfectItems: readonly PerfectItem[] = [
   { id: 'p08', sentence: 'Die Kinder haben gelacht.', auxiliary: 'haben', auxiliaryForm: 'haben', participle: 'gelacht', difficulty: 1 },
   { id: 'p09', sentence: 'Der Zug ist angekommen.', auxiliary: 'sein', auxiliaryForm: 'ist', participle: 'angekommen', difficulty: 3 },
   { id: 'p10', sentence: 'Paul hat das Fahrrad repariert.', auxiliary: 'haben', auxiliaryForm: 'hat', participle: 'repariert', difficulty: 2 },
+  ...perfectItemsExtra,
 ]

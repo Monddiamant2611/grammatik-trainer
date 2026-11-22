@@ -174,27 +174,49 @@ async function solveFoundation(user: ReturnType<typeof userEvent.setup>, step: F
   await clickButton(user, 'Beobachtung ansehen')
 }
 
+function seedTutorialsDone(storage: Storage) {
+  const areas = Object.fromEntries(
+    AREAS.map((area) => [
+      area.id,
+      {
+        foundationStep: 99,
+        foundationsDone: true,
+        tutorialStep: 99,
+        tutorialCompleted: true,
+        attempted: 0,
+        correct: 0,
+        recent: [],
+        lastLabel: '',
+      },
+    ]),
+  )
+  storage.setItem(STORAGE_KEY, JSON.stringify({ version: 2, areas, session: null }))
+}
+
 describe('Lernwege', () => {
-  it('führt durch alle Grundlagen ohne Punkte', async () => {
+  it('führt durch alle Tutorials ohne Punkte', async () => {
     const user = userEvent.setup()
     renderApp()
     for (const [index, area] of AREAS.entries()) {
-      await user.click(screen.getAllByRole('button', { name: 'Lernen' })[index]!)
+      await user.click(screen.getAllByRole('button', { name: /Tutorial starten|Tutorial wiederholen|Tutorial fortsetzen/ })[index]!)
       for (const step of foundationModule(area.id).steps) {
         expect(screen.getByRole('heading', { name: step.title })).toBeTruthy()
         expect(screen.getByText(/ohne Bewertung/)).toBeTruthy()
-        expect(document.body.textContent ?? '').not.toMatch(/undefined|null|Fehlerquote|Punktzahl/)
+        expect(document.body.textContent ?? '').not.toMatch(/undefined|null|Fehlerquote|Punktzahl|Prozent/)
         await solveFoundation(user, step)
         await clickButton(user, 'Weiter')
       }
       expect(screen.getByText(/keine Punkte/)).toBeTruthy()
+      expect(screen.getByRole('button', { name: 'Jetzt trainieren' })).toBeTruthy()
+      expect(screen.getByRole('button', { name: 'Tutorial wiederholen' })).toBeTruthy()
       await clickButton(user, 'Zur Startseite')
     }
-  }, 120000)
+  }, 180000)
 
   it('prüft drei Aufgaben je Lernbereich und speichert den Stand', async () => {
     const user = userEvent.setup()
     const storage = memoryStorage()
+    seedTutorialsDone(storage)
     const view = renderApp(storage)
     for (const area of AREAS) {
       const card = screen.getByRole('heading', { name: area.title }).closest('article')
@@ -224,7 +246,9 @@ describe('Lernwege', () => {
 
   it('beschriftet gemischte Aufgaben mit ihrem Lernbereich', async () => {
     const user = userEvent.setup()
-    renderApp()
+    const storage = memoryStorage()
+    seedTutorialsDone(storage)
+    renderApp(storage)
     const openArea = async (title: string) => {
       const card = screen.getByRole('heading', { name: exactName(title) }).closest('article')
       if (!card) throw new Error(title)
