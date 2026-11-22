@@ -1,3 +1,11 @@
+import {
+  commaSentencesExtra,
+  confusedWordsExtra,
+  spellingPairsExtra,
+  syllableItemsExtra,
+  sWordsExtra,
+} from './spelling.extra'
+
 export interface SpellingPair {
   id: string
   topic: string
@@ -50,6 +58,7 @@ export const spellingPairs: readonly SpellingPair[] = [
   { id: 'fw5', topic: 'häufig falsch', correct: 'nämlich', wrong: 'nähmlich', note: 'Nämlich schreibt man mit ä und ohne h: nämlich.', difficulty: 3 },
   { id: 'fw6', topic: 'häufig falsch', correct: 'interessant', wrong: 'interesant', note: 'Interessant schreibt man mit ss: interessant.', difficulty: 3 },
   { id: 'fw7', topic: 'häufig falsch', correct: 'Rhythmus', wrong: 'Rythmus', note: 'Rhythmus beginnt mit Rh. Rythmus ist nicht richtig.', difficulty: 3 },
+  ...spellingPairsExtra,
 ]
 
 export type SGroup = 'ss' | 'ß' | 's'
@@ -63,6 +72,7 @@ export const sWords: readonly { word: string; group: SGroup; note: string }[] = 
   { word: 'groß', group: 'ß', note: 'In groß ist der Vokal lang. Deshalb steht ß.' },
   { word: 'Fuß', group: 'ß', note: 'In Fuß ist der Vokal lang. Deshalb steht ß.' },
   { word: 'Haus', group: 's', note: 'Haus prüft man durch Verlängern: Hauses. Dort bleibt ein s.' },
+  ...sWordsExtra,
 ]
 
 export interface ConfusedItem {
@@ -89,6 +99,7 @@ export const confusedWords: readonly ConfusedItem[] = [
   { id: 'cw11', topic: 'wahr oder war', prompt: 'Welches Wort passt?', options: ['wahr', 'war'], correct: 'war', sentence: 'Ich war gestern krank.', note: 'War ist das Präteritum von sein.' },
   { id: 'cw12', topic: 'ihm oder im', prompt: 'Welches Wort passt?', options: ['ihm', 'im'], correct: 'ihm', sentence: 'Ich helfe ihm.', note: 'Ihm ist das Pronomen. Im ist die Verbindung aus in dem.' },
   { id: 'cw13', topic: 'ihm oder im', prompt: 'Welches Wort passt?', options: ['ihm', 'im'], correct: 'im', sentence: 'Er spielt im Garten.', note: 'Im steht hier für in dem Garten.' },
+  ...confusedWordsExtra,
 ]
 
 export interface CommaSentence {
@@ -107,6 +118,7 @@ export const commaSentences: readonly CommaSentence[] = [
   { id: 'kom4', words: ['Meine', 'Schwester', 'die', 'in', 'Berlin', 'wohnt', 'kommt', 'morgen'], slots: [1, 5], solution: 'Meine Schwester, die in Berlin wohnt, kommt morgen.', note: 'Der Einschub die in Berlin wohnt steht zwischen zwei Kommas.', difficulty: 3 },
   { id: 'kom5', words: ['Paul', 'kauft', 'Brot', 'Käse', 'Milch', 'und', 'Äpfel'], slots: [2, 3], solution: 'Paul kauft Brot, Käse, Milch und Äpfel.', note: 'Die Aufzählung trennt man mit Kommas. Vor und steht hier kein Komma.', difficulty: 2 },
   { id: 'kom6', words: ['Der', 'Hund', 'der', 'unter', 'dem', 'Tisch', 'schläft', 'gehört', 'Lena'], slots: [1, 6], solution: 'Der Hund, der unter dem Tisch schläft, gehört Lena.', note: 'Der Einschub der unter dem Tisch schläft steht zwischen zwei Kommas.', difficulty: 3 },
+  ...commaSentencesExtra,
 ]
 
 export const syllableItems = [
@@ -115,4 +127,5 @@ export const syllableItems = [
   { word: 'Kasten', parts: ['Kas', 'ten'] },
   { word: 'Zucker', parts: ['Zu', 'cker'] },
   { word: 'Tasche', parts: ['Ta', 'sche'] },
+  ...syllableItemsExtra,
 ] as const

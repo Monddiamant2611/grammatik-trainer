@@ -1,0 +1,1438 @@
+import type { NounSentence } from './nouns'
+
+export const nounSentencesExtra: readonly NounSentence[] = [
+  {
+    id: 'n21',
+    sentence: 'Im Herbst fallen bunte Blätter vom Baum.',
+    nouns: [
+      'Herbst',
+      'Blätter',
+      'Baum',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n22',
+    sentence: 'Der Bäcker verkauft frisches Brot.',
+    nouns: [
+      'Bäcker',
+      'Brot',
+    ],
+    traps: [],
+    difficulty: 1,
+    text: false,
+  },
+  {
+    id: 'n23',
+    sentence: 'Hamburg liegt an der Elbe.',
+    nouns: [
+      'Hamburg',
+      'Elbe',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n24',
+    sentence: 'Stolz ist ein wichtiges Gefühl.',
+    nouns: [
+      'Stolz',
+      'Gefühl',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n25',
+    sentence: 'Früh steht der Vogel auf dem Dach.',
+    nouns: [
+      'Vogel',
+      'Dach',
+    ],
+    traps: [
+      'Früh',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n26',
+    sentence: 'Jonas repariert sein Fahrrad in der Garage.',
+    nouns: [
+      'Jonas',
+      'Fahrrad',
+      'Garage',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n27',
+    sentence: 'Neugier treibt die Forscher an.',
+    nouns: [
+      'Neugier',
+      'Forscher',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n28',
+    sentence: 'Die Donau fließt durch Österreich.',
+    nouns: [
+      'Donau',
+      'Österreich',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n29',
+    sentence: 'Ehrgeiz motiviert viele Schüler.',
+    nouns: [
+      'Ehrgeiz',
+      'Schüler',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n30',
+    sentence: 'Plötzlich klopft es an der Haustür.',
+    nouns: [
+      'Haustür',
+    ],
+    traps: [
+      'Plötzlich',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n31',
+    sentence: 'Meine Cousine studiert Medizin in Leipzig.',
+    nouns: [
+      'Cousine',
+      'Medizin',
+      'Leipzig',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n32',
+    sentence: 'Der Nachmittag vergeht wie im Flug.',
+    nouns: [
+      'Nachmittag',
+      'Flug',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n33',
+    sentence: 'Geduld ist in der Schule hilfreich.',
+    nouns: [
+      'Geduld',
+      'Schule',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n34',
+    sentence: 'Heimat bedeutet für viele Menschen Sicherheit.',
+    nouns: [
+      'Heimat',
+      'Menschen',
+      'Sicherheit',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: true,
+  },
+  {
+    id: 'n35',
+    sentence: 'Gern trinkt Emma heiße Schokolade.',
+    nouns: [
+      'Emma',
+      'Schokolade',
+    ],
+    traps: [
+      'Gern',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n36',
+    sentence: 'Der Adler kreist über dem Tal.',
+    nouns: [
+      'Adler',
+      'Tal',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n37',
+    sentence: 'In Dresden stehen schöne Brücken.',
+    nouns: [
+      'Dresden',
+      'Brücken',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n38',
+    sentence: 'Zwei Schwestern teilen ein Zimmer.',
+    nouns: [
+      'Schwestern',
+      'Zimmer',
+    ],
+    traps: [],
+    difficulty: 1,
+    text: false,
+  },
+  {
+    id: 'n39',
+    sentence: 'Der Arzt untersucht den Arm des Patienten.',
+    nouns: [
+      'Arzt',
+      'Arm',
+      'Patienten',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: true,
+  },
+  {
+    id: 'n40',
+    sentence: 'Trotz Regens geht der Zugplan weiter.',
+    nouns: [
+      'Regens',
+      'Zugplan',
+    ],
+    traps: [
+      'Trotz',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n41',
+    sentence: 'Ein Reh springt über den Zaun.',
+    nouns: [
+      'Reh',
+      'Zaun',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n42',
+    sentence: 'Beharrlichkeit führt oft zum Erfolg.',
+    nouns: [
+      'Beharrlichkeit',
+      'Erfolg',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n43',
+    sentence: 'Die Flöte klingt im Musikzimmer hell.',
+    nouns: [
+      'Flöte',
+      'Musikzimmer',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n44',
+    sentence: 'Köln ist für seinen Dom bekannt.',
+    nouns: [
+      'Köln',
+      'Dom',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n45',
+    sentence: 'Nils malt Landschaften mit Wasserfarben.',
+    nouns: [
+      'Nils',
+      'Landschaften',
+      'Wasserfarben',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n46',
+    sentence: 'Langsam sinkt die Sonne hinter den Hügel.',
+    nouns: [
+      'Sonne',
+      'Hügel',
+    ],
+    traps: [
+      'Langsam',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n47',
+    sentence: 'Demokratie braucht verantwortungsvolle Bürger.',
+    nouns: [
+      'Demokratie',
+      'Bürger',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n48',
+    sentence: 'Der Igel sucht Futter im Laub.',
+    nouns: [
+      'Igel',
+      'Futter',
+      'Laub',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n49',
+    sentence: 'Im Winter trägt Paula eine warme Mütze.',
+    nouns: [
+      'Winter',
+      'Paula',
+      'Mütze',
+    ],
+    traps: [],
+    difficulty: 1,
+    text: false,
+  },
+  {
+    id: 'n50',
+    sentence: 'Neid kann Freundschaften belasten.',
+    nouns: [
+      'Neid',
+      'Freundschaften',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n51',
+    sentence: 'Stuttgart ist eine Automobilstadt.',
+    nouns: [
+      'Stuttgart',
+      'Automobilstadt',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n52',
+    sentence: 'Der Schmetterling landet auf der Lilie.',
+    nouns: [
+      'Schmetterling',
+      'Lilie',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n53',
+    sentence: 'Bald beginnt die Pause in der Aula.',
+    nouns: [
+      'Pause',
+      'Aula',
+    ],
+    traps: [
+      'Bald',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n54',
+    sentence: 'Respekt macht das Zusammenleben leichter.',
+    nouns: [
+      'Respekt',
+      'Zusammenleben',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n55',
+    sentence: 'Felix sammelt Muscheln am Strand.',
+    nouns: [
+      'Felix',
+      'Muscheln',
+      'Strand',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n56',
+    sentence: 'Die Oma erzählt Märchen am Kamin.',
+    nouns: [
+      'Oma',
+      'Märchen',
+      'Kamin',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n57',
+    sentence: 'Wut löst manchmal heftige Worte aus.',
+    nouns: [
+      'Wut',
+      'Worte',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n58',
+    sentence: 'Der Postbote bringt einen Brief.',
+    nouns: [
+      'Postbote',
+      'Brief',
+    ],
+    traps: [],
+    difficulty: 1,
+    text: false,
+  },
+  {
+    id: 'n59',
+    sentence: 'Nürnberg hat eine lange Geschichte.',
+    nouns: [
+      'Nürnberg',
+      'Geschichte',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n60',
+    sentence: 'Jährlich besucht die Familie den Zoo.',
+    nouns: [
+      'Familie',
+      'Zoo',
+    ],
+    traps: [
+      'Jährlich',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n61',
+    sentence: 'Sanft streicht der Wind über das Feld.',
+    nouns: [
+      'Wind',
+      'Feld',
+    ],
+    traps: [
+      'Sanft',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n62',
+    sentence: 'Emilia übt Klavier vor dem Konzert.',
+    nouns: [
+      'Emilia',
+      'Klavier',
+      'Konzert',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n63',
+    sentence: 'Gerechtigkeit ist ein hohes Ideal.',
+    nouns: [
+      'Gerechtigkeit',
+      'Ideal',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n64',
+    sentence: 'Eine Lilie blüht am Bachufer.',
+    nouns: [
+      'Lilie',
+      'Bachufer',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n65',
+    sentence: 'Bremerhaven liegt an der Nordsee.',
+    nouns: [
+      'Bremerhaven',
+      'Nordsee',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n66',
+    sentence: 'Der Professor hält einen Vortrag.',
+    nouns: [
+      'Professor',
+      'Vortrag',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n67',
+    sentence: 'Einsamkeit kann traurig machen.',
+    nouns: [
+      'Einsamkeit',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n68',
+    sentence: 'Laut hallt die Stimme in der Halle.',
+    nouns: [
+      'Stimme',
+      'Halle',
+    ],
+    traps: [
+      'Laut',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n69',
+    sentence: 'Mira pflanzt Tomaten im Hochbeet.',
+    nouns: [
+      'Mira',
+      'Tomaten',
+      'Hochbeet',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n70',
+    sentence: 'Der Bodensee grenzt an drei Länder.',
+    nouns: [
+      'Bodensee',
+      'Länder',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n71',
+    sentence: 'Hoffnung bleibt auch in schweren Zeiten.',
+    nouns: [
+      'Hoffnung',
+      'Zeiten',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n72',
+    sentence: 'Ein Dackel jagt den Ball über den Rasen.',
+    nouns: [
+      'Dackel',
+      'Ball',
+      'Rasen',
+    ],
+    traps: [],
+    difficulty: 1,
+    text: true,
+  },
+  {
+    id: 'n73',
+    sentence: 'Oft liest Tom abends ein Comic.',
+    nouns: [
+      'Tom',
+      'Comic',
+    ],
+    traps: [
+      'Oft',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n74',
+    sentence: 'Braunschweig ist eine niedersächsische Stadt.',
+    nouns: [
+      'Braunschweig',
+      'Stadt',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n75',
+    sentence: 'Die Enkelin schenkt der Oma Blumen.',
+    nouns: [
+      'Enkelin',
+      'Oma',
+      'Blumen',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n76',
+    sentence: 'Vertrauen wächst durch ehrliche Worte.',
+    nouns: [
+      'Vertrauen',
+      'Worte',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n77',
+    sentence: 'Leise summt die Biene um die Rose.',
+    nouns: [
+      'Biene',
+      'Rose',
+    ],
+    traps: [
+      'Leise',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n78',
+    sentence: 'Der Feuerwehrmann löscht ein kleines Feuer.',
+    nouns: [
+      'Feuerwehrmann',
+      'Feuer',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n79',
+    sentence: 'Freiburg liegt am Rand des Schwarzwalds.',
+    nouns: [
+      'Freiburg',
+      'Schwarzwalds',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n80',
+    sentence: 'Der Schüler notiert Fragen in sein Heft.',
+    nouns: [
+      'Schüler',
+      'Fragen',
+      'Heft',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n81',
+    sentence: 'Nebel legt sich über die Felder.',
+    nouns: [
+      'Nebel',
+      'Felder',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n82',
+    sentence: 'Simon trainiert Ausdauer auf der Laufbahn.',
+    nouns: [
+      'Simon',
+      'Ausdauer',
+      'Laufbahn',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n83',
+    sentence: 'Ruhe hilft nach einem anstrengenden Tag.',
+    nouns: [
+      'Ruhe',
+      'Tag',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n84',
+    sentence: 'Der Kapitän steuert das Schiff in den Hafen.',
+    nouns: [
+      'Kapitän',
+      'Schiff',
+      'Hafen',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: true,
+  },
+  {
+    id: 'n85',
+    sentence: 'Wien ist berühmt für Musik und Kultur.',
+    nouns: [
+      'Wien',
+      'Musik',
+      'Kultur',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n86',
+    sentence: 'Heftig tobt der Sturm in der Nacht.',
+    nouns: [
+      'Sturm',
+      'Nacht',
+    ],
+    traps: [
+      'Heftig',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n87',
+    sentence: 'Dankbarkeit macht den Alltag freundlicher.',
+    nouns: [
+      'Dankbarkeit',
+      'Alltag',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n88',
+    sentence: 'Die Maus versteckt Körner in ihrem Bau.',
+    nouns: [
+      'Maus',
+      'Körner',
+      'Bau',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n89',
+    sentence: 'Salzburg ist Mozarts Geburtsstadt.',
+    nouns: [
+      'Salzburg',
+      'Mozarts',
+      'Geburtsstadt',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n90',
+    sentence: 'Eine Spinne spinnt ein feines Netz.',
+    nouns: [
+      'Spinne',
+      'Netz',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n91',
+    sentence: 'Gerne hilft Sofia beim Packen der Koffer.',
+    nouns: [
+      'Sofia',
+      'Koffer',
+    ],
+    traps: [
+      'Gerne',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n92',
+    sentence: 'Der Stein rollt den Hang hinunter.',
+    nouns: [
+      'Stein',
+      'Hang',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n93',
+    sentence: 'Achtsamkeit stärkt die Konzentration.',
+    nouns: [
+      'Achtsamkeit',
+      'Konzentration',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n94',
+    sentence: 'Am Abend leuchten Sterne am Himmel.',
+    nouns: [
+      'Abend',
+      'Sterne',
+      'Himmel',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n95',
+    sentence: 'Düsseldorf liegt am Rhein.',
+    nouns: [
+      'Düsseldorf',
+      'Rhein',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n96',
+    sentence: 'Ein Pferd frisst Heu in der Koppel.',
+    nouns: [
+      'Pferd',
+      'Heu',
+      'Koppel',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n97',
+    sentence: 'Tief dröhnt der Donner nach dem Blitz.',
+    nouns: [
+      'Donner',
+      'Blitz',
+    ],
+    traps: [
+      'Tief',
+    ],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n98',
+    sentence: 'Lukas baut ein Modell aus Holz.',
+    nouns: [
+      'Lukas',
+      'Modell',
+      'Holz',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: true,
+  },
+  {
+    id: 'n99',
+    sentence: 'Sauberkeit ist in der Küche wichtig.',
+    nouns: [
+      'Sauberkeit',
+      'Küche',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n100',
+    sentence: 'Zürich ist eine Schweizer Großstadt.',
+    nouns: [
+      'Zürich',
+      'Großstadt',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n101',
+    sentence: 'Der Wolf heult in der Ferne.',
+    nouns: [
+      'Wolf',
+      'Ferne',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n102',
+    sentence: 'Neugierde öffnet Türen zum Wissen.',
+    nouns: [
+      'Neugierde',
+      'Wissen',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n103',
+    sentence: 'Laura organisiert eine Klassenfahrt.',
+    nouns: [
+      'Laura',
+      'Klassenfahrt',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+  {
+    id: 'n104',
+    sentence: 'Der Meteorologe sagt das Wetter voraus.',
+    nouns: [
+      'Meteorologe',
+      'Wetter',
+    ],
+    traps: [],
+    difficulty: 3,
+    text: false,
+  },
+  {
+    id: 'n105',
+    sentence: 'In Hannover beginnt die Messe.',
+    nouns: [
+      'Hannover',
+      'Messe',
+    ],
+    traps: [],
+    difficulty: 2,
+    text: false,
+  },
+] as const
+
+export const articleProbesExtra = [
+  {
+    word: 'Tisch',
+    correct: 'der Tisch',
+    options: [
+      'der Tisch',
+      'die Tisch',
+      'das Tisch',
+    ],
+  },
+  {
+    word: 'Lampe',
+    correct: 'die Lampe',
+    options: [
+      'der Lampe',
+      'die Lampe',
+      'das Lampe',
+    ],
+  },
+  {
+    word: 'Fenster',
+    correct: 'das Fenster',
+    options: [
+      'der Fenster',
+      'die Fenster',
+      'das Fenster',
+    ],
+  },
+  {
+    word: 'Stuhl',
+    correct: 'der Stuhl',
+    options: [
+      'der Stuhl',
+      'die Stuhl',
+      'das Stuhl',
+    ],
+  },
+  {
+    word: 'Tür',
+    correct: 'die Tür',
+    options: [
+      'der Tür',
+      'die Tür',
+      'das Tür',
+    ],
+  },
+  {
+    word: 'Regal',
+    correct: 'das Regal',
+    options: [
+      'der Regal',
+      'die Regal',
+      'das Regal',
+    ],
+  },
+  {
+    word: 'Freund',
+    correct: 'der Freund',
+    options: [
+      'der Freund',
+      'die Freund',
+      'das Freund',
+    ],
+  },
+  {
+    word: 'Freundin',
+    correct: 'die Freundin',
+    options: [
+      'der Freundin',
+      'die Freundin',
+      'das Freundin',
+    ],
+  },
+  {
+    word: 'Schiff',
+    correct: 'das Schiff',
+    options: [
+      'der Schiff',
+      'die Schiff',
+      'das Schiff',
+    ],
+  },
+  {
+    word: 'Berg',
+    correct: 'der Berg',
+    options: [
+      'der Berg',
+      'die Berg',
+      'das Berg',
+    ],
+  },
+  {
+    word: 'Tal',
+    correct: 'das Tal',
+    options: [
+      'der Tal',
+      'die Tal',
+      'das Tal',
+    ],
+  },
+  {
+    word: 'Rose',
+    correct: 'die Rose',
+    options: [
+      'der Rose',
+      'die Rose',
+      'das Rose',
+    ],
+  },
+  {
+    word: 'Garten',
+    correct: 'der Garten',
+    options: [
+      'der Garten',
+      'die Garten',
+      'das Garten',
+    ],
+  },
+  {
+    word: 'Messer',
+    correct: 'das Messer',
+    options: [
+      'der Messer',
+      'die Messer',
+      'das Messer',
+    ],
+  },
+  {
+    word: 'Löffel',
+    correct: 'der Löffel',
+    options: [
+      'der Löffel',
+      'die Löffel',
+      'das Löffel',
+    ],
+  },
+  {
+    word: 'Gabel',
+    correct: 'die Gabel',
+    options: [
+      'der Gabel',
+      'die Gabel',
+      'das Gabel',
+    ],
+  },
+  {
+    word: 'Tasse',
+    correct: 'die Tasse',
+    options: [
+      'der Tasse',
+      'die Tasse',
+      'das Tasse',
+    ],
+  },
+  {
+    word: 'Radio',
+    correct: 'das Radio',
+    options: [
+      'der Radio',
+      'die Radio',
+      'das Radio',
+    ],
+  },
+  {
+    word: 'Team',
+    correct: 'das Team',
+    options: [
+      'der Team',
+      'die Team',
+      'das Team',
+    ],
+  },
+  {
+    word: 'Hobby',
+    correct: 'das Hobby',
+    options: [
+      'der Hobby',
+      'die Hobby',
+      'das Hobby',
+    ],
+  },
+] as const
+
+export const pluralProbesExtra = [
+  {
+    singular: 'Tisch',
+    plural: 'Tische',
+  },
+  {
+    singular: 'Haus',
+    plural: 'Häuser',
+  },
+  {
+    singular: 'Mann',
+    plural: 'Männer',
+  },
+  {
+    singular: 'Frau',
+    plural: 'Frauen',
+  },
+  {
+    singular: 'Auto',
+    plural: 'Autos',
+  },
+  {
+    singular: 'Apfel',
+    plural: 'Äpfel',
+  },
+  {
+    singular: 'Stadt',
+    plural: 'Städte',
+  },
+  {
+    singular: 'Fahrrad',
+    plural: 'Fahrräder',
+  },
+  {
+    singular: 'Maus',
+    plural: 'Mäuse',
+  },
+  {
+    singular: 'Heft',
+    plural: 'Hefte',
+  },
+  {
+    singular: 'Schule',
+    plural: 'Schulen',
+  },
+  {
+    singular: 'Baby',
+    plural: 'Babys',
+  },
+  {
+    singular: 'Vogel',
+    plural: 'Vögel',
+  },
+  {
+    singular: 'Baum',
+    plural: 'Bäume',
+  },
+  {
+    singular: 'Wald',
+    plural: 'Wälder',
+  },
+  {
+    singular: 'Freund',
+    plural: 'Freunde',
+  },
+  {
+    singular: 'Lampe',
+    plural: 'Lampen',
+  },
+  {
+    singular: 'Uhr',
+    plural: 'Uhren',
+  },
+  {
+    singular: 'Brief',
+    plural: 'Briefe',
+  },
+  {
+    singular: 'Wort',
+    plural: 'Wörter',
+  },
+] as const
+
+export const concreteAbstractExtra = [
+  {
+    word: 'Stein',
+    kind: 'konkret',
+  },
+  {
+    word: 'See',
+    kind: 'konkret',
+  },
+  {
+    word: 'Rose',
+    kind: 'konkret',
+  },
+  {
+    word: 'Hammer',
+    kind: 'konkret',
+  },
+  {
+    word: 'Tiger',
+    kind: 'konkret',
+  },
+  {
+    word: 'Köln',
+    kind: 'konkret',
+  },
+  {
+    word: 'Angst',
+    kind: 'abstrakt',
+  },
+  {
+    word: 'Stolz',
+    kind: 'abstrakt',
+  },
+  {
+    word: 'Geduld',
+    kind: 'abstrakt',
+  },
+  {
+    word: 'Freundschaft',
+    kind: 'abstrakt',
+  },
+  {
+    word: 'Gerechtigkeit',
+    kind: 'abstrakt',
+  },
+  {
+    word: 'König',
+    kind: 'konkret',
+  },
+  {
+    word: 'Platz',
+    kind: 'konkret',
+  },
+  {
+    word: 'Erinnerung',
+    kind: 'abstrakt',
+  },
+  {
+    word: 'Treppe',
+    kind: 'konkret',
+  },
+  {
+    word: 'Wille',
+    kind: 'abstrakt',
+  },
+  {
+    word: 'Brombeere',
+    kind: 'konkret',
+  },
+  {
+    word: 'Respekt',
+    kind: 'abstrakt',
+  },
+  {
+    word: 'Brücke',
+    kind: 'konkret',
+  },
+  {
+    word: 'Traurigkeit',
+    kind: 'abstrakt',
+  },
+] as const
+
+export const properNamesExtra = [
+  'Hamburg',
+  'Köln',
+  'Dresden',
+  'Leipzig',
+  'Hannah',
+  'Jonas',
+  'Lea',
+  'Felix',
+  'Lena',
+  'Tim',
+  'Emma',
+  'Paul',
+  'Mia',
+  'Ben',
+  'Sofia',
+  'Elias',
+  'Marie',
+  'Noah',
+  'Clara',
+  'Max',
+] as const
+
+export const capitalizationPairsExtra = [
+  {
+    faulty: 'die katze',
+    correct: 'die Katze',
+    error: 'katze',
+  },
+  {
+    faulty: 'der tisch',
+    correct: 'der Tisch',
+    error: 'tisch',
+  },
+  {
+    faulty: 'das fenster',
+    correct: 'das Fenster',
+    error: 'fenster',
+  },
+  {
+    faulty: 'im winter',
+    correct: 'im Winter',
+    error: 'winter',
+  },
+  {
+    faulty: 'am montag',
+    correct: 'am Montag',
+    error: 'montag',
+  },
+  {
+    faulty: 'nach deutschland',
+    correct: 'nach Deutschland',
+    error: 'deutschland',
+  },
+  {
+    faulty: 'meine freude',
+    correct: 'meine Freude',
+    error: 'freude',
+  },
+  {
+    faulty: 'die freundschaft',
+    correct: 'die Freundschaft',
+    error: 'freundschaft',
+  },
+  {
+    faulty: 'der rhein',
+    correct: 'der Rhein',
+    error: 'rhein',
+  },
+  {
+    faulty: 'ein buch',
+    correct: 'ein Buch',
+    error: 'buch',
+  },
+  {
+    faulty: 'das auto',
+    correct: 'das Auto',
+    error: 'auto',
+  },
+  {
+    faulty: 'der hamster',
+    correct: 'der Hamster',
+    error: 'hamster',
+  },
+  {
+    faulty: 'die blume',
+    correct: 'die Blume',
+    error: 'blume',
+  },
+  {
+    faulty: 'der lehrer',
+    correct: 'der Lehrer',
+    error: 'lehrer',
+  },
+  {
+    faulty: 'im frühling',
+    correct: 'im Frühling',
+    error: 'frühling',
+  },
+] as const

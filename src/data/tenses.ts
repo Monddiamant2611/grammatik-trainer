@@ -1,3 +1,5 @@
+import { recognitionSentencesExtra, tensePoolsExtra } from './tenses.extra'
+
 export const tenseIds = ['praesens', 'praeteritum', 'perfekt', 'plusquam', 'futur1', 'futur2'] as const
 export type TenseId = (typeof tenseIds)[number]
 
@@ -81,6 +83,7 @@ export const tensePools: readonly TensePool[] = [
     futur1: { tense: 'futur1', sentence: 'Der Bus wird pünktlich kommen.', parts: ['wird', 'kommen'] },
     futur2: { tense: 'futur2', sentence: 'Der Bus wird pünktlich gekommen sein.', parts: ['wird', 'gekommen', 'sein'] },
   }),
+  ...tensePoolsExtra,
 ]
 
 export interface RecognitionSentence {
@@ -101,6 +104,7 @@ export const recognitionSentences: readonly RecognitionSentence[] = [
   { id: 'r08', sentence: 'Der Zug war bereits abgefahren.', tense: 'plusquam', difficulty: 3 },
   { id: 'r09', sentence: 'Mia wird später anrufen.', tense: 'futur1', difficulty: 2 },
   { id: 'r10', sentence: 'Der Hund schläft unter dem Tisch.', tense: 'praesens', difficulty: 1 },
+  ...recognitionSentencesExtra,
 ]
 
 export const timelineOrder = ['plusquam', 'praeteritum', 'praesens', 'futur1'] as const

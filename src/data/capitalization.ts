@@ -1,3 +1,5 @@
+import { capitalizationSentencesExtra } from './capitalization.extra'
+
 export interface CapToken {
   faulty: string
   correct: string
@@ -192,4 +194,27 @@ export const capitalizationSentences: readonly CapSentence[] = [
     { faulty: 'den', correct: 'den' },
     { faulty: 'alpen', correct: 'Alpen', reason: 'name', after: '.' },
   ], ['Zugspitze', 'Alpen'], 'die zugspitze liegt in den alpen.', 'Die Zugspitze liegt in den Alpen.'),
+  cap('k21', 1, [
+    { faulty: 'die', correct: 'Die', reason: 'sentence' },
+    { faulty: 'sonne', correct: 'Sonne', reason: 'noun' },
+    { faulty: 'scheint', correct: 'scheint' },
+    { faulty: 'über', correct: 'über' },
+    { faulty: 'dem', correct: 'dem' },
+    { faulty: 'meer', correct: 'Meer', reason: 'noun', after: '.' },
+  ], ['Sonne', 'Meer'], 'die sonne scheint über dem meer.', 'Die Sonne scheint über dem Meer.'),
+  cap('k22', 2, [
+    { faulty: 'am', correct: 'Am', reason: 'sentence' },
+    { faulty: 'freitag', correct: 'Freitag', reason: 'weekday' },
+    { faulty: 'besucht', correct: 'besucht' },
+    { faulty: 'oma', correct: 'Oma', reason: 'noun' },
+    { faulty: 'die', correct: 'die' },
+    { faulty: 'schule', correct: 'Schule', reason: 'noun', after: '.' },
+  ], ['Freitag', 'Oma', 'Schule'], 'am freitag besucht oma die schule.', 'Am Freitag besucht Oma die Schule.'),
+  cap('k23', 3, [
+    { faulty: 'morgens', correct: 'Morgens', reason: 'sentence', note: 'morgens ist adverbial und steht nur am Satzanfang groß.' },
+    { faulty: 'trinkt', correct: 'trinkt' },
+    { faulty: 'paul', correct: 'Paul', reason: 'name' },
+    { faulty: 'tee', correct: 'Tee', reason: 'noun', after: '.' },
+  ], ['Paul', 'Tee'], 'morgens trinkt paul tee.', 'Morgens trinkt Paul Tee.'),
+  ...capitalizationSentencesExtra,
 ]
