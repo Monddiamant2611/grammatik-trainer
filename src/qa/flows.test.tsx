@@ -256,7 +256,7 @@ describe('Lernwege', () => {
       const confirm = screen.queryByRole('button', { name: exactName('Neue Runde starten') })
       if (confirm) await user.click(confirm)
     }
-    await openArea('Nomen erkennen')
+    await openArea('Substantive (Nomen) erkennen')
     await answerTask(user, visibleTask('nouns'))
     await clickButton(user, 'Prüfen')
     await clickButton(user, 'Pause')

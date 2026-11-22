@@ -252,7 +252,7 @@ let cwi = 1
 const confuseRows = [
   ['das oder dass','Welches Wort passt?','das','dass','das','Ich weiß, dass du kommst.','dass leitet den Nebensatz ein.'],
   ['das oder dass','Welches Wort passt?','das','dass','Das','Das Heft liegt hier.','Das zeigt auf das Heft.'],
-  ['seit oder seid','Welches Wort passt?','seit','seid','seit','Ich bin seit Montag hier.','seit nennt den Zeitpunkt.'],
+  ['seit oder seid','Welches Wort passt?','seit','seid','seit','Ich bin seit Montag hier.','seit gibt einen Zeitpunkt an.'],
   ['seit oder seid','Welches Wort passt?','seit','seid','seid','Ihr seid pünktlich.','seid ist eine Form von sein.'],
   ['wieder oder wider','Welches Wort passt?','wieder','wider','wieder','Komm bitte wieder.','wieder bedeutet erneut.'],
   ['wieder oder wider','Welches Wort passt?','wieder','wider','wider','Das spricht dagegen, also wider Erwarten.','wider bedeutet gegen.'],

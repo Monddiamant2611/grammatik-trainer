@@ -22,6 +22,8 @@ export type FoundationTry =
 
 export interface ConceptCard {
   term: string
+  /** Gleichbedeutender Fachbegriff, sichtbar unter dem Hauptbegriff. */
+  also?: string
   definition: string
 }
 

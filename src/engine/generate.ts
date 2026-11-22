@@ -35,6 +35,11 @@ function options(texts: readonly string[]): ChoiceOption[] {
   return distinct(texts).map((text) => ({ id: text, text }))
 }
 
+const nounChoice: ChoiceOption[] = [
+  { id: 'Nomen', text: 'Substantiv (Nomen)' },
+  { id: 'kein Nomen', text: 'kein Substantiv' },
+]
+
 function task(input: Task): Task {
   if (!input.feedbackCorrect.trim() || !input.feedbackIncorrect.trim()) {
     throw new Error(`Feedback fehlt: ${input.id}`)
@@ -53,17 +58,17 @@ export function buildNounTasks(): Task[] {
     const correctIds = idsForWords(tokens, item.nouns, item.id)
     for (const trap of item.traps) requireWord(item.sentence, trap, item.id)
     const trapNote = item.traps.length > 0
-      ? ` ${listWords(item.traps)} ${item.traps.length === 1 ? 'ist' : 'sind'} kein Nomen.`
+      ? ` ${listWords(item.traps)} ${item.traps.length === 1 ? 'ist kein Substantiv' : 'sind keine Substantive'}.`
       : ''
-    const feedback = `Nomen bezeichnen Personen, Tiere, Dinge, Pflanzen, Orte, Gefühle oder Namen. Hier sind das ${listWords(item.nouns)}.${trapNote}`
+    const feedback = `Substantive bezeichnen Personen, Tiere, Dinge, Pflanzen, Orte, Gefühle oder Namen. Hier sind das ${listWords(item.nouns)}.${trapNote}`
     tasks.push(task({
       id: `noun-mark-${item.id}`,
       area: 'nouns',
       type: 'noun-mark',
-      typeLabel: 'Nomen markieren',
+      typeLabel: 'Substantive markieren',
       difficulty: item.difficulty,
       tags: ['nomen'],
-      prompt: 'Markiere alle Nomen.',
+      prompt: 'Markiere alle Substantive.',
       stimulus: item.sentence,
       interaction: { kind: 'mark', tokens, correctIds, mode: 'multi' },
       feedbackCorrect: feedback,
@@ -74,10 +79,10 @@ export function buildNounTasks(): Task[] {
         id: `noun-text-${item.id}`,
         area: 'nouns',
         type: 'noun-text',
-        typeLabel: 'Nomen im Text',
+        typeLabel: 'Substantive im Text',
         difficulty: maxDifficulty(item.difficulty, 2),
         tags: ['nomen', 'text'],
-        prompt: 'Markiere alle Nomen in diesem Text.',
+        prompt: 'Markiere alle Substantive in diesem Text.',
         stimulus: item.sentence,
         interaction: { kind: 'mark', tokens, correctIds, mode: 'multi' },
         feedbackCorrect: feedback,
@@ -88,21 +93,21 @@ export function buildNounTasks(): Task[] {
     for (const word of judged) {
       const isNoun = item.nouns.includes(word)
       const because = isNoun
-        ? `„${word}“ bezeichnet eine Person, ein Ding, einen Ort, ein Gefühl oder einen Namen. Deshalb ist es ein Nomen.`
-        : `„${word}“ steht hier groß, weil es am Satzanfang steht. Großschreibung allein macht es nicht zum Nomen.`
+        ? `„${word}“ bezeichnet eine Person, ein Ding, einen Ort, ein Gefühl oder einen Namen. Deshalb ist es ein Substantiv.`
+        : `„${word}“ steht hier groß, weil es am Satzanfang steht. Großschreibung allein macht es nicht zum Substantiv.`
       tasks.push(task({
         id: `noun-kind-${item.id}-${word}`,
         area: 'nouns',
         type: 'noun-kind',
-        typeLabel: 'Nomen oder kein Nomen',
+        typeLabel: 'Substantiv (Nomen)',
         difficulty: item.traps.includes(word) ? 3 : item.difficulty,
         tags: ['nomen', 'abgrenzung'],
-        prompt: `Ist „${word}“ in diesem Satz ein Nomen?`,
+        prompt: `Ist „${word}“ in diesem Satz ein Substantiv (Nomen)?`,
         stimulus: item.sentence,
         interaction: {
           kind: 'choose',
           layout: 'pair',
-          options: options(['Nomen', 'kein Nomen']),
+          options: nounChoice,
           correctId: isNoun ? 'Nomen' : 'kein Nomen',
         },
         feedbackCorrect: because,
@@ -122,8 +127,8 @@ export function buildNounTasks(): Task[] {
       prompt: 'Welche Artikelprobe passt?',
       stimulus: probe.word,
       interaction: { kind: 'choose', layout: 'stack', options: options(probe.options), correctId: probe.correct },
-      feedbackCorrect: `Vor „${probe.word}“ passt ${probe.correct}. Vor viele Nomen kann man einen Artikel setzen.`,
-      feedbackIncorrect: `Vor „${probe.word}“ passt ${probe.correct}. Vor viele Nomen kann man einen Artikel setzen.`,
+      feedbackCorrect: `Vor „${probe.word}“ passt ${probe.correct}. Vor viele Substantive kann man einen Artikel setzen.`,
+      feedbackIncorrect: `Vor „${probe.word}“ passt ${probe.correct}. Vor viele Substantive kann man einen Artikel setzen.`,
     }))
   }
 
@@ -138,8 +143,8 @@ export function buildNounTasks(): Task[] {
       tags: ['nomen', 'mehrzahl'],
       prompt: `Welche Mehrzahl gehört zu „${probe.singular}“?`,
       interaction: { kind: 'choose', layout: 'stack', options: options(plurals), correctId: probe.plural },
-      feedbackCorrect: `Die Mehrzahl von ${probe.singular} heißt ${probe.plural}. Viele Nomen können in Einzahl und Mehrzahl stehen.`,
-      feedbackIncorrect: `Die Mehrzahl von ${probe.singular} heißt ${probe.plural}. Viele Nomen können in Einzahl und Mehrzahl stehen.`,
+      feedbackCorrect: `Die Mehrzahl von ${probe.singular} lautet ${probe.plural}. Viele Substantive können in Einzahl und Mehrzahl stehen.`,
+      feedbackIncorrect: `Die Mehrzahl von ${probe.singular} lautet ${probe.plural}. Viele Substantive können in Einzahl und Mehrzahl stehen.`,
     }))
   }
 
@@ -159,11 +164,11 @@ export function buildNounTasks(): Task[] {
         correctId: item.kind,
       },
       feedbackCorrect: item.kind === 'konkret'
-        ? `„${item.word}“ kann man wahrnehmen. Deshalb ist es ein konkretes Nomen.`
-        : `„${item.word}“ kann man nicht anfassen. Deshalb ist es ein abstraktes Nomen.`,
+        ? `„${item.word}“ kann man wahrnehmen. Deshalb ist es ein konkretes Substantiv.`
+        : `„${item.word}“ kann man nicht anfassen. Deshalb ist es ein abstraktes Substantiv.`,
       feedbackIncorrect: item.kind === 'konkret'
-        ? `„${item.word}“ kann man wahrnehmen. Deshalb ist es ein konkretes Nomen.`
-        : `„${item.word}“ kann man nicht anfassen. Deshalb ist es ein abstraktes Nomen.`,
+        ? `„${item.word}“ kann man wahrnehmen. Deshalb ist es ein konkretes Substantiv.`
+        : `„${item.word}“ kann man nicht anfassen. Deshalb ist es ein abstraktes Substantiv.`,
     }))
   }
 
@@ -174,7 +179,7 @@ export function buildNounTasks(): Task[] {
     typeLabel: 'Kategorien bilden',
     difficulty: 2,
     tags: ['nomen', 'sortieren'],
-    prompt: 'Ordne die Nomen zu: konkret oder abstrakt.',
+    prompt: 'Ordne die Substantive zu: konkret oder abstrakt.',
     interaction: {
       kind: 'classify',
       items: concreteAbstract.map((item) => ({ id: item.word, text: item.word })),
@@ -182,7 +187,7 @@ export function buildNounTasks(): Task[] {
       solution: Object.fromEntries(concreteAbstract.map((item) => [item.word, item.kind])),
     },
     feedbackCorrect: 'Tisch und Hund sind konkret. Freude, Mut, Zeit und Liebe sind abstrakt.',
-    feedbackIncorrect: 'Tisch und Hund kann man wahrnehmen. Freude, Mut, Zeit und Liebe sind abstrakte Nomen.',
+    feedbackIncorrect: 'Tisch und Hund kann man wahrnehmen. Freude, Mut, Zeit und Liebe sind abstrakte Substantive.',
   }))
 
   tasks.push(task({
@@ -192,7 +197,7 @@ export function buildNounTasks(): Task[] {
     typeLabel: 'Kategorien bilden',
     difficulty: 1,
     tags: ['nomen', 'sortieren'],
-    prompt: 'Was bezeichnen diese Nomen?',
+    prompt: 'Was bezeichnen diese Substantive?',
     interaction: {
       kind: 'classify',
       items: nounCategories.map((item) => ({ id: item.id, text: item.word })),
@@ -209,14 +214,14 @@ export function buildNounTasks(): Task[] {
       id: `noun-name-${name}`,
       area: 'nouns',
       type: 'noun-kind',
-      typeLabel: 'Nomen oder kein Nomen',
+      typeLabel: 'Substantiv (Nomen)',
       difficulty: 2,
       tags: ['nomen', 'eigenname'],
-      prompt: `Ist „${name}“ ein Nomen?`,
+      prompt: `Ist „${name}“ ein Substantiv (Nomen)?`,
       stimulus: host?.sentence ?? name,
-      interaction: { kind: 'choose', layout: 'pair', options: options(['Nomen', 'kein Nomen']), correctId: 'Nomen' },
-      feedbackCorrect: `„${name}“ ist ein Eigenname. Auch Eigennamen sind Nomen.`,
-      feedbackIncorrect: `„${name}“ ist ein Eigenname. Auch Eigennamen sind Nomen.`,
+      interaction: { kind: 'choose', layout: 'pair', options: nounChoice, correctId: 'Nomen' },
+      feedbackCorrect: `„${name}“ ist ein Eigenname. Auch Eigennamen sind Substantive.`,
+      feedbackIncorrect: `„${name}“ ist ein Eigenname. Auch Eigennamen sind Substantive.`,
     }))
   }
 
@@ -230,8 +235,8 @@ export function buildNounTasks(): Task[] {
       tags: ['nomen', 'großschreibung'],
       prompt: 'Welche Schreibung ist richtig?',
       interaction: { kind: 'choose', layout: 'pair', options: options([pair.faulty, pair.correct]), correctId: pair.correct },
-      feedbackCorrect: `Nomen schreibt man groß: ${pair.correct}.`,
-      feedbackIncorrect: `Nomen schreibt man groß: ${pair.correct}.`,
+      feedbackCorrect: `Substantive schreibt man groß: ${pair.correct}.`,
+      feedbackIncorrect: `Substantive schreibt man groß: ${pair.correct}.`,
     }))
     const tokens = wordTokens(pair.faulty)
     const errorIds = idsForWords(tokens, [pair.error], pair.faulty)
@@ -245,8 +250,8 @@ export function buildNounTasks(): Task[] {
       prompt: 'Tippe das Wort an, das großgeschrieben werden muss.',
       stimulus: pair.faulty,
       interaction: { kind: 'mark', tokens, correctIds: errorIds, mode: 'single' },
-      feedbackCorrect: `„${pair.error}“ ist ein Nomen und steht groß: ${pair.correct}.`,
-      feedbackIncorrect: `„${pair.error}“ ist ein Nomen und steht groß: ${pair.correct}.`,
+      feedbackCorrect: `„${pair.error}“ ist ein Substantiv und steht groß: ${pair.correct}.`,
+      feedbackIncorrect: `„${pair.error}“ ist ein Substantiv und steht groß: ${pair.correct}.`,
     }))
   }
 
@@ -446,7 +451,7 @@ export function buildAdjectiveTasks(): Task[] {
         typeLabel: 'Steigerungsstufe erkennen',
         difficulty: item.difficulty,
         tags: ['adjektiv', item.pattern],
-        prompt: 'Welche Steigerungsstufe ist das?',
+        prompt: `In welcher Steigerungsstufe steht das Adjektiv „${form}“?`,
         stimulus: form,
         interaction: { kind: 'choose', layout: 'stack', options: options(['Positiv', 'Komparativ', 'Superlativ']), correctId: degree.label },
         feedbackCorrect: `${form} ist der ${degree.label} von ${item.positive}. Positiv ist die Grundform, Komparativ der Vergleich, Superlativ die höchste Stufe.`,
@@ -460,10 +465,10 @@ export function buildAdjectiveTasks(): Task[] {
       typeLabel: 'Komparativ bilden',
       difficulty: item.difficulty,
       tags: ['adjektiv', 'komparativ'],
-      prompt: `Welche Form ist der Komparativ von „${item.positive}“?`,
+      prompt: `Wie lautet der Komparativ von „${item.positive}“?`,
       interaction: { kind: 'choose', layout: 'stack', options: options(forms), correctId: item.comparative },
-      feedbackCorrect: `Der Komparativ von ${item.positive} heißt ${item.comparative}.`,
-      feedbackIncorrect: `Der Komparativ von ${item.positive} heißt ${item.comparative}.`,
+      feedbackCorrect: `Der Komparativ von ${item.positive} lautet ${item.comparative}.`,
+      feedbackIncorrect: `Der Komparativ von ${item.positive} lautet ${item.comparative}.`,
     }))
     tasks.push(task({
       id: `adj-sup-${item.id}`,
@@ -472,10 +477,10 @@ export function buildAdjectiveTasks(): Task[] {
       typeLabel: 'Superlativ bilden',
       difficulty: item.difficulty,
       tags: ['adjektiv', 'superlativ'],
-      prompt: `Welche Form ist der Superlativ von „${item.positive}“?`,
+      prompt: `Wie lautet der Superlativ von „${item.positive}“?`,
       interaction: { kind: 'choose', layout: 'stack', options: options(forms), correctId: item.superlative },
-      feedbackCorrect: `Der Superlativ von ${item.positive} heißt ${item.superlative}.`,
-      feedbackIncorrect: `Der Superlativ von ${item.positive} heißt ${item.superlative}.`,
+      feedbackCorrect: `Der Superlativ von ${item.positive} lautet ${item.superlative}.`,
+      feedbackIncorrect: `Der Superlativ von ${item.positive} lautet ${item.superlative}.`,
     }))
     tasks.push(task({
       id: `adj-order-${item.id}`,
@@ -543,7 +548,7 @@ export function buildAdjectiveTasks(): Task[] {
       typeLabel: 'Als oder wie',
       difficulty: item.difficulty,
       tags: ['adjektiv', item.connector],
-      prompt: 'als oder wie?',
+      prompt: 'Welches Vergleichswort passt: als oder wie?',
       stimulus: gapped,
       interaction: { kind: 'choose', layout: 'pair', options: options(['als', 'wie']), correctId: item.connector },
       feedbackCorrect: same
@@ -565,7 +570,7 @@ export function buildAdjectiveTasks(): Task[] {
       typeLabel: 'Fehler korrigieren',
       difficulty: 3,
       tags: ['adjektiv', 'fehler'],
-      prompt: 'Welche Fassung ist richtig?',
+      prompt: 'Welche Form ist korrekt?',
       interaction: { kind: 'choose', layout: 'pair', options: options([error.faulty, error.correct]), correctId: error.correct },
       feedbackCorrect: error.note,
       feedbackIncorrect: error.note,
@@ -593,10 +598,10 @@ export function buildAdjectiveTasks(): Task[] {
     difficulty: 3,
     tags: ['adjektiv', 'nomen'],
     prompt: 'Stimmt diese Aussage?',
-    stimulus: 'Vor einem Nomen heißt es: der schnellste Läufer. Ohne Nomen heißt es: Er läuft am schnellsten.',
+    stimulus: 'Vor einem Substantiv heißt es: der schnellste Läufer. Ohne Substantiv heißt es: Er läuft am schnellsten.',
     interaction: { kind: 'bool', correct: true },
-    feedbackCorrect: 'Ohne Nomen steht am schnellsten. Vor einem Nomen steht die Form mit Endung: der schnellste Läufer.',
-    feedbackIncorrect: 'Ohne Nomen steht am schnellsten. Vor einem Nomen steht die Form mit Endung: der schnellste Läufer.',
+    feedbackCorrect: 'Ohne Substantiv steht am schnellsten. Vor einem Substantiv steht die Form mit Endung: der schnellste Läufer.',
+    feedbackIncorrect: 'Ohne Substantiv steht am schnellsten. Vor einem Substantiv steht die Form mit Endung: der schnellste Läufer.',
   }))
   return tasks
 }
@@ -625,7 +630,7 @@ export function buildVerbTasks(): Task[] {
         typeLabel: 'Person erkennen',
         difficulty: verb.difficulty,
         tags: ['verb', verb.pattern],
-        prompt: 'Zu welcher Person gehört diese Form?',
+        prompt: `Welche Person und Zahl hat die Verbform „${form}“?`,
         stimulus: `${verb.infinitive}: ${form}`,
         interaction: { kind: 'choose', layout: 'stack', options: personOptions, correctId: person },
         feedbackCorrect: `${form} gehört zu ${person}.${personNote}`,
@@ -638,7 +643,7 @@ export function buildVerbTasks(): Task[] {
         typeLabel: 'Verb konjugieren',
         difficulty: verb.difficulty,
         tags: ['verb', 'präsens'],
-        prompt: `Welche Präsensform gehört zu „${person}“?`,
+        prompt: `Wie lautet die Verbform für „${person}“?`,
         stimulus: verb.infinitive,
         interaction: { kind: 'choose', layout: 'stack', options: options(distinctForms), correctId: form },
         feedbackCorrect: `${person} ${form}. Das ist die Präsensform von ${verb.infinitive}.${personNote}`,
@@ -659,7 +664,7 @@ export function buildVerbTasks(): Task[] {
         typeLabel: 'Grundform bestimmen',
         difficulty: gap.difficulty,
         tags: ['verb', 'grundform'],
-        prompt: 'Welche Grundform steckt in dem Verb?',
+        prompt: `Wie lautet der Infinitiv von „${gap.solution}“?`,
         stimulus: `${gap.before} ${gap.solution} ${gap.after}`,
         interaction: { kind: 'choose', layout: 'stack', options: options([gap.infinitive, ...distractors]), correctId: gap.infinitive },
         feedbackCorrect: `${gap.solution} gehört zur Grundform ${gap.infinitive}.`,
@@ -674,7 +679,7 @@ export function buildVerbTasks(): Task[] {
       typeLabel: 'Verbform einsetzen',
       difficulty: gap.difficulty,
       tags: ['verb', 'lücke'],
-      prompt: 'Welche Form passt in die Lücke?',
+      prompt: `Setze „${gap.infinitive}“ in die passende Form.`,
       stimulus: `${gap.before} ___ ${gap.after} (${gap.infinitive})`,
       interaction: {
         kind: 'choose',
@@ -696,10 +701,10 @@ export function buildVerbTasks(): Task[] {
       typeLabel: 'Präteritum bilden',
       difficulty: item.infinitive === 'machen' ? 2 : 3,
       tags: ['verb', 'präteritum'],
-      prompt: `Welche Form ist das Präteritum von „${item.infinitive}“?`,
+      prompt: `Wie lautet das Präteritum von „${item.infinitive}“?`,
       interaction: { kind: 'choose', layout: 'stack', options: preteriteOptions, correctId: item.form },
-      feedbackCorrect: `Das Präteritum von ${item.infinitive} heißt ${item.form}.`,
-      feedbackIncorrect: `Das Präteritum von ${item.infinitive} heißt ${item.form}.`,
+      feedbackCorrect: `Das Präteritum von ${item.infinitive} lautet ${item.form}.`,
+      feedbackIncorrect: `Das Präteritum von ${item.infinitive} lautet ${item.form}.`,
     }))
   }
 
@@ -714,7 +719,7 @@ export function buildVerbTasks(): Task[] {
       typeLabel: 'Partizip II bilden',
       difficulty: ['gehen', 'nehmen', 'sehen', 'studieren', 'probieren'].includes(item.infinitive) ? 3 : 2,
       tags: ['verb', 'partizip'],
-      prompt: `Welches Partizip II gehört zu „${item.infinitive}“?`,
+      prompt: `Wie lautet das Partizip II von „${item.infinitive}“?`,
       interaction: { kind: 'choose', layout: 'stack', options: options(choices), correctId: item.participle },
       feedbackCorrect: `${item.infinitive} bildet das Partizip II ${item.participle}.`,
       feedbackIncorrect: `${item.infinitive} bildet das Partizip II ${item.participle}.`,
@@ -770,7 +775,7 @@ export function buildTenseTasks(): Task[] {
         typeLabel: 'Zeitform erkennen',
         difficulty: hard ? 3 : maxDifficulty(pool.difficulty, tense === 'praesens' || tense === 'praeteritum' ? 1 : 2),
         tags: ['zeit', tense],
-        prompt: 'Welche Zeitform ist das?',
+        prompt: 'In welcher Zeitform steht der Satz?',
         stimulus: form.sentence,
         interaction: { kind: 'choose', layout: 'stack', options: options(labels), correctId: tenseLabels[tense] },
         feedbackCorrect: tenseFeedback(tense, form.parts),
@@ -783,7 +788,7 @@ export function buildTenseTasks(): Task[] {
         typeLabel: 'Verbteile markieren',
         difficulty: hard ? 3 : 2,
         tags: ['zeit', 'verbteile'],
-        prompt: 'Markiere die Wörter, die zur Verbform gehören.',
+        prompt: 'Markiere die Verbgruppe.',
         stimulus: form.sentence,
         interaction: { kind: 'mark', tokens, correctIds: partIds, mode: 'multi' },
         feedbackCorrect: tenseFeedback(tense, form.parts),
@@ -797,7 +802,7 @@ export function buildTenseTasks(): Task[] {
         typeLabel: 'Satz umformen',
         difficulty: hard ? 3 : 2,
         tags: ['zeit', 'umformen'],
-        prompt: `Welche Fassung von „${pool.verb}“ steht im ${tenseLabels[tense]}?`,
+        prompt: `Wie lautet der Satz im ${tenseLabels[tense]}?`,
         interaction: {
           kind: 'choose',
           layout: 'stack',
@@ -832,7 +837,7 @@ export function buildTenseTasks(): Task[] {
       typeLabel: 'Zeitform erkennen',
       difficulty: item.difficulty,
       tags: ['zeit', item.tense],
-      prompt: 'Welche Zeitform ist das?',
+      prompt: 'In welcher Zeitform steht der Satz?',
       stimulus: item.sentence,
       interaction: { kind: 'choose', layout: 'stack', options: options(labels), correctId: tenseLabels[item.tense] },
       feedbackCorrect: `Der Satz steht im ${tenseLabels[item.tense]}.`,
@@ -844,7 +849,7 @@ export function buildTenseTasks(): Task[] {
 
 function tenseFeedback(tense: (typeof tenseIds)[number], parts: readonly string[]): string {
   const marked = listWords(parts)
-  if (tense === 'praesens') return `„${marked}“ zeigt das Präsens, also die Gegenwart. Mit einer Zeitangabe kann das Präsens auch Zukünftiges nennen.`
+  if (tense === 'praesens') return `„${marked}“ zeigt das Präsens, also die Gegenwart. Mit einer Zeitangabe kann das Präsens auch Zukünftiges ausdrücken.`
   if (tense === 'praeteritum') return `„${marked}“ ist eine Präteritumform. Diese Zeitform ist typisch für Geschichten, Erzählungen und Berichte.`
   if (tense === 'perfekt') return `„${marked}“ besteht aus einer Form von haben oder sein und dem Partizip II. Der Satz steht deshalb im Perfekt.`
   if (tense === 'plusquam') return `„${marked}“ besteht aus hatte oder war und dem Partizip II. Das ist das Plusquamperfekt, die Vorvergangenheit.`
@@ -867,7 +872,7 @@ export function buildVoiceTasks(): Task[] {
       typeLabel: 'Aktiv oder Passiv',
       difficulty: pair.difficulty,
       tags: ['genus', 'aktiv'],
-      prompt: 'Aktiv oder Passiv?',
+      prompt: 'Steht der Satz im Aktiv oder im Passiv?',
       stimulus: pair.active,
       interaction: { kind: 'choose', layout: 'pair', options: options(['Aktiv', 'Passiv']), correctId: 'Aktiv' },
       feedbackCorrect: 'Das Subjekt handelt selbst. Der Satz steht im Aktiv.',
@@ -880,7 +885,7 @@ export function buildVoiceTasks(): Task[] {
       typeLabel: 'Aktiv oder Passiv',
       difficulty: pair.difficulty,
       tags: ['genus', 'passiv'],
-      prompt: 'Aktiv oder Passiv?',
+      prompt: 'Steht der Satz im Aktiv oder im Passiv?',
       stimulus: pair.passive,
       interaction: { kind: 'choose', layout: 'pair', options: options(['Aktiv', 'Passiv']), correctId: 'Passiv' },
       feedbackCorrect: 'Die Handlung steht im Mittelpunkt. Der Satz steht im Passiv.',
@@ -919,7 +924,7 @@ export function buildVoiceTasks(): Task[] {
       typeLabel: 'Aktiv in Passiv',
       difficulty: pair.difficulty,
       tags: ['genus', 'umformen'],
-      prompt: 'Welche Fassung ist das Passiv?',
+      prompt: 'Forme den Satz ins Passiv um.',
       stimulus: pair.active,
       interaction: { kind: 'choose', layout: 'stack', options: pairOptions, correctId: pair.passive },
       feedbackCorrect: `Das Objekt „${pair.activeObject}“ wird zum Subjekt. ${pair.passive}`,
@@ -932,7 +937,7 @@ export function buildVoiceTasks(): Task[] {
       typeLabel: 'Passiv in Aktiv',
       difficulty: pair.difficulty,
       tags: ['genus', 'umformen'],
-      prompt: 'Welche Fassung ist das Aktiv?',
+      prompt: 'Forme den Satz ins Aktiv um.',
       stimulus: pair.passive,
       interaction: { kind: 'choose', layout: 'stack', options: pairOptions, correctId: pair.active },
       feedbackCorrect: `Im Aktiv handelt ${pair.agent} selbst: ${pair.active}`,
@@ -945,7 +950,7 @@ export function buildVoiceTasks(): Task[] {
       typeLabel: 'Passivform zusammensetzen',
       difficulty: pair.parts.length > 2 ? 3 : pair.difficulty,
       tags: ['genus', 'formen'],
-      prompt: 'Bringe die Teile der Passivform in die richtige Reihenfolge.',
+      prompt: 'Ordne die Verbgruppe des Passivs.',
       stimulus: pair.passive,
       interaction: {
         kind: 'order',
@@ -962,7 +967,7 @@ export function buildVoiceTasks(): Task[] {
       typeLabel: 'Zeitform im Passiv',
       difficulty: pair.difficulty,
       tags: ['genus', pair.tense],
-      prompt: 'Welche Passivzeit ist das?',
+      prompt: 'In welcher Zeitform steht dieses Passiv?',
       stimulus: pair.passive,
       interaction: { kind: 'choose', layout: 'stack', options: tenseOptions, correctId: voiceTenseLabels[pair.tense] },
       feedbackCorrect: `Die Form ${pair.parts.join(' ')} ist ${voiceTenseLabels[pair.tense]}.`,
@@ -978,7 +983,7 @@ export function buildVoiceTasks(): Task[] {
     typeLabel: 'Zeitform im Passiv',
     difficulty: 3,
     tags: ['genus', 'futur2'],
-    prompt: 'Welche Passivzeit ist das?',
+    prompt: 'In welcher Zeitform steht dieses Passiv?',
     stimulus: voicePatternSentence.sentence,
     interaction: { kind: 'choose', layout: 'stack', options: tenseOptions, correctId: voiceTenseLabels.futur2 },
     feedbackCorrect: 'werden + Partizip II + worden sein bildet das Passiv Futur II.',
@@ -995,8 +1000,8 @@ export function buildVoiceTasks(): Task[] {
     prompt: 'Stimmt diese Aussage?',
     stimulus: 'Der Täter kann im Passiv wegbleiben: Der Ball wird geschossen.',
     interaction: { kind: 'bool', correct: true },
-    feedbackCorrect: 'Der Ball wird vom Jungen geschossen nennt den Täter. Der Ball wird geschossen lässt ihn weg.',
-    feedbackIncorrect: 'Der Ball wird vom Jungen geschossen nennt den Täter. Der Ball wird geschossen lässt ihn weg.',
+    feedbackCorrect: '„Der Ball wird vom Jungen geschossen“ gibt den Täter an. „Der Ball wird geschossen“ lässt ihn weg.',
+    feedbackIncorrect: '„Der Ball wird vom Jungen geschossen“ gibt den Täter an. „Der Ball wird geschossen“ lässt ihn weg.',
   }))
 
   for (const error of voiceErrors) {
@@ -1008,7 +1013,7 @@ export function buildVoiceTasks(): Task[] {
       typeLabel: 'Fehler korrigieren',
       difficulty: 3,
       tags: ['genus', 'fehler'],
-      prompt: 'Welche Fassung ist richtig?',
+      prompt: 'Welche Passivform ist korrekt?',
       interaction: { kind: 'choose', layout: 'pair', options: options([error.faulty, error.correct]), correctId: error.correct },
       feedbackCorrect: error.note,
       feedbackIncorrect: error.note,
@@ -1063,7 +1068,7 @@ export function buildCapitalizationTasks(): Task[] {
       typeLabel: 'Satz korrigieren',
       difficulty: sentence.difficulty,
       tags: ['großschreibung'],
-      prompt: 'Welche Fassung ist richtig geschrieben?',
+      prompt: 'Welche Schreibweise ist richtig?',
       interaction: {
         kind: 'choose',
         layout: 'pair',
@@ -1078,14 +1083,14 @@ export function buildCapitalizationTasks(): Task[] {
       id: `cap-nouns-${sentence.id}`,
       area: 'capitalization',
       type: 'cap-nouns',
-      typeLabel: 'Nomen markieren',
+      typeLabel: 'Substantive markieren',
       difficulty: maxDifficulty(sentence.difficulty, 2),
       tags: ['großschreibung', 'nomen'],
-      prompt: 'Markiere die Nomen. Nicht jedes großgeschriebene Wort ist ein Nomen.',
+      prompt: 'Markiere die Substantive (Nomen). Nicht jedes großgeschriebene Wort ist ein Substantiv.',
       stimulus: sentence.correctSentence,
       interaction: { kind: 'mark', tokens: correctTokens, correctIds: idsForWords(correctTokens, sentence.nouns, sentence.id), mode: 'multi' },
-      feedbackCorrect: `Nomen in diesem Satz: ${listWords(sentence.nouns)}.`,
-      feedbackIncorrect: `Nomen in diesem Satz: ${listWords(sentence.nouns)}. Wörter am Satzanfang können auch ohne Nomen großstehen.`,
+      feedbackCorrect: `Substantive in diesem Satz: ${listWords(sentence.nouns)}.`,
+      feedbackIncorrect: `Substantive in diesem Satz: ${listWords(sentence.nouns)}. Wörter am Satzanfang können auch ohne Substantiv großstehen.`,
     }))
     for (const [index, token] of tokens.entries()) {
       if (!token.reason || token.faulty === token.correct) continue
@@ -1148,7 +1153,7 @@ export function buildSpellingTasks(): Task[] {
       typeLabel: 'Fehler korrigieren',
       difficulty: maxDifficulty(pair.difficulty, 2),
       tags: ['rechtschreibung', pair.topic, 'fehler'],
-      prompt: 'Welche Fassung ist richtig?',
+      prompt: 'Welche Schreibweise ist richtig?',
       interaction: { kind: 'choose', layout: 'pair', options: options([pair.wrong, pair.correct]), correctId: pair.correct },
       feedbackCorrect: pair.note,
       feedbackIncorrect: `„${pair.wrong}“ ist nicht korrekt. ${pair.note}`,
