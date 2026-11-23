@@ -11,6 +11,7 @@ import {
   prepositionExamples,
   type CaseId,
 } from '../data/cases'
+import { withCaseContrast } from '../data/case-contrast'
 import { capitalizationSentences, reasonLabels } from '../data/capitalization'
 import {
   articleProbes,
@@ -270,10 +271,10 @@ export function buildCaseTasks(): Task[] {
   const caseOptions = options(caseIds.map((id) => caseLabels[id]))
   const questionOptions = options(caseIds.map((id) => caseQuestions[id]))
 
-  for (const sentence of caseSentences) {
+  for (const sentence of caseSentences.map(withCaseContrast)) {
     for (const [index, target] of sentence.targets.entries()) {
       requireWord(sentence.sentence, target.surface, sentence.id)
-      const feedback = `Prüfe die Frage: ${target.probe} Die Antwort lautet „${target.label}“. Deshalb steht die Wortgruppe im ${caseLabels[target.caseId]}.`
+      const reason = `„${target.label}“ steht im ${caseLabels[target.caseId]}, weil die Wortgruppe auf „${caseQuestions[target.caseId]}“ antwortet.`
       tasks.push(task({
         id: `case-id-${sentence.id}-${index}`,
         area: 'cases',
@@ -284,8 +285,8 @@ export function buildCaseTasks(): Task[] {
         prompt: `In welchem ${withBridge(sentence.difficulty, 'Kasus', 'Fall')} steht „${target.label}“?`,
         stimulus: sentence.sentence,
         interaction: { kind: 'choose', layout: 'stack', options: caseOptions, correctId: caseLabels[target.caseId] },
-        feedbackCorrect: feedback,
-        feedbackIncorrect: feedback,
+        feedbackCorrect: `Richtig. ${reason}`,
+        feedbackIncorrect: `Prüfe, welche Wortgruppe auf „${caseQuestions[target.caseId]}“ antwortet. ${reason}`,
       }))
       tasks.push(task({
         id: `case-question-${sentence.id}-${index}`,
@@ -297,8 +298,8 @@ export function buildCaseTasks(): Task[] {
         prompt: `Welche Frage passt zu diesem ${withBridge(sentence.difficulty, 'Kasus', 'Fall')}?`,
         stimulus: sentence.sentence,
         interaction: { kind: 'choose', layout: 'stack', options: questionOptions, correctId: caseQuestions[target.caseId] },
-        feedbackCorrect: feedback,
-        feedbackIncorrect: feedback,
+        feedbackCorrect: `Richtig. ${reason}`,
+        feedbackIncorrect: `Prüfe die Rolle der Wortgruppe im Satz. ${reason}`,
       }))
     }
   }

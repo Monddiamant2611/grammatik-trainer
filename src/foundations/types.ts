@@ -11,14 +11,16 @@ export interface FoundationQuestion {
   options: FoundationChoice[]
   answerId: string
   settle: string
+  /** Erster Fehlversuch: Hinweis, noch keine Lösung. */
+  hint?: string
 }
 
 export type FoundationTry =
-  | { kind: 'choice'; prompt: string; options: FoundationChoice[]; answerId: string }
+  | { kind: 'choice'; prompt: string; options: FoundationChoice[]; answerId: string; hint?: string }
   | { kind: 'series'; questions: FoundationQuestion[] }
-  | { kind: 'classify'; prompt: string; items: FoundationChoice[]; buckets: FoundationChoice[]; solution: Record<string, string> }
-  | { kind: 'compare'; prompt: string; left: string; right: string; answer: 'left' | 'right' }
-  | { kind: 'order'; prompt: string; items: FoundationChoice[]; correctIds: string[] }
+  | { kind: 'classify'; prompt: string; items: FoundationChoice[]; buckets: FoundationChoice[]; solution: Record<string, string>; hint?: string }
+  | { kind: 'compare'; prompt: string; left: string; right: string; answer: 'left' | 'right'; hint?: string }
+  | { kind: 'order'; prompt: string; items: FoundationChoice[]; correctIds: string[]; hint?: string }
 
 export interface ConceptPair {
   term: string

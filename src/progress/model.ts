@@ -1,4 +1,6 @@
 import { AREA_IDS, type AreaId, type TrainingArea } from '../domain/areas'
+import { modules } from '../foundations/content'
+import { LEGACY_TUTORIAL_IDS, TUTORIAL_REVISION } from '../foundations/legacy'
 import type { Task } from '../engine/types'
 
 export interface Outcome {
@@ -14,6 +16,8 @@ export interface AreaRecord {
   foundationsDone: boolean
   tutorialStep: number
   tutorialCompleted: boolean
+  /** 0 = Stand vor der kleinschrittigen Tutorialfassung. */
+  tutorialRevision: number
   attempted: number
   correct: number
   recent: Outcome[]
@@ -50,6 +54,7 @@ export function emptyArea(): AreaRecord {
     foundationsDone: false,
     tutorialStep: 0,
     tutorialCompleted: false,
+    tutorialRevision: TUTORIAL_REVISION,
     attempted: 0,
     correct: 0,
     recent: [],
@@ -101,11 +106,13 @@ function sanitizeArea(value: unknown): AreaRecord {
     Math.max(0, Math.floor(typeof value.tutorialStep === 'number' ? value.tutorialStep : 0)),
   )
   const tutorialCompleted = value.tutorialCompleted === true || foundationsDone
+  const tutorialRevision = value.tutorialRevision === TUTORIAL_REVISION ? TUTORIAL_REVISION : 0
   return {
     foundationStep: tutorialStep,
     foundationsDone: tutorialCompleted,
     tutorialStep,
     tutorialCompleted,
+    tutorialRevision,
     attempted: Math.max(0, Math.floor(typeof value.attempted === 'number' ? value.attempted : 0)),
     correct: Math.max(0, Math.floor(typeof value.correct === 'number' ? value.correct : 0)),
     lastLabel: typeof value.lastLabel === 'string' ? value.lastLabel : '',
@@ -120,8 +127,27 @@ export function sanitizeProgress(value: unknown): ProgressState {
   const empty = emptyProgress()
   if (!isRecord(value) || !isRecord(value.areas)) return empty
   const areas = { ...empty.areas }
-  for (const id of AREA_IDS) areas[id] = sanitizeArea(value.areas[id])
+  for (const id of AREA_IDS) areas[id] = migrateTutorial(id, sanitizeArea(value.areas[id]))
   return { version: 2, areas, session: sanitizeSession(value.session) }
+}
+
+function migrateTutorial(area: AreaId, record: AreaRecord): AreaRecord {
+  if (record.tutorialRevision >= TUTORIAL_REVISION) return record
+  const steps = modules.find((module) => module.area === area)?.steps ?? []
+  if (record.tutorialCompleted || steps.length === 0) {
+    return { ...record, tutorialRevision: TUTORIAL_REVISION }
+  }
+  const legacy = LEGACY_TUTORIAL_IDS[area]
+  const oldIndex = Math.max(0, Math.min(record.tutorialStep, legacy.length - 1))
+  const oldId = legacy[oldIndex]
+  const mapped = oldId ? steps.findIndex((step) => step.id === oldId) : 0
+  const tutorialStep = mapped >= 0 ? mapped : Math.min(record.tutorialStep, steps.length - 1)
+  return {
+    ...record,
+    tutorialRevision: TUTORIAL_REVISION,
+    tutorialStep,
+    foundationStep: tutorialStep,
+  }
 }
 
 function sanitizeSession(value: unknown): SessionRecord | null {
@@ -214,6 +240,7 @@ export function withTutorial(state: ProgressState, area: AreaId, step: number, d
         foundationsDone: tutorialCompleted,
         tutorialStep,
         tutorialCompleted,
+        tutorialRevision: TUTORIAL_REVISION,
       },
     },
   }

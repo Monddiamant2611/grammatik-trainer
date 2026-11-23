@@ -3,6 +3,7 @@ import { correctAnswer, isCorrect, wrongAnswer } from '../src/engine/check'
 import { allTasks, tasksFor } from '../src/engine/generate'
 import { mulberry32 } from '../src/engine/random'
 import { buildRound } from '../src/engine/select'
+import { auditSummary, denseTutorialSteps, positionReports, weakCaseContexts } from '../src/qa/content-audit'
 import { emptyHistory, withHistory } from '../src/progress/model'
 
 const all = allTasks()
@@ -61,6 +62,21 @@ for (const area of AREA_IDS) {
     history = withHistory(history, area, round.map((t) => t.id))
   }
   console.log(area, '20-round unique', seen.size)
+}
+
+for (const line of auditSummary()) console.log(line)
+const four = positionReports().find((report) => report.size === 4)
+if (!four || four.shares.some((share) => share < 18 || share > 32)) {
+  console.error('FAIL answer position balance')
+  ok = false
+}
+if (weakCaseContexts().length > 0) {
+  console.error('FAIL case context', weakCaseContexts().slice(0, 8).map((task) => task.id).join(', '))
+  ok = false
+}
+if (denseTutorialSteps().length > 0) {
+  console.error('FAIL tutorial density', denseTutorialSteps().map((step) => step.id).join(', '))
+  ok = false
 }
 
 if (!ok) process.exit(1)

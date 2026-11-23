@@ -167,7 +167,7 @@ async function solveFoundation(user: ReturnType<typeof userEvent.setup>, step: F
       if (!section) throw new Error(`Gruppe fehlt: ${bucket?.text}`)
       await user.click(within(section).getByRole('button', { name: exactName('Hier zuordnen') }))
     }
-    await clickButton(user, 'Beobachtung ansehen')
+    await clickButton(user, 'Prüfen')
     return
   }
   for (const id of attempt.correctIds) {
@@ -176,7 +176,7 @@ async function solveFoundation(user: ReturnType<typeof userEvent.setup>, step: F
     if (!button) throw new Error(`Reihenfolge fehlt: ${text}`)
     await user.click(button)
   }
-  await clickButton(user, 'Beobachtung ansehen')
+  await clickButton(user, 'Prüfen')
 }
 
 function seedTutorialsDone(storage: Storage) {

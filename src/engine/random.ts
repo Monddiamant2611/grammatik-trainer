@@ -24,3 +24,15 @@ export function shuffle<T>(items: readonly T[], rng: () => number): T[] {
   }
   return copy
 }
+
+/** Mischt und vermeidet die Ausgangsreihenfolge, damit sie keine Lösung verrät. */
+export function shuffleVisible<T>(items: readonly T[], rng: () => number, reveals?: (order: readonly T[]) => boolean): T[] {
+  if (items.length < 2) return [...items]
+  const next = shuffle(items, rng)
+  const sameAsSource = next.every((item, index) => item === items[index])
+  if (sameAsSource || reveals?.(next)) {
+    const first = next.shift() as T
+    next.push(first)
+  }
+  return next
+}
