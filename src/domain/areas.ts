@@ -24,7 +24,7 @@ export const AREAS: readonly AreaDefinition[] = [
   {
     id: 'nouns',
     order: 1,
-    title: 'Nomen erkennen',
+    title: 'Substantive (Nomen) erkennen',
     description: 'Personen, Dinge, Orte und Gefühle im Satz finden.',
     accent: 'sage',
   },
@@ -67,7 +67,7 @@ export const AREAS: readonly AreaDefinition[] = [
     id: 'capitalization',
     order: 7,
     title: 'Groß- & Kleinschreibung',
-    description: 'Nomen, Satzanfang und Eigennamen unterscheiden.',
+    description: 'Substantive (Nomen), Satzanfang und Eigennamen unterscheiden.',
     accent: 'sage',
   },
   {

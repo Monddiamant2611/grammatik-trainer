@@ -11,7 +11,7 @@ export function ProgressPage() {
       <header className="page-header">
         <span className="eyebrow">Lokal auf diesem Gerät</span>
         <h1>Fortschritt</h1>
-        <p>Tutorials zählen nicht als Leistung. Der Übungsstand steigt erst mit mehr richtigen Aufgaben im Training.</p>
+        <p>Tutorials und Prüfungen zählen nicht als Trainingsstand. Der Übungsstand steigt mit richtigen Aufgaben im Training.</p>
       </header>
       <div className="progress-list">
         {AREAS.map((area) => {

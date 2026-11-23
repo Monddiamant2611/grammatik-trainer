@@ -1,15 +1,19 @@
 import type { AreaId } from '../domain/areas'
 import type { FoundationModule } from './types'
 
-const modules: readonly FoundationModule[] = [
+export const modules: readonly FoundationModule[] = [
   {
     area: 'nouns',
     steps: [
       {
         id: 'n1',
-        title: 'Was ist ein Nomen?',
-        lead: 'Nomen benennen etwas: Hund, Lehrerin, Tisch, Berlin, Freude. Ordne die Wörter zu.',
-        concept: { term: 'Nomen', definition: 'Ein Nomen benennt Personen, Tiere, Dinge, Orte oder Gefühle.' },
+        title: 'Was ist ein Substantiv?',
+        lead: 'Substantive, auch Nomen genannt, bezeichnen zum Beispiel Personen, Tiere, Dinge, Pflanzen, Orte, Gefühle oder abstrakte Begriffe. Ordne die Wörter zu.',
+        concept: {
+          term: 'Substantiv',
+          also: 'Nomen',
+          definition: 'Wortart, die unter anderem Personen, Tiere, Dinge, Orte, Pflanzen, Gefühle und abstrakte Begriffe bezeichnet. Gleichbedeutender Fachbegriff: Nomen.',
+        },
         examples: ['Hund', 'Lehrerin', 'Tisch', 'Berlin', 'Freude'],
         try: {
           kind: 'classify',
@@ -29,14 +33,22 @@ const modules: readonly FoundationModule[] = [
           solution: { Hund: 'Tier', Berlin: 'Ort', Freude: 'Gefühl', Tisch: 'Ding' },
         },
         observation: 'Hund ist ein Tier, Berlin ein Ort, Freude ein Gefühl, Tisch ein Ding.',
-        explanation: 'Nomen bezeichnen Personen, Tiere, Dinge, Orte, Gefühle und weitere Begriffe.',
-        merksatz: 'Ein Nomen benennt etwas oder jemanden.',
+        explanation: 'Substantive bezeichnen Personen, Tiere, Dinge, Pflanzen, Orte, Gefühle und abstrakte Begriffe. Nomen ist der gleichbedeutende Fachbegriff.',
+        merksatz: 'Substantiv und Nomen bezeichnen dieselbe Wortart.',
       },
       {
         id: 'n2',
         title: 'Die Artikelprobe',
-        lead: 'Vor viele Nomen kann man der, die oder das setzen.',
-        concept: { term: 'Artikelprobe', definition: 'Passt der, die oder das vor das Wort, ist es oft ein Nomen.' },
+        lead: 'Vor viele Substantive kann man der, die oder das setzen.',
+        concept: {
+          term: 'Artikelprobe',
+          definition: 'Passt der, die oder das vor das Wort, ist es oft ein Substantiv. Der Artikel zeigt das Genus (grammatisches Geschlecht).',
+          pairs: [
+            { term: 'maskulin', hint: 'männlich, z. B. der Baum' },
+            { term: 'feminin', hint: 'weiblich, z. B. die Blume' },
+            { term: 'neutral', hint: 'sächlich, z. B. das Haus' },
+          ],
+        },
         try: {
           kind: 'series',
           questions: [
@@ -76,14 +88,14 @@ const modules: readonly FoundationModule[] = [
           ],
         },
         observation: 'Es heißt der Baum, die Blume und das Haus.',
-        explanation: 'Die Artikelprobe hilft beim Erkennen von Nomen.',
-        merksatz: 'Vor viele Nomen kann man einen Artikel setzen.',
+        explanation: 'Die Artikelprobe hilft beim Erkennen von Substantiven.',
+        merksatz: 'Vor viele Substantive kann man einen Artikel setzen.',
       },
       {
         id: 'n3',
         title: 'Großschreibung',
-        lead: 'Nomen schreibt man groß: der hund → der Hund.',
-        concept: { term: 'Großschreibung', definition: 'Nomen beginnen mit einem Großbuchstaben.' },
+        lead: 'Substantive schreibt man groß: der hund → der Hund.',
+        concept: { term: 'Großschreibung', definition: 'Substantive, auch Nomen genannt, beginnen mit einem Großbuchstaben.' },
         try: {
           kind: 'compare',
           prompt: 'Korrigiere: Welche Schreibung ist richtig?',
@@ -92,21 +104,29 @@ const modules: readonly FoundationModule[] = [
           answer: 'right',
         },
         observation: 'die schule wird zu die Schule. Ebenso: der Hund, das Leben.',
-        explanation: 'Nomen erkennt man auch an der Großschreibung.',
+        explanation: 'Substantive erkennt man auch an der Großschreibung.',
         merksatz: 'Nomen schreibt man groß.',
       },
       {
         id: 'n4',
-        title: 'Einzahl und Mehrzahl',
-        lead: 'Viele Nomen haben Singular und Plural: Hund → Hunde, Kind → Kinder, Buch → Bücher.',
-        concept: { term: 'Plural', definition: 'Die Mehrzahl zeigt, dass es sich um mehr als eines handelt.' },
+        title: 'Numerus: Singular und Plural',
+        lead: 'Der Numerus (Zahlform) zeigt, ob ein Substantiv im Singular (Einzahl) oder im Plural (Mehrzahl) steht: Hund → Hunde.',
+        concept: {
+          term: 'Numerus',
+          also: 'Zahlform',
+          definition: 'Singular ist die Einzahl, Plural die Mehrzahl.',
+          pairs: [
+            { term: 'Singular', hint: 'Einzahl' },
+            { term: 'Plural', hint: 'Mehrzahl' },
+          ],
+        },
         examples: ['Hund → Hunde', 'Kind → Kinder', 'Buch → Bücher'],
         try: {
           kind: 'series',
           questions: [
             {
               stimulus: 'Hund',
-              prompt: 'Bilde die Mehrzahl.',
+              prompt: 'Bilde den Plural.',
               options: [
                 { id: 'Hunde', text: 'Hunde' },
                 { id: 'Hunden', text: 'Hunden' },
@@ -117,7 +137,7 @@ const modules: readonly FoundationModule[] = [
             },
             {
               stimulus: 'Kind',
-              prompt: 'Bilde die Mehrzahl.',
+              prompt: 'Bilde den Plural.',
               options: [
                 { id: 'Kinden', text: 'Kinden' },
                 { id: 'Kinder', text: 'Kinder' },
@@ -128,7 +148,7 @@ const modules: readonly FoundationModule[] = [
             },
             {
               stimulus: 'Buch',
-              prompt: 'Bilde die Mehrzahl.',
+              prompt: 'Bilde den Plural.',
               options: [
                 { id: 'Buche', text: 'Buche' },
                 { id: 'Bücher', text: 'Bücher' },
@@ -140,14 +160,21 @@ const modules: readonly FoundationModule[] = [
           ],
         },
         observation: 'Hund wird zu Hunde, Kind zu Kinder, Buch zu Bücher.',
-        explanation: 'Wenn ein Wort eine Mehrzahl bilden kann, ist das ein Hinweis auf ein Nomen.',
+        explanation: 'Wenn ein Wort eine Mehrzahl bilden kann, ist das ein Hinweis auf ein Substantiv.',
         merksatz: 'Viele Nomen können in Einzahl und Mehrzahl stehen.',
       },
       {
         id: 'n5',
         title: 'Konkret und abstrakt',
         lead: 'Tisch kann man anfassen, Freude nicht. Ordne Mut und Katze zu.',
-        concept: { term: 'abstrakt', definition: 'Abstrakte Nomen bezeichnen etwas, das man nicht anfassen kann.' },
+        concept: {
+          term: 'abstraktes Substantiv',
+          definition: 'Ein abstraktes Substantiv bezeichnet zum Beispiel ein Gefühl, einen Zustand oder eine Eigenschaft. Ein konkretes Substantiv ist sinnlich wahrnehmbar.',
+          pairs: [
+            { term: 'konkretes Substantiv', hint: 'sinnlich wahrnehmbar' },
+            { term: 'abstraktes Substantiv', hint: 'Gefühl, Zustand, Eigenschaft' },
+          ],
+        },
         try: {
           kind: 'classify',
           prompt: 'Ordne zu: konkret oder abstrakt.',
@@ -164,37 +191,37 @@ const modules: readonly FoundationModule[] = [
           solution: { Tisch: 'konkret', Freude: 'abstrakt', Mut: 'abstrakt', Katze: 'konkret' },
         },
         observation: 'Tisch und Katze sind konkret. Freude und Mut sind abstrakt.',
-        explanation: 'Konkrete Nomen bezeichnen Wahrnehmbares. Abstrakte Nomen bezeichnen Gefühle oder Vorstellungen.',
+        explanation: 'Konkrete Substantive bezeichnen Wahrnehmbares. Abstrakte Substantive bezeichnen Gefühle oder Vorstellungen.',
         merksatz: 'Konkret: greifbar. Abstrakt: nicht greifbar.',
       },
       {
         id: 'n6',
         title: 'Eigennamen',
-        lead: 'Anna, Leipzig und Rhein benennen jeweils etwas Bestimmtes.',
+        lead: 'Anna, Leipzig und Rhein bezeichnen jeweils etwas Bestimmtes.',
         concept: { term: 'Eigenname', definition: 'Eigennamen bezeichnen eine bestimmte Person, einen Ort oder ein Gewässer.' },
         examples: ['Anna', 'Leipzig', 'Rhein'],
         try: {
           kind: 'choice',
-          prompt: 'Sind Anna, Leipzig und Rhein Nomen?',
+          prompt: 'Sind Anna, Leipzig und Rhein Substantive (Nomen)?',
           options: [
-            { id: 'ja', text: 'Ja, auch Eigennamen sind Nomen.' },
-            { id: 'nein', text: 'Nein, Eigennamen sind keine Nomen.' },
+            { id: 'ja', text: 'Ja, auch Eigennamen sind Substantive.' },
+            { id: 'nein', text: 'Nein, Eigennamen sind keine Substantive.' },
           ],
           answerId: 'ja',
         },
-        observation: 'Anna benennt eine Person, Leipzig einen Ort, der Rhein einen Fluss.',
-        explanation: 'Auch Eigennamen sind Nomen. Man schreibt sie groß.',
-        merksatz: 'Auch Eigennamen sind Nomen.',
+        observation: 'Anna bezeichnet eine Person, Leipzig einen Ort, der Rhein einen Fluss.',
+        explanation: 'Auch Eigennamen sind Substantive. Man schreibt sie groß.',
+        merksatz: 'Auch Eigennamen sind Substantive, also Nomen.',
       },
       {
         id: 'n7',
-        title: 'Groß ≠ automatisch Nomen',
-        lead: 'Heute beginnt die Schule. Finde nur die Nomen.',
-        concept: { term: 'Satzanfang', definition: 'Am Satzanfang steht das erste Wort immer groß — auch wenn es kein Nomen ist.' },
+        title: 'Groß ≠ automatisch ein Substantiv',
+        lead: 'Heute beginnt die Schule. Finde nur die Substantive.',
+        concept: { term: 'Satzanfang', definition: 'Am Satzanfang steht das erste Wort immer groß — auch wenn es kein Substantiv ist.' },
         examples: ['Heute beginnt die Schule.'],
         try: {
           kind: 'choice',
-          prompt: 'Welche Wörter sind hier Nomen?',
+          prompt: 'Welche Wörter sind hier Substantive?',
           options: [
             { id: 'heute', text: 'Heute und Schule' },
             { id: 'schule', text: 'nur Schule' },
@@ -202,7 +229,7 @@ const modules: readonly FoundationModule[] = [
           ],
           answerId: 'schule',
         },
-        observation: 'Heute steht nur am Satzanfang groß. Schule ist das Nomen.',
+        observation: 'Heute steht nur am Satzanfang groß. Schule ist das Substantiv.',
         explanation: 'Großschreibung allein reicht nicht: Prüfe Bedeutung und Artikelprobe.',
         merksatz: 'Großschreibung allein reicht nicht als Nomenprobe.',
       },
@@ -215,7 +242,15 @@ const modules: readonly FoundationModule[] = [
         id: 'c1',
         title: 'Bestimmte Artikel',
         lead: 'der, die und das begleiten ein Nomen und zeigen, dass etwas Bestimmtes gemeint ist.',
-        concept: { term: 'bestimmter Artikel', definition: 'der, die, das nennen etwas genauer Bestimmtes.' },
+        concept: {
+          term: 'Artikel',
+          also: 'Begleiter',
+          definition: 'der, die und das sind bestimmte Artikel. ein und eine sind unbestimmte Artikel.',
+          pairs: [
+            { term: 'bestimmter Artikel', hint: 'der, die, das' },
+            { term: 'unbestimmter Artikel', hint: 'ein, eine' },
+          ],
+        },
         examples: ['der Hund', 'die Katze', 'das Haus'],
         try: {
           kind: 'choice',
@@ -254,7 +289,17 @@ const modules: readonly FoundationModule[] = [
         id: 'c3',
         title: 'Kasus = Fall',
         lead: 'Dieselbe Wortgruppe kann in vier Fällen (Kasus) stehen. Zu jedem Fall gehört eine Frage.',
-        concept: { term: 'Kasus', definition: 'Kasus bedeutet Fall. Es gibt Nominativ, Genitiv, Dativ und Akkusativ.' },
+        concept: {
+          term: 'Kasus',
+          also: 'grammatischer Fall',
+          definition: 'Die vier Kasus heißen Nominativ, Genitiv, Dativ und Akkusativ.',
+          pairs: [
+            { term: 'Nominativ', hint: 'Wer-oder-was-Fall' },
+            { term: 'Genitiv', hint: 'Wessen-Fall' },
+            { term: 'Dativ', hint: 'Wem-Fall' },
+            { term: 'Akkusativ', hint: 'Wen-oder-was-Fall' },
+          ],
+        },
         examples: ['Nominativ: Wer oder was?', 'Genitiv: Wessen?', 'Dativ: Wem?', 'Akkusativ: Wen oder was?'],
         try: {
           kind: 'classify',
@@ -310,7 +355,7 @@ const modules: readonly FoundationModule[] = [
           answerId: 'des',
         },
         observation: 'Wessen Spielzeug? Die Antwort ist des Hundes.',
-        explanation: 'des Hundes steht im Genitiv. Der Genitiv nennt oft eine Zugehörigkeit.',
+        explanation: 'des Hundes steht im Genitiv. Der Genitiv zeigt oft eine Zugehörigkeit.',
         merksatz: 'Genitiv fragt: Wessen?',
       },
       {
@@ -401,7 +446,16 @@ const modules: readonly FoundationModule[] = [
         id: 'c9',
         title: 'Femininum und Neutrum',
         lead: 'Auch die und das ändern sich in den Fällen. Merke die Tabellen.',
-        concept: { term: 'Genus', definition: 'Maskulin, feminin und neutrum haben eigene Artikelformen.' },
+        concept: {
+          term: 'Genus',
+          also: 'grammatisches Geschlecht',
+          definition: 'Maskulin, feminin und neutral haben eigene Artikelformen.',
+          pairs: [
+            { term: 'maskulin', hint: 'männlich' },
+            { term: 'feminin', hint: 'weiblich' },
+            { term: 'neutral', hint: 'sächlich' },
+          ],
+        },
         examples: [
           'feminin: die Frau – der Frau – der Frau – die Frau',
           'neutrum: das Kind – des Kindes – dem Kind – das Kind',
@@ -478,11 +532,20 @@ const modules: readonly FoundationModule[] = [
         id: 'a2',
         title: 'Positiv',
         lead: 'Die Grundform eines Adjektivs heißt Positiv.',
-        concept: { term: 'Positiv', definition: 'Der Positiv ist die Grundform ohne Vergleich.' },
+        concept: {
+          term: 'Komparation',
+          also: 'Steigerung von Adjektiven',
+          definition: 'Der Positiv ist die Grundstufe eines Adjektivs.',
+          pairs: [
+            { term: 'Positiv', hint: 'Grundstufe' },
+            { term: 'Komparativ', hint: '1. Steigerungsstufe' },
+            { term: 'Superlativ', hint: 'höchste Steigerungsstufe' },
+          ],
+        },
         examples: ['klein', 'schnell'],
         try: {
           kind: 'choice',
-          prompt: 'Welche Form ist die Grundform?',
+          prompt: 'Welche Form ist der Positiv (Grundstufe)?',
           options: [
             { id: 'klein', text: 'klein' },
             { id: 'kleiner', text: 'kleiner' },
@@ -490,7 +553,7 @@ const modules: readonly FoundationModule[] = [
           ],
           answerId: 'klein',
         },
-        observation: 'klein nennt die Eigenschaft, ohne zu vergleichen.',
+        observation: 'klein steht im Positiv und vergleicht noch nicht.',
         explanation: 'Der Positiv ist die Grundform.',
         merksatz: 'Positiv = Grundform.',
       },
@@ -498,7 +561,7 @@ const modules: readonly FoundationModule[] = [
         id: 'a3',
         title: 'Komparativ',
         lead: 'Beim Vergleich bekommt das Adjektiv oft die Endung -er.',
-        concept: { term: 'Komparativ', definition: 'Der Komparativ ist die Vergleichsform.' },
+        concept: { term: 'Komparativ', definition: 'Der Komparativ ist die 1. Steigerungsstufe.' },
         examples: ['kleiner', 'schneller'],
         try: {
           kind: 'choice',
@@ -529,7 +592,7 @@ const modules: readonly FoundationModule[] = [
           ],
           answerId: 'am',
         },
-        observation: 'am kleinsten nennt die höchste Stufe.',
+        observation: 'am kleinsten ist die höchste Stufe, der Superlativ.',
         explanation: 'Positiv ist die Grundform, Komparativ der Vergleich, Superlativ die höchste Stufe.',
         merksatz: 'Superlativ = höchste Steigerungsstufe.',
       },
@@ -621,7 +684,7 @@ const modules: readonly FoundationModule[] = [
         examples: ['größer als', 'schneller als'],
         try: {
           kind: 'compare',
-          prompt: 'Welche Fassung vergleicht einen Unterschied richtig?',
+          prompt: 'Welches Vergleichswort passt beim Unterschied: als oder wie?',
           left: 'größer wie',
           right: 'größer als',
           answer: 'right',
@@ -638,7 +701,7 @@ const modules: readonly FoundationModule[] = [
         examples: ['so groß wie', 'genauso schnell wie'],
         try: {
           kind: 'choice',
-          prompt: 'Welche Fassung vergleicht gleich?',
+          prompt: 'Welches Vergleichswort passt bei gleichem Maß: als oder wie?',
           options: [
             { id: 'als', text: 'so groß als' },
             { id: 'wie', text: 'so groß wie' },
@@ -716,7 +779,15 @@ const modules: readonly FoundationModule[] = [
         id: 'v3',
         title: 'Konjugieren',
         lead: 'Beim Konjugieren ändert sich die Verbform nach Person und Zahl.',
-        concept: { term: 'Konjugation', definition: 'Konjugieren heißt: die passende Verbform zur Person bilden.' },
+        concept: {
+          term: 'Konjugation',
+          definition: 'Konjugieren bedeutet: Ein Verb wird an Person und Numerus angepasst.',
+          pairs: [
+            { term: 'Infinitiv', hint: 'Grundform' },
+            { term: 'Personalform', hint: 'konjugierte Verbform' },
+            { term: 'Numerus', hint: 'Singular oder Plural' },
+          ],
+        },
         try: {
           kind: 'choice',
           prompt: 'Was bedeutet konjugieren?',
@@ -884,7 +955,7 @@ const modules: readonly FoundationModule[] = [
           answerId: 'sein',
         },
         observation: 'Ich habe gespielt nutzt haben. Er ist gekommen nutzt sein.',
-        explanation: 'haben oder sein trägt die Person. Das Partizip II nennt die Handlung.',
+        explanation: 'haben oder sein trägt die Person. Das Partizip II bezeichnet die Handlung.',
         merksatz: 'Perfekt = haben oder sein + Partizip II.',
       },
     ],
@@ -894,13 +965,25 @@ const modules: readonly FoundationModule[] = [
     steps: [
       {
         id: 't0',
-        title: 'Was sind Zeitformen?',
-        lead: 'Zeitformen ordnen Handlungen zeitlich ein: Gegenwart, Vergangenheit, Zukunft.',
-        concept: { term: 'Zeitform', definition: 'Eine Zeitform zeigt, wann etwas geschieht.' },
+        title: 'Was ist ein Tempus?',
+        lead: 'Das Tempus (Zeitform) ordnet eine Handlung zeitlich ein. Die Tempora sind Präsens, Präteritum, Perfekt, Plusquamperfekt, Futur I und Futur II.',
+        concept: {
+          term: 'Tempus',
+          also: 'Zeitform',
+          definition: 'Grammatische Zeitform. Mehrzahl: Tempora.',
+          pairs: [
+            { term: 'Präsens', hint: 'Gegenwart' },
+            { term: 'Präteritum', hint: 'einfache Vergangenheit' },
+            { term: 'Perfekt', hint: 'vollendete Vergangenheit' },
+            { term: 'Plusquamperfekt', hint: 'Vorvergangenheit' },
+            { term: 'Futur I', hint: 'Zukunft' },
+            { term: 'Futur II', hint: 'vollendete Zukunft' },
+          ],
+        },
         examples: ['Gegenwart', 'Vergangenheit', 'Zukunft'],
         try: {
           kind: 'choice',
-          prompt: 'Wozu dienen Zeitformen?',
+          prompt: 'Wozu dient das Tempus (Zeitform)?',
           options: [
             { id: 'zeit', text: 'zur zeitlichen Einordnung' },
             { id: 'gros', text: 'nur zur Großschreibung' },
@@ -909,7 +992,7 @@ const modules: readonly FoundationModule[] = [
         },
         observation: 'Zeitformen sagen, ob etwas jetzt, früher oder später geschieht.',
         explanation: 'Im Deutschen gibt es sechs gebräuchliche Zeitformen.',
-        merksatz: 'Zeitformen = zeitliche Einordnung.',
+        merksatz: 'Tempus = zeitliche Einordnung.',
       },
       {
         id: 't1',
@@ -926,7 +1009,7 @@ const modules: readonly FoundationModule[] = [
           ],
           answerId: 'gegenwart',
         },
-        observation: 'Ich lerne beschreibt die Gegenwart. Morgen schreibe ich nennt mit Zeitangabe Zukünftiges und bleibt im Präsens.',
+        observation: 'Ich lerne beschreibt die Gegenwart. Morgen schreibe ich bleibt mit einer Zeitangabe im Präsens und meint Zukünftiges.',
         explanation: 'Das Präsens ist die Gegenwartsform. Mit einer Zeitangabe kann es auch Zukünftiges ausdrücken.',
         merksatz: 'Präsens = Gegenwart.',
       },
@@ -1013,7 +1096,7 @@ const modules: readonly FoundationModule[] = [
           answerId: 'futur2',
         },
         observation: 'werden, gelernt und haben bilden zusammen das Futur II.',
-        explanation: 'Futur II bildet man mit werden, dem Partizip II und haben oder sein. Es nennt eine vollendete Zukunft.',
+        explanation: 'Futur II bildet man mit werden, dem Partizip II und haben oder sein. Es steht für eine vollendete Zukunft.',
         merksatz: 'Futur II = werden + Partizip II + haben/sein.',
       },
       {
@@ -1092,7 +1175,14 @@ const modules: readonly FoundationModule[] = [
         id: 'p1',
         title: 'Aktiv',
         lead: 'Der Junge schießt den Ball.',
-        concept: { term: 'Aktiv', definition: 'Im Aktiv handelt das Subjekt selbst.' },
+        concept: {
+          term: 'Genus verbi',
+          definition: 'Genus verbi bezeichnet die Handlungsrichtung eines Verbs.',
+          pairs: [
+            { term: 'Aktiv', hint: 'die handelnde Person steht im Mittelpunkt' },
+            { term: 'Passiv', hint: 'die Handlung steht im Mittelpunkt' },
+          ],
+        },
         try: {
           kind: 'choice',
           prompt: 'Wer handelt in diesem Satz selbst?',
@@ -1147,7 +1237,7 @@ const modules: readonly FoundationModule[] = [
         id: 'p3b',
         title: 'Umwandlung',
         lead: 'Der Lehrer erklärt die Aufgabe.',
-        concept: { term: 'Umwandlung', definition: 'Objekt des Aktivs wird Subjekt des Passivs.' },
+        concept: { term: 'Umwandlung', definition: 'Das Akkusativobjekt des Aktivsatzes wird im Passivsatz zum Subjekt.' },
         examples: ['Objekt: die Aufgabe', 'Passiv: Die Aufgabe wird vom Lehrer erklärt.'],
         try: {
           kind: 'choice',
@@ -1219,7 +1309,7 @@ const modules: readonly FoundationModule[] = [
         concept: { term: 'worden', definition: 'worden gehört zum Passiv; geworden gehört zu werden als Vollverb.' },
         try: {
           kind: 'compare',
-          prompt: 'Welche Fassung ist das Passiv Perfekt?',
+          prompt: 'Welche Passivform ist korrekt?',
           left: 'Der Ball ist geschossen geworden.',
           right: 'Der Ball ist geschossen worden.',
           answer: 'right',
@@ -1258,7 +1348,7 @@ const modules: readonly FoundationModule[] = [
           ],
           correctIds: ['wird', 'geschossen', 'werden'],
         },
-        observation: 'wird geschossen werden nennt eine zukünftige Handlung.',
+        observation: 'wird geschossen werden steht für eine zukünftige Handlung.',
         explanation: 'Passiv Futur I = wird oder werden + Partizip II + werden.',
       },
       {
@@ -1291,7 +1381,7 @@ const modules: readonly FoundationModule[] = [
           ],
           answerId: 'ohne',
         },
-        observation: 'vom Jungen nennt den Täter. Der zweite Satz bleibt ohne diese Angabe richtig.',
+        observation: 'vom Jungen gibt den Täter an. Der zweite Satz bleibt ohne diese Angabe richtig.',
         explanation: 'Im Passiv kann der Täter wegbleiben, wenn er unbekannt oder unwichtig ist.',
         merksatz: 'Der Täter kann im Passiv wegbleiben.',
       },
@@ -1374,7 +1464,7 @@ const modules: readonly FoundationModule[] = [
         examples: ['der Morgen', 'der Mittag', 'der Abend', 'die Nacht'],
         try: {
           kind: 'choice',
-          prompt: 'Welche Schreibung nennt die Tageszeit als Nomen?',
+          prompt: 'Welche Schreibweise zeigt die Tageszeit als Substantiv?',
           options: [
             { id: 'nomen', text: 'am Morgen' },
             { id: 'adv', text: 'morgens' },
@@ -1409,7 +1499,7 @@ const modules: readonly FoundationModule[] = [
         examples: ['Deutsch', 'Englisch', 'aber: deutsches Brot'],
         try: {
           kind: 'choice',
-          prompt: 'Welche Fassung nennt das Adjektiv klein?',
+          prompt: 'In welcher Schreibung bleibt das Adjektiv klein?',
           options: [
             { id: 'klein', text: 'deutsches Brot' },
             { id: 'sprache', text: 'Deutsch' },
@@ -1494,8 +1584,17 @@ const modules: readonly FoundationModule[] = [
       },
       {
         id: 's2',
-        title: 'Doppelter Mitlaut',
-        lead: 'Nach kurzem betonten Vokal steht häufig ein doppelter Mitlaut.',
+        title: 'Vokal und Doppelkonsonant',
+        lead: 'Nach kurzem betontem Vokal (Selbstlaut) steht häufig ein Doppelkonsonant (doppelter Mitlaut).',
+        concept: {
+          term: 'Vokal',
+          also: 'Selbstlaut',
+          definition: 'a, e, i, o, u.',
+          pairs: [
+            { term: 'Konsonant', hint: 'Mitlaut' },
+            { term: 'Doppelkonsonant', hint: 'doppelter Mitlaut, z. B. mm, tt' },
+          ],
+        },
         examples: ['kommen', 'bitter', 'Sommer', 'rennen', 'Halle', 'Koffer'],
         try: {
           kind: 'compare',
@@ -1590,7 +1689,10 @@ const modules: readonly FoundationModule[] = [
         id: 's8',
         title: 'das oder dass',
         lead: 'das zeigt auf etwas. dass leitet einen Nebensatz ein.',
-        concept: { term: 'dass', definition: 'dass ist die Konjunktion für Nebensätze.' },
+        concept: {
+          term: 'Konjunktion',
+          definition: 'dass ist eine Konjunktion und leitet einen Nebensatz ein. das kann Artikel oder Pronomen sein.',
+        },
         examples: ['Das Buch liegt hier.', 'Ich weiß, dass du kommst.'],
         try: {
           kind: 'choice',
@@ -1608,7 +1710,7 @@ const modules: readonly FoundationModule[] = [
       {
         id: 's8b',
         title: 'seit oder seid',
-        lead: 'seit nennt einen Zeitpunkt. seid ist eine Form von sein.',
+        lead: 'seit gibt einen Zeitpunkt an. seid ist eine Form von sein.',
         concept: { term: 'seit/seid', definition: 'seit = Präposition/Zeit; seid = ihr seid.' },
         examples: ['seit Montag', 'ihr seid'],
         try: {
@@ -1620,7 +1722,7 @@ const modules: readonly FoundationModule[] = [
           ],
           answerId: 'seit',
         },
-        observation: 'seit Montag nennt den Zeitpunkt. Ihr seid pünktlich nutzt seid.',
+        observation: 'seit Montag gibt den Zeitpunkt an. In Ihr seid pünktlich steht seid.',
         explanation: 'seit und seid klingen gleich, haben aber verschiedene Aufgaben.',
         merksatz: 'seit = Zeit. seid = sein.',
       },
@@ -1685,7 +1787,7 @@ const modules: readonly FoundationModule[] = [
         examples: ['Ich bleibe drinnen, weil es regnet.'],
         try: {
           kind: 'compare',
-          prompt: 'Welche Fassung ist richtig?',
+          prompt: 'Welche Schreibweise ist richtig?',
           left: 'Ich bleibe drinnen weil es regnet.',
           right: 'Ich bleibe drinnen, weil es regnet.',
           answer: 'right',

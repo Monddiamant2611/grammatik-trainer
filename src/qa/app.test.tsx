@@ -30,20 +30,25 @@ describe('Startseite', () => {
     expect(screen.getByRole('heading', { name: 'Grammatik-Trainer' })).toBeTruthy()
     expect(screen.getByText('Lernen. Ausprobieren. Sicher anwenden.')).toBeTruthy()
     expect(screen.getAllByRole('button', { name: 'Tutorial starten' })).toHaveLength(8)
-    expect(screen.getAllByRole('button', { name: 'Zuerst Tutorial' })).toHaveLength(8)
+    expect(screen.getAllByRole('button', { name: 'Gemischt üben' })).toHaveLength(8)
+    expect(screen.queryByRole('button', { name: 'Zuerst Tutorial' })).toBeNull()
     const mixed = screen.getByRole('button', { name: 'Gemischt trainieren' })
     expect((mixed as HTMLButtonElement).disabled).toBe(true)
+    expect(screen.getByRole('heading', { name: 'Prüfungsmodus' })).toBeTruthy()
+
+    const card = screen.getByRole('heading', { name: 'Substantive (Nomen) erkennen' }).closest('article')
+    expect(card?.querySelectorAll('button')).toHaveLength(2)
 
     await userEvent.click(screen.getAllByRole('button', { name: 'Tutorial starten' })[0]!)
     expect(screen.getByText(/ohne Bewertung/)).toBeTruthy()
     expect(screen.getByText(/Tutorial/)).toBeTruthy()
   })
 
-  it('leitet Erstbesuch vom Training ins Tutorial', async () => {
-    const { unmount } = renderApp()
-    await userEvent.click(screen.getAllByRole('button', { name: 'Zuerst Tutorial' })[0]!)
-    expect(screen.getAllByText(/ohne Bewertung/).length).toBeGreaterThan(0)
-    expect(screen.getByText(/Tutorial/)).toBeTruthy()
-    unmount()
+  it('öffnet das Training auch ohne abgeschlossenes Tutorial', async () => {
+    renderApp()
+    await userEvent.click(screen.getAllByRole('button', { name: 'Gemischt üben' })[0]!)
+    expect(screen.queryByText(/ohne Bewertung/)).toBeNull()
+    expect(screen.getByText(/Aufgabe 1 von 20/)).toBeTruthy()
+    expect(screen.getByRole('button', { name: 'Prüfen' })).toBeTruthy()
   })
 })
