@@ -45,8 +45,11 @@ function pick<T>(id: string, items: readonly T[]): T {
 export function withCaseContrast(sentence: CaseSentence): CaseSentence {
   const needed = sentence.difficulty === 1 ? 2 : 3
   if (caseGroupCount(sentence.sentence) >= needed) return sentence
-  const tail = sentence.difficulty === 1 ? pick(sentence.id, LIGHT) : pick(sentence.id, RICH)
+  const pool = sentence.difficulty === 1 ? LIGHT : RICH
+  const tail = [pick(sentence.id, pool), ...pool].find((item) => sentence.targets.every((target) => !item.includes(target.surface)))
+  if (!tail) return sentence
   const next = sentence.sentence.replace(/\.$/, `${tail}.`)
   if (!sentence.targets.every((target) => next.includes(target.surface))) return sentence
+  if (sentence.targets.some((target) => next.split(target.surface).length > 2)) return sentence
   return { ...sentence, sentence: next }
 }

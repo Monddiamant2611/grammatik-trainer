@@ -50,7 +50,16 @@ function task(input: Task): Task {
   if (!input.feedbackCorrect.trim() || !input.feedbackIncorrect.trim()) {
     throw new Error(`Feedback fehlt: ${input.id}`)
   }
+  if (input.target && (!input.stimulus || !input.stimulus.includes(input.target.surface))) {
+    throw new Error(`Ziel fehlt im Satz: ${input.id}`)
+  }
   return input
+}
+
+function marked(sentence: string, surface: string): { surface: string } | undefined {
+  const escaped = surface.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  const found = sentence.match(new RegExp(`(?<![\\p{L}\\p{N}])${escaped}(?![\\p{L}\\p{N}])`, 'gu'))
+  return found?.length === 1 ? { surface } : undefined
 }
 
 function maxDifficulty(base: Difficulty, floor: Difficulty): Difficulty {
@@ -110,6 +119,7 @@ export function buildNounTasks(): Task[] {
         tags: ['nomen', 'abgrenzung'],
         prompt: `Ist „${word}“ in diesem Satz ein Substantiv (Nomen)?`,
         stimulus: item.sentence,
+        target: marked(item.sentence, word),
         interaction: {
           kind: 'choose',
           layout: 'pair',
@@ -227,6 +237,7 @@ export function buildNounTasks(): Task[] {
       tags: ['nomen', 'eigenname'],
       prompt: `Ist „${name}“ ein Substantiv (Nomen)?`,
       stimulus: host?.sentence ?? name,
+      target: host && host.sentence.length > name.length + 4 ? marked(host.sentence, name) : undefined,
       interaction: { kind: 'choose', layout: 'pair', options: nounChoice, correctId: 'Nomen' },
       feedbackCorrect: `„${name}“ ist ein Eigenname. Auch Eigennamen sind Substantive.`,
       feedbackIncorrect: `„${name}“ ist ein Eigenname. Auch Eigennamen sind Substantive.`,
@@ -275,6 +286,7 @@ export function buildCaseTasks(): Task[] {
     for (const [index, target] of sentence.targets.entries()) {
       requireWord(sentence.sentence, target.surface, sentence.id)
       const reason = `„${target.label}“ steht im ${caseLabels[target.caseId]}, weil die Wortgruppe auf „${caseQuestions[target.caseId]}“ antwortet.`
+      const spot = { surface: target.surface }
       tasks.push(task({
         id: `case-id-${sentence.id}-${index}`,
         area: 'cases',
@@ -282,8 +294,11 @@ export function buildCaseTasks(): Task[] {
         typeLabel: 'Kasus bestimmen',
         difficulty: sentence.difficulty,
         tags: ['fall', target.caseId],
-        prompt: `In welchem ${withBridge(sentence.difficulty, 'Kasus', 'Fall')} steht „${target.label}“?`,
+        prompt: sentence.difficulty === 1
+          ? 'In welchem Kasus (Fall) steht die markierte Wortgruppe?'
+          : 'Bestimme den Kasus der markierten Wortgruppe.',
         stimulus: sentence.sentence,
+        target: spot,
         interaction: { kind: 'choose', layout: 'stack', options: caseOptions, correctId: caseLabels[target.caseId] },
         feedbackCorrect: `Richtig. ${reason}`,
         feedbackIncorrect: `Prüfe, welche Wortgruppe auf „${caseQuestions[target.caseId]}“ antwortet. ${reason}`,
@@ -295,11 +310,14 @@ export function buildCaseTasks(): Task[] {
         typeLabel: 'Passende Frage',
         difficulty: sentence.difficulty,
         tags: ['fall', 'frage'],
-        prompt: `Welche Frage passt zu diesem ${withBridge(sentence.difficulty, 'Kasus', 'Fall')}?`,
+        prompt: sentence.difficulty === 1
+          ? 'Mit welcher Frage kannst du den Kasus (Fall) der markierten Wortgruppe bestimmen?'
+          : 'Welche Kasusfrage passt zur markierten Wortgruppe?',
         stimulus: sentence.sentence,
+        target: spot,
         interaction: { kind: 'choose', layout: 'stack', options: questionOptions, correctId: caseQuestions[target.caseId] },
         feedbackCorrect: `Richtig. ${reason}`,
-        feedbackIncorrect: `Prüfe die Rolle der Wortgruppe im Satz. ${reason}`,
+        feedbackIncorrect: `Prüfe die Rolle der markierten Wortgruppe im Satz. ${reason}`,
       }))
     }
   }
@@ -441,6 +459,14 @@ function gainsUmlaut(base: string, next: string): boolean {
   return ['ä', 'ö', 'ü'].some((mark) => next.includes(mark) && !base.includes(mark))
 }
 
+function stripMarks(value: string): string {
+  return value.replaceAll('ä', 'a').replaceAll('ö', 'o').replaceAll('ü', 'u')
+}
+
+function addMarks(value: string): string {
+  return value.replaceAll('a', 'ä').replaceAll('o', 'ö').replaceAll('u', 'ü')
+}
+
 export function buildAdjectiveTasks(): Task[] {
   const tasks: Task[] = []
   const degrees = [
@@ -508,41 +534,64 @@ export function buildAdjectiveTasks(): Task[] {
       feedbackCorrect: `${item.positive}, ${item.comparative}, ${item.superlative}.`,
       feedbackIncorrect: `Die Reihenfolge ist ${item.positive}, ${item.comparative}, ${item.superlative}.`,
     }))
-    const umlaut = gainsUmlaut(item.positive, item.comparative)
+    const umlautChoices = distinct([
+      item.comparative,
+      stripMarks(item.comparative),
+      addMarks(item.comparative),
+      `${item.positive}er`,
+      `${item.positive}ste`,
+    ]).slice(0, 4)
+    if (umlautChoices.length < 2 || !umlautChoices.includes(item.comparative)) {
+      throw new Error(`Komparativ nicht unterscheidbar: ${item.positive}`)
+    }
     tasks.push(task({
       id: `adj-umlaut-${item.id}`,
       area: 'adjectives',
       type: 'adj-umlaut',
-      typeLabel: 'Umlaut erkennen',
+      typeLabel: 'Komparativ wählen',
       difficulty: item.pattern === 'umlaut' || item.pattern === 'irregular' ? 2 : 1,
       tags: ['adjektiv', 'umlaut'],
-      prompt: `Bekommt „${item.positive}“ im Komparativ einen Umlaut?`,
-      stimulus: `${item.positive} → ${item.comparative}`,
-      interaction: { kind: 'bool', correct: umlaut },
-      feedbackCorrect: umlaut
-        ? `${item.comparative} hat einen Umlaut, ${item.positive} noch nicht.`
-        : `${item.comparative} übernimmt keinen neuen Umlaut.`,
-      feedbackIncorrect: umlaut
-        ? `${item.comparative} hat einen Umlaut, ${item.positive} noch nicht.`
-        : `${item.comparative} übernimmt keinen neuen Umlaut.`,
+      prompt: `Welche Komparativform von „${item.positive}“ ist richtig?`,
+      interaction: { kind: 'choose', layout: 'stack', options: options(umlautChoices), correctId: item.comparative },
+      feedbackCorrect: gainsUmlaut(item.positive, item.comparative)
+        ? `Der Komparativ lautet ${item.comparative}. Der Stammvokal bekommt einen Umlaut.`
+        : `Der Komparativ lautet ${item.comparative}. Der Stammvokal bleibt hier ohne neuen Umlaut.`,
+      feedbackIncorrect: gainsUmlaut(item.positive, item.comparative)
+        ? `Der Komparativ lautet ${item.comparative}. Der Stammvokal bekommt einen Umlaut.`
+        : `Der Komparativ lautet ${item.comparative}. Der Stammvokal bleibt hier ohne neuen Umlaut.`,
     }))
     const irregular = item.pattern === 'irregular'
+    const series = `${item.positive}, ${item.comparative}, ${item.superlative}`
+    const seriesOptions = distinct([
+      series,
+      `${item.positive}, ${stripMarks(item.comparative)}er, am ${stripMarks(item.positive)}sten`,
+      `${item.positive}, ${addMarks(item.positive)}er, am ${addMarks(item.positive)}sten`,
+      `${item.comparative}, ${item.positive}, ${item.superlative}`,
+      `${item.positive}, ${item.positive}, ${item.positive}`,
+    ]).slice(0, 3)
+    if (seriesOptions.filter((option) => option !== series).length < 1) {
+      throw new Error(`Steigerung ohne Ablenkung: ${item.positive}`)
+    }
     tasks.push(task({
       id: `adj-regular-${item.id}`,
       area: 'adjectives',
       type: 'adj-regular',
-      typeLabel: 'Regelmäßig oder unregelmäßig',
+      typeLabel: 'Steigerung wählen',
       difficulty: irregular ? 3 : 2,
       tags: ['adjektiv', irregular ? 'unregelmäßig' : 'regelmäßig'],
-        prompt: `Ist die Komparation von „${item.positive}“ unregelmäßig?`,
-      stimulus: `${item.positive}, ${item.comparative}, ${item.superlative}`,
-      interaction: { kind: 'bool', correct: irregular },
+      prompt: `Welche Steigerung von „${item.positive}“ ist richtig?`,
+      interaction: {
+        kind: 'choose',
+        layout: 'stack',
+        options: options(seriesOptions),
+        correctId: series,
+      },
       feedbackCorrect: irregular
-        ? `${item.positive}, ${item.comparative}, ${item.superlative} folgt nicht der einfachen Endung. Die Steigerung ist unregelmäßig.`
-        : `${item.positive}, ${item.comparative}, ${item.superlative} folgt einer der behandelten Regeln.`,
+        ? `${series} folgt nicht der einfachen Endung. Die Steigerung ist unregelmäßig.`
+        : `${series} ist die passende Steigerung.`,
       feedbackIncorrect: irregular
-        ? `${item.positive}, ${item.comparative}, ${item.superlative} folgt nicht der einfachen Endung. Die Steigerung ist unregelmäßig.`
-        : `${item.positive}, ${item.comparative}, ${item.superlative} folgt einer der behandelten Regeln.`,
+        ? `${series} folgt nicht der einfachen Endung. Die Steigerung ist unregelmäßig.`
+        : `${series} ist die passende Steigerung.`,
     }))
   }
 
@@ -621,31 +670,82 @@ function uniquePersons(forms: Record<Person, string>, form: string): Person[] {
   return persons.filter((person) => forms[person] === form)
 }
 
+const personLabels: Record<Person, string> = {
+  ich: '1. Person Singular',
+  du: '2. Person Singular',
+  er: '3. Person Singular',
+  wir: '1. Person Plural',
+  ihr: '2. Person Plural',
+  sie: '3. Person Plural',
+}
+
+function personContext(infinitive: string, person: Person, form: string): string {
+  if (infinitive === 'sein') {
+    const line: Record<Person, string> = {
+      ich: 'Heute bin ich da.',
+      du: 'Heute bist du da.',
+      er: 'Mia ist da.',
+      wir: 'Wir sind da.',
+      ihr: 'Ihr seid da.',
+      sie: 'Mia und Paul sind da.',
+    }
+    return line[person]
+  }
+  if (infinitive === 'haben') {
+    const line: Record<Person, string> = {
+      ich: 'Heute habe ich Zeit.',
+      du: 'Heute hast du Zeit.',
+      er: 'Mia hat Zeit.',
+      wir: 'Wir haben Zeit.',
+      ihr: 'Ihr habt Zeit.',
+      sie: 'Mia und Paul haben Zeit.',
+    }
+    return line[person]
+  }
+  if (person === 'ich') return `Heute ${form} ich gerne.`
+  if (person === 'du') return `Heute ${form} du gerne.`
+  if (person === 'er') return `Mia ${form} gerne.`
+  if (person === 'wir') return `Wir ${form} gerne.`
+  if (person === 'ihr') return `Ihr ${form} gerne.`
+  return `Mia und Paul ${form} gerne.`
+}
+
+function conjugationPrompt(infinitive: string, person: Person, difficulty: Difficulty): string {
+  if (difficulty === 1) return `Konjugiere „${infinitive}“ für „${person}“.`
+  if (difficulty === 2) return `Konjugiere „${infinitive}“ in der ${personLabels[person]}.`
+  return `Bilde die ${personLabels[person]} von „${infinitive}“ im Präsens.`
+}
+
 export function buildVerbTasks(): Task[] {
   const tasks: Task[] = []
-  const personOptions = options([...persons])
+  const personOptions = options(persons.map((person) => personLabels[person]))
   for (const verb of verbParadigms) {
     const distinctForms = distinct(persons.map((person) => verb.forms[person]))
     for (const person of persons) {
       const form = verb.forms[person]
       const owners = uniquePersons(verb.forms, form)
+      const contextual = owners.length > 1 || verb.difficulty >= 2
+      const sentence = contextual ? personContext(verb.infinitive, person, form) : undefined
+      if (sentence) requireWord(sentence, form, `${verb.infinitive}-${person}`)
       const personNote = [
         person === 'er' ? ' Die Form gilt ebenso für sie und es.' : '',
         person === 'sie' ? ' sie meint hier die Mehrzahl. Die Höflichkeitsform Sie hat dieselbe Form.' : '',
-        owners.length > 1 ? ` Dieselbe Form steht auch bei ${owners.filter((item) => item !== person).join(' und ')}.` : '',
       ].join('')
-      if (owners.length === 1) tasks.push(task({
+      tasks.push(task({
         id: `verb-person-${verb.infinitive}-${person}`,
         area: 'verbs',
         type: 'verb-person',
         typeLabel: 'Person und Numerus',
-        difficulty: verb.difficulty,
+        difficulty: owners.length > 1 ? maxDifficulty(verb.difficulty, 2) : verb.difficulty,
         tags: ['verb', verb.pattern],
-        prompt: `Welche Person und welchen ${withBridge(verb.difficulty, 'Numerus', 'Singular oder Plural')} hat die Personalform „${form}“?`,
-        stimulus: `${verb.infinitive}: ${form}`,
-        interaction: { kind: 'choose', layout: 'stack', options: personOptions, correctId: person },
-        feedbackCorrect: `${form} gehört zu ${person}.${personNote}`,
-        feedbackIncorrect: `${form} gehört zu ${person}.${personNote}`,
+        prompt: contextual
+          ? 'Bestimme Person und Numerus der markierten Personalform.'
+          : `Bestimme Person und ${withBridge(verb.difficulty, 'Numerus', 'Singular oder Plural')} der Personalform „${form}“.`,
+        stimulus: sentence ?? `${verb.infinitive}: ${form}`,
+        target: sentence ? { surface: form } : undefined,
+        interaction: { kind: 'choose', layout: 'stack', options: personOptions, correctId: personLabels[person] },
+        feedbackCorrect: `${form} ist ${personLabels[person]}.${personNote}`,
+        feedbackIncorrect: `${form} ist ${personLabels[person]}.${personNote}`,
       }))
       tasks.push(task({
         id: `verb-form-${verb.infinitive}-${person}`,
@@ -654,13 +754,11 @@ export function buildVerbTasks(): Task[] {
         typeLabel: 'Konjugation',
         difficulty: verb.difficulty,
         tags: ['verb', 'präsens'],
-        prompt: verb.difficulty === 1
-          ? `Konjugiere „${verb.infinitive}“ für „${person}“ (an Person und Numerus anpassen).`
-          : `Konjugiere „${verb.infinitive}“ für „${person}“.`,
+        prompt: conjugationPrompt(verb.infinitive, person, verb.difficulty),
         stimulus: verb.infinitive,
         interaction: { kind: 'choose', layout: 'stack', options: options(distinctForms), correctId: form },
-        feedbackCorrect: `${person} ${form}. Das ist die Präsensform von ${verb.infinitive}.${personNote}`,
-        feedbackIncorrect: `${person} ${form}. Das ist die Präsensform von ${verb.infinitive}.${personNote}`,
+        feedbackCorrect: `${personLabels[person]}: ${form}. Das ist die Präsensform von ${verb.infinitive}.${personNote}`,
+        feedbackIncorrect: `${personLabels[person]}: ${form}. Das ist die Präsensform von ${verb.infinitive}.${personNote}`,
       }))
     }
   }
@@ -781,17 +879,23 @@ export function buildTenseTasks(): Task[] {
       const tokens = wordTokens(form.sentence)
       const partIds = idsForWords(tokens, form.parts, `${pool.id}-${tense}`)
       const hard = tense === 'plusquam' || tense === 'futur2'
+      const difficulty = hard ? 3 : maxDifficulty(pool.difficulty, tense === 'praesens' || tense === 'praeteritum' ? 1 : 2)
+      const group = form.parts.join(' ')
+      const groupTarget = form.sentence.includes(group) ? { surface: group } : undefined
       tasks.push(task({
         id: `tense-id-${pool.id}-${tense}`,
         area: 'tenses',
         type: 'tense-identify',
         typeLabel: 'Tempus bestimmen',
-        difficulty: hard ? 3 : maxDifficulty(pool.difficulty, tense === 'praesens' || tense === 'praeteritum' ? 1 : 2),
+        difficulty,
         tags: ['zeit', tense],
-        prompt: (hard ? 3 : maxDifficulty(pool.difficulty, tense === 'praesens' || tense === 'praeteritum' ? 1 : 2)) === 1
+        prompt: difficulty === 1
           ? 'Bestimme das Tempus (Zeitform).'
-          : 'Bestimme das Tempus.',
+          : groupTarget
+            ? 'Bestimme das Tempus der markierten Verbgruppe.'
+            : 'Bestimme das Tempus.',
         stimulus: form.sentence,
+        target: groupTarget,
         interaction: { kind: 'choose', layout: 'stack', options: options(labels), correctId: tenseLabels[tense] },
         feedbackCorrect: tenseFeedback(tense, form.parts),
         feedbackIncorrect: tenseFeedback(tense, form.parts),
@@ -990,8 +1094,13 @@ export function buildVoiceTasks(): Task[] {
       typeLabel: 'Tempus im Passiv',
       difficulty: pair.difficulty,
       tags: ['genus', pair.tense],
-      prompt: 'In welchem Tempus steht dieses Passiv?',
+      prompt: pair.difficulty === 1
+        ? 'In welchem Tempus steht dieses Passiv?'
+        : pair.difficulty === 2
+          ? 'Bestimme das Tempus dieses Passivs.'
+          : 'Bestimme Genus verbi und Tempus.',
       stimulus: pair.passive,
+      target: marked(pair.passive, pair.parts.join(' ')),
       interaction: { kind: 'choose', layout: 'stack', options: tenseOptions, correctId: voiceTenseLabels[pair.tense] },
       feedbackCorrect: `Die Form ${pair.parts.join(' ')} ist ${voiceTenseLabels[pair.tense]}.`,
       feedbackIncorrect: `Die Form ${pair.parts.join(' ')} ist ${voiceTenseLabels[pair.tense]}.`,
@@ -1132,6 +1241,7 @@ export function buildCapitalizationTasks(): Task[] {
         tags: ['großschreibung', token.reason],
         prompt: `Warum steht „${token.correct}“ groß?`,
         stimulus: sentence.correctSentence,
+        target: marked(sentence.correctSentence, token.correct),
         interaction: { kind: 'choose', layout: 'stack', options: options([label, ...extras]), correctId: label },
         feedbackCorrect: token.note ?? `„${token.correct}“ steht groß, weil es als ${label} gilt.`,
         feedbackIncorrect: token.note ?? `„${token.correct}“ steht groß, weil es als ${label} gilt.`,
@@ -1155,19 +1265,6 @@ export function buildSpellingTasks(): Task[] {
       interaction: { kind: 'choose', layout: 'pair', options: options([pair.wrong, pair.correct]), correctId: pair.correct },
       feedbackCorrect: pair.note,
       feedbackIncorrect: `„${pair.wrong}“ ist nicht korrekt. ${pair.note}`,
-    }))
-    tasks.push(task({
-      id: `spell-bool-${pair.id}`,
-      area: 'spelling',
-      type: 'spell-bool',
-      typeLabel: 'Richtig oder falsch',
-      difficulty: pair.difficulty,
-      tags: ['rechtschreibung', pair.topic],
-      prompt: 'Stimmt diese Schreibung?',
-      stimulus: pair.wrong,
-      interaction: { kind: 'bool', correct: false },
-      feedbackCorrect: `„${pair.wrong}“ ist falsch. Richtig ist „${pair.correct}“. ${pair.note}`,
-      feedbackIncorrect: `„${pair.wrong}“ ist falsch. Richtig ist „${pair.correct}“. ${pair.note}`,
     }))
     tasks.push(task({
       id: `spell-fix-${pair.id}`,

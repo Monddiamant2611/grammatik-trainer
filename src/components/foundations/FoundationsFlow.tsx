@@ -3,6 +3,7 @@ import { areaById, type AreaId } from '../../domain/areas'
 import type { FoundationStep, FoundationTry } from '../../foundations/types'
 import { foundationModule, tutorialModule } from '../../foundations/content'
 import { useProgress } from '../../progress/ProgressContext'
+import { MarkedStimulus } from '../MarkedStimulus'
 import { ChoiceList, ClassifyBoard, OrderBoard } from '../interactions/TaskInteraction'
 
 export function FoundationsFlow({
@@ -69,7 +70,7 @@ function StepBody({ step, onNext, onBack }: { step: FoundationStep; onNext: () =
 
   return (
     <div className="foundation-step">
-      <p className="prompt">{step.lead}</p>
+      {step.mark ? <MarkedStimulus text={step.lead} target={step.mark} /> : <p className="prompt">{step.lead}</p>}
       {step.concept && (
         <aside className="concept-card" aria-label={`Begriff: ${step.concept.term}`}>
           <p className="merke-label">Begriff</p>

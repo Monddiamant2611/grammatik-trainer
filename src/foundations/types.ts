@@ -40,6 +40,8 @@ export interface FoundationStep {
   id: string
   title: string
   lead: string
+  /** Zielstelle im Einleitungssatz, wenn die Frage eine Wortgruppe im Satz meint. */
+  mark?: string
   examples?: readonly string[]
   concept?: ConceptCard
   try: FoundationTry

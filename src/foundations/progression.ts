@@ -758,10 +758,22 @@ function special(parent: string): FoundationStep[] {
   return []
 }
 
+function markQuoted(step: FoundationStep): FoundationStep {
+  if (step.mark || step.try.kind !== 'choice') return step
+  const quoted = step.try.prompt.match(/„([^“]+)“/)
+  const phrase = quoted?.[1]
+  if (!phrase || step.lead.length < phrase.length + 8) return step
+  const needle = phrase.toLocaleLowerCase('de')
+  const haystack = step.lead.toLocaleLowerCase('de')
+  const index = haystack.indexOf(needle)
+  if (index < 0) return step
+  return { ...step, mark: step.lead.slice(index, index + phrase.length) }
+}
+
 export function expandModules(source: readonly FoundationModule[]): FoundationModule[] {
   const modules = source.map((module) => ({
     ...module,
-    steps: module.steps.flatMap((step) => [slim(step), ...packed(step.id), ...special(step.id)]),
+    steps: module.steps.flatMap((step) => [slim(step), ...packed(step.id), ...special(step.id)].map(markQuoted)),
   }))
   const ids = modules.flatMap((module) => module.steps.map((step) => step.id))
   const duplicate = ids.find((id, index) => ids.indexOf(id) !== index)

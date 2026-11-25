@@ -52,6 +52,8 @@ export interface Task {
   tags: string[]
   prompt: string
   stimulus?: string
+  /** Sichtbare Zielstelle im Stimulus. Die Markierung benennt den Gegenstand, sie ist keine Lösungshilfe. */
+  target?: { surface: string }
   interaction: Interaction
   feedbackCorrect: string
   feedbackIncorrect: string

@@ -4,6 +4,7 @@ import { allTasks, tasksFor } from '../src/engine/generate'
 import { mulberry32 } from '../src/engine/random'
 import { buildRound } from '../src/engine/select'
 import { auditSummary, denseTutorialSteps, positionReports, weakCaseContexts } from '../src/qa/content-audit'
+import { contentFlags, flagReport } from '../src/qa/content-flags'
 import { emptyHistory, withHistory } from '../src/progress/model'
 
 const all = allTasks()
@@ -76,6 +77,12 @@ if (weakCaseContexts().length > 0) {
 }
 if (denseTutorialSteps().length > 0) {
   console.error('FAIL tutorial density', denseTutorialSteps().map((step) => step.id).join(', '))
+  ok = false
+}
+const flags = contentFlags(all)
+for (const line of flagReport(flags)) console.log(line)
+if (flags.length > 0) {
+  console.error('FAIL content flags', flags.length)
   ok = false
 }
 
