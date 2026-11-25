@@ -1,7 +1,8 @@
 import type { AreaId } from '../domain/areas'
 import type { FoundationModule } from './types'
+import { expandModules } from './progression'
 
-export const modules: readonly FoundationModule[] = [
+const sourceModules: readonly FoundationModule[] = [
   {
     area: 'nouns',
     steps: [
@@ -1836,6 +1837,8 @@ export const modules: readonly FoundationModule[] = [
     ],
   },
 ]
+
+export const modules = expandModules(sourceModules)
 
 const byArea = new Map(modules.map((module) => [module.area, module]))
 

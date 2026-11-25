@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import type { Answer, SortBucket, SortItem, Task, ToggleToken, WordToken } from '../../engine/types'
-import { rngFromString, shuffle } from '../../engine/random'
+import { rngFromString, shuffleVisible } from '../../engine/random'
 
 export type BoardTone = 'training' | 'explore' | 'exam'
 
@@ -51,6 +51,7 @@ export function TaskInteraction({ task, answer, locked, tone, onChange }: BoardP
         solution={interaction.solution}
         locked={locked}
         tone={tone}
+        seed={task.id}
         onChange={(map) => onChange({ kind: 'map', map })}
       />
     )
@@ -173,7 +174,7 @@ export function ChoiceList({
   seed: string
   onChange: (id: string) => void
 }) {
-  const [order] = useState(() => shuffle(options, rngFromString(seed)))
+  const [order] = useState(() => shuffleVisible(options, rngFromString(seed)))
   return (
     <div className={`choice-list ${layout === 'pair' ? 'choice-pair' : ''}`}>
       {order.map((option) => {
@@ -204,6 +205,7 @@ export function ClassifyBoard({
   solution,
   locked,
   tone,
+  seed,
   onChange,
 }: {
   items: readonly SortItem[]
@@ -212,10 +214,12 @@ export function ClassifyBoard({
   solution?: Record<string, string>
   locked: boolean
   tone: BoardTone
+  seed: string
   onChange: (map: Record<string, string>) => void
 }) {
   const [active, setActive] = useState<string | null>(null)
-  const open = items.filter((item) => !value[item.id])
+  const [bank] = useState(() => shuffleVisible(items, rngFromString(`${seed}-classify`)))
+  const open = bank.filter((item) => !value[item.id])
   const accents = ['sage', 'sky', 'rose', 'violet', 'clay', 'teal']
 
   const assign = (itemId: string, bucketId: string) => {
@@ -300,7 +304,11 @@ export function OrderBoard({
   seed: string
   onChange: (ids: string[]) => void
 }) {
-  const [bank] = useState(() => shuffle(items, rngFromString(seed)))
+  const [bank] = useState(() => shuffleVisible(
+    items,
+    rngFromString(seed),
+    (order) => order.length === correctIds.length && order.every((item, index) => item.id === correctIds[index]),
+  ))
   const used = new Set(value)
   const append = (id: string) => {
     if (locked || used.has(id)) return

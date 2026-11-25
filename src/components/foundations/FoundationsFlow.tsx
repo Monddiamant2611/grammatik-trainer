@@ -3,6 +3,7 @@ import { areaById, type AreaId } from '../../domain/areas'
 import type { FoundationStep, FoundationTry } from '../../foundations/types'
 import { foundationModule, tutorialModule } from '../../foundations/content'
 import { useProgress } from '../../progress/ProgressContext'
+import { MarkedStimulus } from '../MarkedStimulus'
 import { ChoiceList, ClassifyBoard, OrderBoard } from '../interactions/TaskInteraction'
 
 export function FoundationsFlow({
@@ -69,7 +70,7 @@ function StepBody({ step, onNext, onBack }: { step: FoundationStep; onNext: () =
 
   return (
     <div className="foundation-step">
-      <p className="prompt">{step.lead}</p>
+      {step.mark ? <MarkedStimulus text={step.lead} target={step.mark} /> : <p className="prompt">{step.lead}</p>}
       {step.concept && (
         <aside className="concept-card" aria-label={`Begriff: ${step.concept.term}`}>
           <p className="merke-label">Begriff</p>
@@ -93,11 +94,7 @@ function StepBody({ step, onNext, onBack }: { step: FoundationStep; onNext: () =
       <TryBlock tryStep={step.try} seed={step.id} revealed={insight} onReveal={(ok) => { setMatched(ok); setInsight(true) }} />
       {insight && (
         <div className="insight-panel">
-          <p>{matched ? 'Das passt zur Beobachtung.' : 'Hier lohnt sich ein zweiter Blick. Die Beobachtung zeigt, worauf es ankommt.'}</p>
-          <h2>Beobachtung</h2>
-          <p>{step.observation}</p>
-          <h2>Erklärung</h2>
-          <p>{step.explanation}</p>
+          <p>{matched ? step.observation : step.explanation}</p>
           {step.merksatz && (
             <aside className="merke-card" aria-label="Merksatz">
               <p className="merke-label">Merke</p>
@@ -135,7 +132,7 @@ function TryBlock({
     return <SeriesTry tryStep={tryStep} seed={seed} revealed={revealed} onReveal={onReveal} />
   }
   if (tryStep.kind === 'classify') {
-    return <ClassifyTry tryStep={tryStep} revealed={revealed} onReveal={onReveal} />
+    return <ClassifyTry tryStep={tryStep} seed={seed} revealed={revealed} onReveal={onReveal} />
   }
   return <OrderTry tryStep={tryStep} seed={seed} revealed={revealed} onReveal={onReveal} />
 }
@@ -152,6 +149,8 @@ function ChoiceTry({
   onReveal: (matched: boolean) => void
 }) {
   const [value, setValue] = useState<string | null>(null)
+  const [attempts, setAttempts] = useState(0)
+  const [hint, setHint] = useState<string | null>(null)
   return (
     <div className="try-block">
       <p className="prompt">{tryStep.prompt}</p>
@@ -163,10 +162,24 @@ function ChoiceTry({
         tone="explore"
         seed={seed}
         onChange={(id) => {
+          if (id === tryStep.answerId) {
+            setHint(null)
+            setValue(id)
+            onReveal(true)
+            return
+          }
+          if (attempts === 0) {
+            setAttempts(1)
+            setValue(null)
+            setHint(tryStep.hint ?? 'Prüfe die Frage noch einmal.')
+            return
+          }
+          setHint(null)
           setValue(id)
-          onReveal(id === tryStep.answerId)
+          onReveal(false)
         }}
       />
+      {hint && <p className="settle-note">{hint}</p>}
     </div>
   )
 }
@@ -183,6 +196,8 @@ function CompareTry({
   onReveal: (matched: boolean) => void
 }) {
   const [value, setValue] = useState<string | null>(null)
+  const [attempts, setAttempts] = useState(0)
+  const [hint, setHint] = useState<string | null>(null)
   return (
     <div className="try-block">
       <p className="prompt">{tryStep.prompt}</p>
@@ -194,10 +209,24 @@ function CompareTry({
         tone="explore"
         seed={seed}
         onChange={(id) => {
+          if (id === tryStep.answer) {
+            setHint(null)
+            setValue(id)
+            onReveal(true)
+            return
+          }
+          if (attempts === 0) {
+            setAttempts(1)
+            setValue(null)
+            setHint(tryStep.hint ?? 'Vergleiche die beiden Formen noch einmal.')
+            return
+          }
+          setHint(null)
           setValue(id)
-          onReveal(id === tryStep.answer)
+          onReveal(false)
         }}
       />
+      {hint && <p className="settle-note">{hint}</p>}
     </div>
   )
 }
@@ -217,6 +246,8 @@ function SeriesTry({
   const [value, setValue] = useState<string | null>(null)
   const [settle, setSettle] = useState<string | null>(null)
   const [matchedAll, setMatchedAll] = useState(true)
+  const [attempts, setAttempts] = useState(0)
+  const [hint, setHint] = useState<string | null>(null)
   const question = tryStep.questions[cursor]
   if (!question || revealed) return null
   return (
@@ -232,11 +263,25 @@ function SeriesTry({
         tone="explore"
         seed={`${seed}-${cursor}`}
         onChange={(id) => {
+          if (id === question.answerId) {
+            setHint(null)
+            setValue(id)
+            setSettle(question.settle)
+            return
+          }
+          if (attempts === 0) {
+            setAttempts(1)
+            setValue(null)
+            setHint(question.hint ?? 'Schau noch einmal auf das Beispiel.')
+            return
+          }
+          setHint(null)
           setValue(id)
           setSettle(question.settle)
-          if (id !== question.answerId) setMatchedAll(false)
+          setMatchedAll(false)
         }}
       />
+      {hint && <p className="settle-note">{hint}</p>}
       {settle && <p className="settle-note">{settle}</p>}
       {settle && (
         <button
@@ -249,6 +294,8 @@ function SeriesTry({
               setCursor(cursor + 1)
               setValue(null)
               setSettle(null)
+              setAttempts(0)
+              setHint(null)
             }
           }}
         >
@@ -261,14 +308,18 @@ function SeriesTry({
 
 function ClassifyTry({
   tryStep,
+  seed,
   revealed,
   onReveal,
 }: {
   tryStep: Extract<FoundationTry, { kind: 'classify' }>
+  seed: string
   revealed: boolean
   onReveal: (matched: boolean) => void
 }) {
   const [map, setMap] = useState<Record<string, string>>({})
+  const [attempts, setAttempts] = useState(0)
+  const [hint, setHint] = useState<string | null>(null)
   const complete = tryStep.items.every((item) => map[item.id])
   const matched = tryStep.items.every((item) => map[item.id] === tryStep.solution[item.id])
   return (
@@ -280,10 +331,23 @@ function ClassifyTry({
         value={map}
         locked={revealed}
         tone="explore"
+        seed={seed}
         onChange={setMap}
       />
-      <button type="button" className="secondary-button" disabled={!complete || revealed} onClick={() => onReveal(matched)}>
-        Beobachtung ansehen
+      {hint && <p className="settle-note">{hint}</p>}
+      <button
+        type="button"
+        className="secondary-button"
+        disabled={!complete || revealed}
+        onClick={() => {
+          if (matched) onReveal(true)
+          else if (attempts === 0) {
+            setAttempts(1)
+            setHint(tryStep.hint ?? 'Prüfe jede Zuordnung noch einmal.')
+          } else onReveal(false)
+        }}
+      >
+        Prüfen
       </button>
     </div>
   )
@@ -301,6 +365,8 @@ function OrderTry({
   onReveal: (matched: boolean) => void
 }) {
   const [ids, setIds] = useState<string[]>([])
+  const [attempts, setAttempts] = useState(0)
+  const [hint, setHint] = useState<string | null>(null)
   const complete = ids.length === tryStep.correctIds.length
   const matched = tryStep.correctIds.every((id, index) => ids[index] === id)
   return (
@@ -315,8 +381,20 @@ function OrderTry({
         seed={seed}
         onChange={setIds}
       />
-      <button type="button" className="secondary-button" disabled={!complete || revealed} onClick={() => onReveal(matched)}>
-        Beobachtung ansehen
+      {hint && <p className="settle-note">{hint}</p>}
+      <button
+        type="button"
+        className="secondary-button"
+        disabled={!complete || revealed}
+        onClick={() => {
+          if (matched) onReveal(true)
+          else if (attempts === 0) {
+            setAttempts(1)
+            setHint(tryStep.hint ?? 'Prüfe die Reihenfolge noch einmal.')
+          } else onReveal(false)
+        }}
+      >
+        Prüfen
       </button>
     </div>
   )

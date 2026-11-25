@@ -201,6 +201,14 @@
   border-radius: var(--radius-md);
   padding: var(--space-4);
 }
+.target-mark {
+  background: color-mix(in srgb, var(--accent) 22%, var(--paper));
+  color: inherit;
+  font-weight: 700;
+  padding: 0.02em 0;
+  border-radius: 0.2em;
+  box-decoration-break: clone;
+}
 .token-sentence, .comma-sentence {
   display: flex;
   flex-wrap: wrap;

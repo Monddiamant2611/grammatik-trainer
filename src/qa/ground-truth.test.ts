@@ -80,8 +80,11 @@ describe('Geprüfte Kerninhalte', () => {
     expect(chosen('adj-compare-v02')).toBe('wie')
     expect(chosen('adj-fix-ae1')).toBe('Er ist schneller als ich.')
     expect(taskById('adj-compare-v01').feedbackCorrect).toMatch(/größer wie/)
-    expect(taskById('adj-umlaut-a04').interaction).toMatchObject({ kind: 'bool', correct: true })
-    expect(taskById('adj-regular-a23').interaction).toMatchObject({ kind: 'bool', correct: true })
+    expect(chosen('adj-umlaut-a04')).toBe('größer')
+    expect(taskById('adj-umlaut-a04').stimulus ?? '').not.toContain('größer')
+    expect(taskById('adj-umlaut-a04').prompt).not.toMatch(/Bekommt/)
+    expect(chosen('adj-regular-a23')).toBe('gut, besser, am besten')
+    expect(taskById('adj-regular-a23').stimulus ?? '').not.toContain('besser')
   })
 
   it('konjugiert Personen, Vokalwechsel und die Perfektformen', () => {

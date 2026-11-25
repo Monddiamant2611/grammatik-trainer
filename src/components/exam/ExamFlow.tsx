@@ -25,6 +25,7 @@ import {
 } from '../../progress/exams'
 import { historyFor } from '../../progress/model'
 import { useProgress } from '../../progress/ProgressContext'
+import { MarkedStimulus } from '../MarkedStimulus'
 import { PromptBlock } from '../PromptBlock'
 import { TaskInteraction } from '../interactions/TaskInteraction'
 
@@ -193,7 +194,7 @@ export function ExamFlow({ onExit }: { onExit: () => void }) {
               <span className="eyebrow">{AREA_LABEL[item.task.area]}</span>
               <h2>{item.task.typeLabel}</h2>
               <p className="prompt">{item.task.prompt}</p>
-              {item.task.stimulus && <p className="stimulus">{item.task.stimulus}</p>}
+              {item.task.stimulus && <MarkedStimulus text={item.task.stimulus} target={item.task.target?.surface} />}
               <p><strong>Deine Antwort:</strong> {describeAnswer(item.task, item.answer)}</p>
               <p><strong>Richtige Antwort:</strong> {describeSolution(item.task)}</p>
               <p>{item.task.feedbackIncorrect}</p>
@@ -382,7 +383,7 @@ function ExamTask({
       </div>
       <article className="learning-card exercise-card" data-task-id={task.id}>
         <p className="prompt">{task.prompt}</p>
-        {task.stimulus && <p className="stimulus">{task.stimulus}</p>}
+        {task.stimulus && <MarkedStimulus text={task.stimulus} target={task.target?.surface} />}
         <TaskInteraction task={task} answer={answer} locked={confirmed} tone="exam" onChange={onChange} />
         <div className="exercise-actions">
           {!confirmed && (
@@ -478,7 +479,7 @@ function PracticeRound({
       </header>
       <article key={task.id} className="learning-card exercise-card" data-task-id={task.id}>
         <PromptBlock text={task.prompt} help />
-        {task.stimulus && <p className="stimulus">{task.stimulus}</p>}
+        {task.stimulus && <MarkedStimulus text={task.stimulus} target={task.target?.surface} />}
         <TaskInteraction task={task} answer={answer} locked={checked} tone="training" onChange={setAnswer} />
         {checked && answer && <p className="feedback-status">{correct ? 'Das stimmt.' : 'Schau noch einmal hin.'}</p>}
         {checked && <p>{correct ? task.feedbackCorrect : task.feedbackIncorrect}</p>}

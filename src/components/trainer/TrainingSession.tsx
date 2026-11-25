@@ -9,6 +9,7 @@ import type { Answer, Task } from '../../engine/types'
 import { historyFor, isAreaStarted, type HistoryState } from '../../progress/model'
 import { useProgress } from '../../progress/ProgressContext'
 import { FeedbackBanner } from '../feedback/FeedbackBanner'
+import { MarkedStimulus } from '../MarkedStimulus'
 import { PromptBlock } from '../PromptBlock'
 import { TaskInteraction } from '../interactions/TaskInteraction'
 
@@ -118,7 +119,7 @@ function TaskCard({
       </header>
       <article className="learning-card exercise-card" data-task-id={task.id}>
         <PromptBlock text={task.prompt} help />
-        {task.stimulus && <p className="stimulus">{task.stimulus}</p>}
+        {task.stimulus && <MarkedStimulus text={task.stimulus} target={task.target?.surface} />}
         <TaskInteraction task={task} answer={answer} locked={checked} tone="training" onChange={setAnswer} />
         {checked && answer && (
           <FeedbackBanner correct={correct} text={correct ? task.feedbackCorrect : task.feedbackIncorrect} />
